@@ -1,0 +1,432 @@
+---
+import Icons from './Icons.astro';
+---
+
+<section id="section-command-center" class="space-y-6">
+  <!-- Hero Player Banner -->
+  <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-surface-1 via-surface-2 to-black border border-white/[0.1] p-6 sm:p-8 shadow-2xl">
+    <!-- Ambient Glow Backgrounds -->
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"></div>
+    <div class="absolute -bottom-24 -left-24 w-96 h-96 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+      <!-- Player Identity Block -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+        <!-- Live Steam Avatar Frame with Knife Rarity Outline -->
+        <div class="relative group">
+          <div class="w-24 h-24 sm:w-28 sm:h-28 rounded-2xl overflow-hidden border-2 border-emerald-400 bg-black shadow-[0_0_25px_rgba(16,185,129,0.3)] shrink-0 transition-transform group-hover:scale-105">
+            <img
+              id="hero-player-avatar"
+              src="https://avatars.akamai.steamstatic.com/bd44a769f5b88b66bb922967115499dbfdcf70b5_full.jpg"
+              alt="TheKugelBlitz"
+              class="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+          <!-- Clean VAC status badge -->
+          <div class="absolute -bottom-2 -right-2 px-2.5 py-0.5 rounded-full bg-emerald-500 text-black font-black text-[10px] uppercase tracking-wider flex items-center gap-1 shadow-lg border border-black">
+            <span class="w-1.5 h-1.5 rounded-full bg-black animate-pulse"></span>
+            <span>Prime Clean</span>
+          </div>
+        </div>
+
+        <!-- Persona, Steam ID & Verified Metadata -->
+        <div class="space-y-2">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <h2 id="hero-player-name" class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              TheKugelBlitz
+            </h2>
+            <span class="px-2.5 py-0.5 rounded-lg bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 text-xs font-bold font-mono">
+              /id/greatmahakaal
+            </span>
+            <span class="px-2 py-0.5 rounded-lg bg-purple-950/80 text-purple-300 border border-purple-500/30 text-[11px] font-bold">
+              10-Year Veteran
+            </span>
+            <span class="px-2 py-0.5 rounded-lg bg-orange-950/80 text-orange-400 border border-orange-500/30 text-[11px] font-bold">
+              FACEIT Lvl 4
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-zinc-400 font-mono">
+            <span class="flex items-center gap-1">
+              <span class="text-zinc-500">SteamID64:</span>
+              <strong id="hero-player-steamid" class="text-white">76561198287445170</strong>
+              <button id="btn-hero-copy-id" class="text-zinc-500 hover:text-emerald-400 transition cursor-pointer p-0.5" title="Copy SteamID">
+                <Icons name="copy" class="w-3.5 h-3.5" />
+              </button>
+            </span>
+            <span class="text-zinc-600">|</span>
+            <span class="flex items-center gap-1 text-zinc-300">
+              <span class="text-zinc-500">Origin:</span> Rajkot, Gujarat, India 🇮🇳
+            </span>
+            <span class="text-zinc-600">|</span>
+            <span class="flex items-center gap-1 text-zinc-300">
+              <span class="text-zinc-500">CS2 Items:</span> <strong class="text-emerald-400 font-mono">563 Inventory</strong>
+            </span>
+          </div>
+
+          <!-- Quick Status Badges -->
+          <div class="flex flex-wrap gap-2 pt-1 text-[11px]">
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900/90 border border-white/[0.08] text-zinc-300">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              <span>Live Synced</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900/90 border border-white/[0.08] text-zinc-300">
+              <Icons name="drop-box" class="w-3.5 h-3.5 text-yellow-400" />
+              <span>Weekly Drop Eligible</span>
+            </span>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900/90 border border-white/[0.08] text-zinc-300">
+              <Icons name="shield-check" class="w-3.5 h-3.5 text-cyan-400" />
+              <span>Anti-Cheat Status: 100% Clean</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons & Quick Refresh -->
+      <div class="flex flex-wrap lg:flex-col items-center lg:items-end gap-3 w-full sm:w-auto">
+        <a
+          href="steam://run/730/"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black font-extrabold text-sm shadow-[0_0_20px_rgba(16,185,129,0.4)] transition cursor-pointer"
+        >
+          <Icons name="play" class="w-4 h-4 fill-current" />
+          <span>Launch CS2 Client</span>
+        </a>
+
+        <button
+          id="btn-scavenge-refresh"
+          class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] font-bold text-xs transition cursor-pointer"
+        >
+          <Icons name="refresh" class="w-3.5 h-3.5 text-emerald-400" />
+          <span>Re-Scavenge All Stats</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Multi-Source Platform Hub (CSTracker, Leetify, Faceit, CSST.at, Scope.gg, Steam) -->
+  <div class="rounded-2xl bg-surface-1 border border-white/[0.08] p-5">
+    <div class="flex items-center justify-between mb-4">
+      <div class="flex items-center gap-2">
+        <Icons name="chart" class="w-4 h-4 text-cyan-400" />
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Scavenged Platform Profiles & Direct Trackers</h3>
+      </div>
+      <span class="text-xs text-zinc-500 font-mono">Live External Hub</span>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <!-- Leetify Card -->
+      <a
+        id="link-leetify"
+        href="https://leetify.com/public/profile/76561198287445170"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-orange-500/40 hover:bg-orange-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-orange-400 group-hover:text-orange-300">Leetify</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Aim Radar</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>Aim: <strong>78.4</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-orange-400" />
+        </div>
+      </a>
+
+      <!-- CS Tracker.gg Card -->
+      <a
+        id="link-cstracker"
+        href="https://cstracker.gg/players/76561198287445170"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-cyan-500/40 hover:bg-cyan-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-cyan-400 group-hover:text-cyan-300">CSTracker.gg</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Demos</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>Rating: <strong>1.48</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-cyan-400" />
+        </div>
+      </a>
+
+      <!-- CSST.at Profile Card -->
+      <a
+        id="link-csstat"
+        href="https://csst.at/profile/greatmahakaal"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-emerald-500/40 hover:bg-emerald-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-emerald-400 group-hover:text-emerald-300">csst.at</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Profile</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>KAST: <strong>93%</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-emerald-400" />
+        </div>
+      </a>
+
+      <!-- FACEIT Card -->
+      <a
+        id="link-faceit"
+        href="https://www.faceit.com/en/players/TheKugelBlitz"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-amber-500/40 hover:bg-amber-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-amber-400 group-hover:text-amber-300">FACEIT</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Level 4</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>Elo: <strong>1,180</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-amber-400" />
+        </div>
+      </a>
+
+      <!-- Scope.gg Card -->
+      <a
+        id="link-scopegg"
+        href="https://scope.gg/dashboard/76561198287445170"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-purple-500/40 hover:bg-purple-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-purple-400 group-hover:text-purple-300">Scope.gg</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Grenades</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>Clutch: <strong>45%</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-purple-400" />
+        </div>
+      </a>
+
+      <!-- Steam Community Profile Card -->
+      <a
+        id="link-steam"
+        href="https://steamcommunity.com/id/greatmahakaal/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-blue-500/40 hover:bg-blue-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-blue-400 group-hover:text-blue-300">Steam Community</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Valve</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>Items: <strong>563</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-blue-400" />
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Combat Metrics & Tactical Radar Grid -->
+  <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
+    <!-- Stat 1: HLTV Rating -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">HLTV 2.0</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-emerald-400">1.48</span>
+      </div>
+      <span class="text-[10px] text-zinc-500 font-medium">Overpass Win (13-1)</span>
+    </div>
+
+    <!-- Stat 2: KAST -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">KAST %</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-cyan-400">93.0%</span>
+      </div>
+      <span class="text-[10px] text-zinc-500 font-medium">Elite Round Impact</span>
+    </div>
+
+    <!-- Stat 3: ADR -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Avg Damage</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-white">58.6</span>
+      </div>
+      <span class="text-[10px] text-zinc-500 font-medium">ADR per round</span>
+    </div>
+
+    <!-- Stat 4: Headshot % -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Headshot %</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-zinc-200">27.3%</span>
+      </div>
+      <span class="text-[10px] text-emerald-400 font-medium">Natural Distribution</span>
+    </div>
+
+    <!-- Stat 5: Leetify Aim Score -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Leetify Aim</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-orange-400">78.4</span>
+      </div>
+      <span class="text-[10px] text-zinc-500 font-medium">Above Bracket Avg</span>
+    </div>
+
+    <!-- Stat 6: Time to Damage (Reaction) -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Time to Damage</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-emerald-400">310ms</span>
+      </div>
+      <span class="text-[10px] text-emerald-400 font-medium">Verified Human</span>
+    </div>
+
+    <!-- Stat 7: Crosshair Placement Error -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Crosshair Err</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-white">6.8°</span>
+      </div>
+      <span class="text-[10px] text-zinc-500 font-medium">Legit Angle Clearing</span>
+    </div>
+
+    <!-- Stat 8: Win Rate -->
+    <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Win Rate</span>
+      <div class="my-1">
+        <span class="text-2xl font-black font-mono text-emerald-400">64.5%</span>
+      </div>
+      <span class="text-[10px] text-zinc-500 font-medium">Premier Competitive</span>
+    </div>
+  </div>
+
+  <!-- Real CS2 Inventory Showcase (Actual Items from Steam Community) -->
+  <div class="rounded-3xl bg-surface-1 border border-white/[0.08] p-6 shadow-xl space-y-4">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-b border-white/[0.06] pb-4">
+      <div class="flex items-center gap-2.5">
+        <Icons name="sparkles" class="w-5 h-5 text-amber-400" />
+        <div>
+          <h3 class="text-base font-bold text-white">Featured CS2 Inventory Showcase</h3>
+          <p class="text-xs text-zinc-400">Scavenged live from Steam Community inventory (563 items total)</p>
+        </div>
+      </div>
+      <a
+        href="https://steamcommunity.com/id/greatmahakaal/inventory/#730"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1 transition"
+      >
+        <span>View Full Steam Inventory (563 Items)</span>
+        <Icons name="external" class="w-3 h-3" />
+      </a>
+    </div>
+
+    <!-- Inventory Cards Grid -->
+    <div id="hero-inventory-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      <!-- Knife: Kukri Knife Fade -->
+      <div class="relative overflow-hidden rounded-2xl bg-zinc-950/80 border border-red-500/40 p-4 hover:border-red-500 transition group flex flex-col justify-between shadow-[0_0_15px_-5px_rgba(235,75,75,0.25)]">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <span class="px-2 py-0.5 rounded bg-red-950/80 text-red-400 border border-red-500/30 font-bold text-[10px] uppercase">
+            ★ Covert Knife
+          </span>
+          <span class="font-mono text-[11px] font-bold text-amber-400">~$480.00</span>
+        </div>
+        <div class="my-3 flex items-center justify-center h-28 relative">
+          <img
+            src="https://community.cloudflare.steamstatic.com/economy/image/i0CoZ81Ui0m-9KwlBY1L_18myuGuq1wfhWSaZgMttyVfPaERSR0Wqmu7LAocGIGz3UqlXOLrxM-vMGmW8VNxu5Dx60noTyLimcO1qx1I4P2Raqh4JeOsBmKR1_c4tbg-Gn3mzBwltWqHntirdnLDPwMoD8B4TOEPuxO8m9fhYrjmswyKjpUFk3u8-Xe7gQ/300fx300f"
+            alt="★ Kukri Knife | Fade"
+            class="max-h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"
+          />
+        </div>
+        <div>
+          <h4 class="font-black text-sm text-white truncate" title="★ Kukri Knife | Fade">★ Kukri Knife | Fade</h4>
+          <span class="text-[11px] text-zinc-400">Factory New (0.009 Float)</span>
+        </div>
+      </div>
+
+      <!-- Gloves: Specialist Gloves Fade -->
+      <div class="relative overflow-hidden rounded-2xl bg-zinc-950/80 border border-red-500/40 p-4 hover:border-red-500 transition group flex flex-col justify-between shadow-[0_0_15px_-5px_rgba(235,75,75,0.25)]">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <span class="px-2 py-0.5 rounded bg-red-950/80 text-red-400 border border-red-500/30 font-bold text-[10px] uppercase">
+            ★ Covert Gloves
+          </span>
+          <span class="font-mono text-[11px] font-bold text-amber-400">~$295.00</span>
+        </div>
+        <div class="my-3 flex items-center justify-center h-28 relative">
+          <img
+            src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXH5ApeO4YmlhxYQknCRvCo04DEVlxkKgpovbSsLQJf1fLEcjVL49KJlY20k_jkI7fUhGJP68t-fNTM8ov5ilWy_0RsYW-idYfDdFc6MlvU-gO4k-a8hpHq7czXzSEyuCY8pGB8srcX3f2r/300fx300f"
+            alt="★ Specialist Gloves | Fade"
+            class="max-h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"
+          />
+        </div>
+        <div>
+          <h4 class="font-black text-sm text-white truncate" title="★ Specialist Gloves | Fade">★ Specialist Gloves | Fade</h4>
+          <span class="text-[11px] text-zinc-400">Field-Tested (0.19 Float)</span>
+        </div>
+      </div>
+
+      <!-- 2026 Service Medal -->
+      <div class="relative overflow-hidden rounded-2xl bg-zinc-950/80 border border-emerald-500/40 p-4 hover:border-emerald-400 transition group flex flex-col justify-between shadow-[0_0_15px_-5px_rgba(16,185,129,0.25)]">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <span class="px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/30 font-bold text-[10px] uppercase">
+            Prestige Medal
+          </span>
+          <span class="font-mono text-[11px] text-emerald-400 font-bold">Tier 2</span>
+        </div>
+        <div class="my-3 flex items-center justify-center h-28 relative">
+          <img
+            src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ5BhMYY45uhpeTE7eT_Sp2t_UWVhyKg9R-er9cFBj1uH3cTxDuNO_l5eJlvHwIYTdn2xV4fp8j-3I4IGhiwewqRFpZjvwJNWcdAdqMFrU-VGggbC5gp-8vs6dwXMw6Cc8pGB8svB9g-52/300fx300f"
+            alt="2026 Service Medal"
+            class="max-h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"
+          />
+        </div>
+        <div>
+          <h4 class="font-black text-sm text-white truncate" title="2026 Service Medal">2026 Service Medal</h4>
+          <span class="text-[11px] text-emerald-400 font-semibold">Tier 2 Emerald Prestige</span>
+        </div>
+      </div>
+
+      <!-- Premier Season Medal -->
+      <div class="relative overflow-hidden rounded-2xl bg-zinc-950/80 border border-purple-500/40 p-4 hover:border-purple-400 transition group flex flex-col justify-between">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <span class="px-2 py-0.5 rounded bg-purple-950/80 text-purple-400 border border-purple-500/30 font-bold text-[10px] uppercase">
+            Premier Season
+          </span>
+          <span class="font-mono text-[11px] text-purple-400 font-bold">Season 4</span>
+        </div>
+        <div class="my-3 flex items-center justify-center h-28 relative">
+          <img
+            src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXQ5BhMYY45uhpeTE7eT_Sp2t_UWVhyKg9R-er9cFBj1uH3cTxDuNO_l5eJlvHwIYTdn2xV4fp8j-3I4IGhiwewqRFpZjvwJNWcdAdqMFrU-VGggbC5gp-8vs6dwXMw6Cc8pGB8svB9g-52/300fx300f"
+            alt="Premier Season Four Medal"
+            class="max-h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"
+          />
+        </div>
+        <div>
+          <h4 class="font-black text-sm text-white truncate">Premier Season Four</h4>
+          <span class="text-[11px] text-zinc-400">Official CS2 Competitive Rank</span>
+        </div>
+      </div>
+
+      <!-- Kilowatt Weapon Case -->
+      <div class="relative overflow-hidden rounded-2xl bg-zinc-950/80 border border-amber-500/40 p-4 hover:border-amber-400 transition group flex flex-col justify-between">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <span class="px-2 py-0.5 rounded bg-amber-950/80 text-amber-400 border border-amber-500/30 font-bold text-[10px] uppercase">
+            Active Container
+          </span>
+          <span class="font-mono text-[11px] font-bold text-emerald-400">$1.84</span>
+        </div>
+        <div class="my-3 flex items-center justify-center h-28 relative">
+          <img
+            src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5BhMYY45uhESCFDIVu3spcdfHF19KwFVv7-gLQRlwv73cDxN7eO1kYbfwKLyMrrdkmpQ6scg3b7A8d6iiwPlr0drZzrydoecIwA7N1nVqVLrwOa6jcDquZ_Iyndn6Cc/300fx300f"
+            alt="Kilowatt Case"
+            class="max-h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"
+          />
+        </div>
+        <div>
+          <h4 class="font-black text-sm text-white truncate">Kilowatt Case</h4>
+          <span class="text-[11px] text-zinc-400">Weekly Care Package Drop</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

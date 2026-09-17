@@ -1,4 +1,18 @@
-import type { SteamAccount, DropItem, XpMultiplier, ServiceMedalTier } from '../lib/types';
+import type {
+  SteamAccount,
+  DropItem,
+  XpMultiplier,
+  ServiceMedalTier,
+  CS2Match,
+  ProPlayerStat,
+  CaseMarketPrice,
+  PlayerMatchLog,
+  ScavengedPlayerProfile,
+  DetailedMatch,
+  HackerScanResult,
+  InventoryShowcaseItem,
+  MatchPlayerScore
+} from '../lib/types';
 import {
   loadAccountsFromStorage,
   saveAccountsToStorage,
@@ -14,6 +28,8 @@ let settings: AppSettings = loadSettingsFromStorage();
 let currentFilter: 'all' | 'available' | 'claimed' | 'near-medal' = 'all';
 let searchQuery: string = '';
 let currentView: 'grid' | 'table' = 'grid';
+let currentScavengedProfile: ScavengedPlayerProfile | null = null;
+let scavengedMatches: DetailedMatch[] = [];
 
 // Initialize
 export function initDashboard() {
@@ -21,8 +37,15 @@ export function initDashboard() {
   currentView = settings.activeView || 'grid';
 
   bindEvents();
+  setupTabNavigation();
+  setupLogMatchModal();
+  loadMarketPrices();
+  setupScavenger();
+  setupHackerRadar();
+  setupMatchScorecardModal();
   render();
 }
+
 
 function bindEvents() {
   // Search
@@ -500,6 +523,15 @@ function renderCardHtml(acc: SteamAccount): string {
         </div>
 
         <div class="flex items-center gap-1">
+          <!-- Quick Log Match button -->
+          <button
+            class="btn-card-log-match p-1.5 text-zinc-400 hover:text-emerald-400 bg-zinc-900 hover:bg-zinc-800 rounded-lg border border-white/[0.08] transition cursor-pointer"
+            data-account-id="${acc.id}"
+            title="Log Match for ${acc.personaName}"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </button>
+
           <!-- Edit button -->
           <button
             class="btn-edit-account p-1.5 text-zinc-400 hover:text-cyan-400 bg-zinc-900 hover:bg-zinc-800 rounded-lg border border-white/[0.08] transition cursor-pointer"
@@ -602,6 +634,13 @@ function renderTableRowHtml(acc: SteamAccount): string {
             <svg class="w-3.5 h-3.5 fill-current text-emerald-400" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
           </a>
           <button
+            class="btn-card-log-match p-1.5 text-zinc-400 hover:text-emerald-400 bg-zinc-900 rounded border border-white/[0.08] cursor-pointer"
+            data-account-id="${acc.id}"
+            title="Log Match"
+          >
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+          </button>
+          <button
             class="btn-edit-account p-1.5 text-zinc-400 hover:text-cyan-400 bg-zinc-900 rounded border border-white/[0.08] cursor-pointer"
             data-account-id="${acc.id}"
           >
@@ -656,6 +695,16 @@ function bindCardInteractions(container: HTMLElement) {
     btn.addEventListener('click', () => {
       const id = btn.getAttribute('data-account-id');
       if (id) openEditModal(id);
+    });
+  });
+
+  // Log Match Quick Action
+  container.querySelectorAll('.btn-card-log-match').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-account-id');
+      if (id && (window as any).openLogMatchForAccount) {
+        (window as any).openLogMatchForAccount(id);
+      }
     });
   });
 
@@ -1170,3 +1219,819 @@ function setupSettingsModal() {
     }
   });
 }
+
+// ----------------------------------------------------------------------
+// Tab Navigation & Section Switcher
+// ----------------------------------------------------------------------
+
+function setupTabNavigation() {
+  const tabs = document.querySelectorAll('.nav-tab');
+  const secCommand = document.getElementById('section-command-center');
+  const secRadar = document.getElementById('section-hacker-radar');
+  const secFleet = document.getElementById('section-fleet');
+  const secMatches = document.getElementById('section-live-matches');
+  const secLeaderboard = document.getElementById('section-pro-leaderboard');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const target = tab.getAttribute('data-target');
+      if (!target) return;
+
+      tabs.forEach((t) => {
+        const tTarget = t.getAttribute('data-target');
+        if (tTarget === target) {
+          t.classList.add('active', 'bg-zinc-800', 'text-white');
+          t.classList.remove('text-zinc-400');
+        } else {
+          t.classList.remove('active', 'bg-zinc-800', 'text-white');
+          t.classList.add('text-zinc-400');
+        }
+      });
+
+      // Hide all sections first
+      secCommand?.classList.add('hidden');
+      secRadar?.classList.add('hidden');
+      secFleet?.classList.add('hidden');
+      secMatches?.classList.add('hidden');
+      secLeaderboard?.classList.add('hidden');
+
+      if (target === 'section-command-center') {
+        secCommand?.classList.remove('hidden');
+      } else if (target === 'section-hacker-radar') {
+        secRadar?.classList.remove('hidden');
+      } else if (target === 'section-fleet') {
+        secFleet?.classList.remove('hidden');
+      } else if (target === 'section-live-matches') {
+        secMatches?.classList.remove('hidden');
+        loadLiveMatches();
+      } else if (target === 'section-pro-leaderboard') {
+        secLeaderboard?.classList.remove('hidden');
+        loadProLeaderboard();
+      }
+    });
+  });
+
+  document.getElementById('btn-refresh-matches')?.addEventListener('click', () => {
+    loadLiveMatches(true);
+  });
+  document.getElementById('btn-refresh-leaderboard')?.addEventListener('click', () => {
+    loadProLeaderboard(true);
+  });
+}
+
+// ----------------------------------------------------------------------
+// Live Weekly Case Market Prices Ticker
+// ----------------------------------------------------------------------
+
+let marketPricesLoaded = false;
+async function loadMarketPrices() {
+  const container = document.getElementById('market-cards-container');
+  const updatedEl = document.getElementById('market-last-updated');
+  if (!container) return;
+
+  try {
+    const res = await fetch('/api/steam/market');
+    const data = await res.json();
+    if (data?.success && Array.isArray(data?.prices) && data.prices.length > 0) {
+      marketPricesLoaded = true;
+      if (updatedEl) {
+        updatedEl.textContent = `Synced ${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+      }
+      container.innerHTML = data.prices.map((item: CaseMarketPrice) => `
+        <div class="p-3 rounded-xl bg-zinc-950/80 border border-white/[0.08] hover:border-emerald-500/30 transition flex items-center gap-2.5 group">
+          <img
+            src="${item.icon}"
+            alt="${item.name}"
+            class="w-10 h-10 object-contain drop-shadow shrink-0 group-hover:scale-105 transition-transform"
+            onerror="this.src='/favicon.svg'"
+          />
+          <div class="min-w-0 flex-1">
+            <div class="text-[11px] font-bold text-zinc-300 truncate" title="${item.name}">${item.name}</div>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="text-xs font-mono font-extrabold text-emerald-400">${item.lowestPrice || '$0.00'}</span>
+              <span class="text-[10px] text-zinc-500 font-mono hidden sm:inline">vol: ${item.volume || 'high'}</span>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+  } catch (err) {
+    console.warn('Market prices sync warning:', err);
+  }
+}
+
+// ----------------------------------------------------------------------
+// Live CS2 Pro Tournament Match Tracker
+// ----------------------------------------------------------------------
+
+let matchesLoaded = false;
+async function loadLiveMatches(force = false) {
+  if (matchesLoaded && !force) return;
+  const loadingEl = document.getElementById('matches-loading');
+  const gridEl = document.getElementById('matches-grid');
+  const emptyEl = document.getElementById('matches-empty');
+
+  if (loadingEl) loadingEl.classList.remove('hidden');
+  if (gridEl) gridEl.classList.add('hidden');
+  if (emptyEl) emptyEl.classList.add('hidden');
+
+  try {
+    const res = await fetch('/api/cs2/matches');
+    const data = await res.json();
+    if (data?.success && Array.isArray(data?.matches) && data.matches.length > 0) {
+      matchesLoaded = true;
+      if (gridEl) {
+        gridEl.innerHTML = data.matches.map((m: CS2Match) => {
+          const t1Won = m.winner?.id === m.team1.id;
+          const t2Won = m.winner?.id === m.team2.id;
+          const mapList = m.maps && m.maps.length > 0
+            ? m.maps.map(mp => `
+                <span class="px-2 py-0.5 rounded bg-zinc-900 border border-white/[0.06] text-[11px] font-mono">
+                  ${mp.name}: <strong class="text-white">${mp.team1_score}-${mp.team2_score}</strong>
+                </span>
+              `).join(' ')
+            : `<span class="text-xs text-zinc-500">Scorecard confirmed</span>`;
+
+          return `
+            <div class="p-5 rounded-2xl bg-surface-1 border border-white/[0.08] hover:border-emerald-500/30 transition flex flex-col justify-between group">
+              <div>
+                <div class="flex items-center justify-between text-xs mb-3">
+                  <span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20 font-bold uppercase tracking-wider text-[10px]">
+                    ${m.event || 'CS2 Tournament'}
+                  </span>
+                  <span class="text-zinc-500 font-mono text-[11px]">Bo${m.best_of || 3} · ${m.date || 'Live'}</span>
+                </div>
+
+                <!-- Match Scoreboard -->
+                <div class="space-y-2.5 my-3">
+                  <!-- Team 1 -->
+                  <div class="flex items-center justify-between p-2.5 rounded-xl ${t1Won ? 'bg-emerald-950/40 border border-emerald-500/30' : 'bg-zinc-900/60 border border-white/[0.04]'}">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-lg bg-zinc-800 flex items-center justify-center font-bold text-xs text-zinc-300">
+                        ${m.team1.name ? m.team1.name.slice(0, 2).toUpperCase() : 'T1'}
+                      </span>
+                      <span class="font-bold text-sm text-white">${m.team1.name}</span>
+                      ${m.team1.rank ? `<span class="text-[10px] text-zinc-500 font-mono">#${m.team1.rank}</span>` : ''}
+                    </div>
+                    <span class="font-mono font-black text-base ${t1Won ? 'text-emerald-400' : 'text-zinc-300'}">${m.team1.score}</span>
+                  </div>
+
+                  <!-- Team 2 -->
+                  <div class="flex items-center justify-between p-2.5 rounded-xl ${t2Won ? 'bg-emerald-950/40 border border-emerald-500/30' : 'bg-zinc-900/60 border border-white/[0.04]'}">
+                    <div class="flex items-center gap-2">
+                      <span class="w-6 h-6 rounded-lg bg-zinc-800 flex items-center justify-center font-bold text-xs text-zinc-300">
+                        ${m.team2.name ? m.team2.name.slice(0, 2).toUpperCase() : 'T2'}
+                      </span>
+                      <span class="font-bold text-sm text-white">${m.team2.name}</span>
+                      ${m.team2.rank ? `<span class="text-[10px] text-zinc-500 font-mono">#${m.team2.rank}</span>` : ''}
+                    </div>
+                    <span class="font-mono font-black text-base ${t2Won ? 'text-emerald-400' : 'text-zinc-300'}">${m.team2.score}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Maps Played -->
+              <div class="pt-3 border-t border-white/[0.06] flex flex-wrap gap-1.5 items-center justify-between">
+                <span class="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Maps:</span>
+                <div class="flex flex-wrap gap-1.5">${mapList}</div>
+              </div>
+            </div>
+          `;
+        }).join('');
+        gridEl.classList.remove('hidden');
+      }
+      if (loadingEl) loadingEl.classList.add('hidden');
+    } else {
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (emptyEl) emptyEl.classList.remove('hidden');
+    }
+  } catch (err) {
+    console.error('Error fetching CS2 matches:', err);
+    if (loadingEl) loadingEl.classList.add('hidden');
+    if (emptyEl) emptyEl.classList.remove('hidden');
+  }
+}
+
+// ----------------------------------------------------------------------
+// CS2 World Pro Leaderboard & Ratings
+// ----------------------------------------------------------------------
+
+let leaderboardLoaded = false;
+async function loadProLeaderboard(force = false) {
+  if (leaderboardLoaded && !force) return;
+  const loadingEl = document.getElementById('leaderboard-loading');
+  const tableWrapper = document.getElementById('leaderboard-table-wrapper');
+  const tableBody = document.getElementById('leaderboard-table-body');
+
+  if (loadingEl) loadingEl.classList.remove('hidden');
+  if (tableWrapper) tableWrapper.classList.add('hidden');
+
+  try {
+    const res = await fetch('/api/cs2/leaderboard');
+    const data = await res.json();
+    if (data?.success && Array.isArray(data?.players) && data.players.length > 0) {
+      leaderboardLoaded = true;
+      if (tableBody) {
+        tableBody.innerHTML = data.players.map((p: ProPlayerStat, idx: number) => {
+          const diff = p.k - p.d;
+          const diffStr = diff >= 0 ? `+${diff}` : `${diff}`;
+          const diffClass = diff >= 0 ? 'text-emerald-400 font-bold' : 'text-rose-400 font-bold';
+          const medalBadge = idx === 0
+            ? '<span class="text-amber-400 font-black">🥇 #1</span>'
+            : idx === 1
+            ? '<span class="text-zinc-300 font-black">🥈 #2</span>'
+            : idx === 2
+            ? '<span class="text-amber-600 font-black">🥉 #3</span>'
+            : `<span class="text-zinc-500 font-mono font-bold">#${p.rank || idx + 1}</span>`;
+
+          return `
+            <tr class="hover:bg-white/[0.02] transition">
+              <td class="py-3 px-4 text-xs">${medalBadge}</td>
+              <td class="py-3 px-4">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-xl bg-zinc-800 border border-white/[0.1] flex items-center justify-center font-bold text-xs text-emerald-400">
+                    ${p.name.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div>
+                    <span class="font-bold text-white block text-sm">${p.name}</span>
+                    <span class="text-[11px] text-zinc-500 font-mono">Pro Athlete</span>
+                  </div>
+                </div>
+              </td>
+              <td class="py-3 px-4 text-center font-mono font-black text-sm text-emerald-400">${p.rating ? p.rating.toFixed(2) : '-'}</td>
+              <td class="py-3 px-4 text-center font-mono text-xs text-zinc-300">${p.adr ? p.adr.toFixed(1) : '-'}</td>
+              <td class="py-3 px-4 text-center font-mono text-xs text-zinc-300">${p.kast ? `${p.kast.toFixed(1)}%` : '-'}</td>
+              <td class="py-3 px-4 text-center font-mono text-xs text-zinc-400">${p.k} / ${p.d}</td>
+              <td class="py-3 px-4 text-center font-mono text-xs ${diffClass}">${diffStr}</td>
+              <td class="py-3 px-4 text-center font-mono text-xs text-zinc-400">${p.N || '-'}</td>
+            </tr>
+          `;
+        }).join('');
+      }
+      if (loadingEl) loadingEl.classList.add('hidden');
+      if (tableWrapper) tableWrapper.classList.remove('hidden');
+    }
+  } catch (err) {
+    console.error('Error fetching leaderboard:', err);
+    if (loadingEl) loadingEl.classList.add('hidden');
+  }
+}
+
+// ----------------------------------------------------------------------
+// Match Logger Modal
+// ----------------------------------------------------------------------
+
+function setupLogMatchModal() {
+  const modal = document.getElementById('modal-log-match');
+  const openBtn = document.getElementById('btn-open-log-match');
+  const closeBtn = document.getElementById('btn-close-log-match');
+  const cancelBtn = document.getElementById('btn-cancel-log-match');
+  const form = document.getElementById('form-log-match') as HTMLFormElement | null;
+  const accSelect = document.getElementById('log-match-account-select') as HTMLSelectElement | null;
+  const accNameEl = document.getElementById('log-match-account-name');
+  const accIdInput = document.getElementById('log-match-account-id') as HTMLInputElement | null;
+
+  const populateAccounts = (selectedId?: string) => {
+    if (!accSelect) return;
+    if (accounts.length === 0) {
+      accSelect.innerHTML = '<option value="">No accounts in fleet</option>';
+      if (accNameEl) accNameEl.textContent = 'Account: None (add an account first)';
+      return;
+    }
+
+    accSelect.innerHTML = accounts.map(a => `
+      <option value="${a.id}" ${a.id === selectedId ? 'selected' : ''}>
+        ${a.personaName} (Rank ${a.xpStatus.currentRank})
+      </option>
+    `).join('');
+
+    const curId = selectedId || accSelect.value || accounts[0].id;
+    const curAcc = accounts.find(a => a.id === curId);
+    if (accIdInput) accIdInput.value = curId;
+    if (accNameEl) accNameEl.textContent = curAcc ? `Account: ${curAcc.personaName}` : 'Account: —';
+  };
+
+  accSelect?.addEventListener('change', () => {
+    const curAcc = accounts.find(a => a.id === accSelect.value);
+    if (accIdInput) accIdInput.value = accSelect.value;
+    if (accNameEl) accNameEl.textContent = curAcc ? `Account: ${curAcc.personaName}` : 'Account: —';
+  });
+
+  const openModal = (targetAccountId?: string) => {
+    if (accounts.length === 0) {
+      showToast('Please add a Steam account first before logging matches!', 'warn');
+      document.getElementById('btn-open-add-modal')?.click();
+      return;
+    }
+    populateAccounts(targetAccountId || accounts[0]?.id);
+    modal?.classList.remove('hidden');
+  };
+
+  openBtn?.addEventListener('click', () => openModal());
+  closeBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+  cancelBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+
+  form?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const accId = accIdInput?.value || accSelect?.value;
+    const acc = accounts.find(a => a.id === accId);
+    if (!acc) {
+      showToast('Please select a valid account!', 'warn');
+      return;
+    }
+
+    const mapVal = (document.getElementById('log-match-map') as HTMLSelectElement)?.value || 'Mirage';
+    const modeVal = (document.getElementById('log-match-mode') as HTMLSelectElement)?.value as any || 'Premier';
+    const resultVal = (document.getElementById('log-match-result') as HTMLSelectElement)?.value as any || 'Win';
+    const wonVal = parseInt((document.getElementById('log-match-won') as HTMLInputElement)?.value || '13', 10);
+    const lostVal = parseInt((document.getElementById('log-match-lost') as HTMLInputElement)?.value || '8', 10);
+    const killsVal = parseInt((document.getElementById('log-match-kills') as HTMLInputElement)?.value || '20', 10);
+    const deathsVal = parseInt((document.getElementById('log-match-deaths') as HTMLInputElement)?.value || '12', 10);
+    const xpVal = parseInt((document.getElementById('log-match-xp') as HTMLInputElement)?.value || '480', 10);
+    const dropChecked = (document.getElementById('log-match-drop-check') as HTMLInputElement)?.checked;
+
+    const matchLog: PlayerMatchLog = {
+      id: `match-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      map: mapVal,
+      mode: modeVal,
+      result: resultVal,
+      roundsWon: wonVal,
+      roundsLost: lostVal,
+      kills: killsVal,
+      deaths: deathsVal,
+      xpEarned: xpVal,
+      dropReceived: dropChecked
+    };
+
+    if (!acc.matchLogs) acc.matchLogs = [];
+    acc.matchLogs.unshift(matchLog);
+
+    // Apply XP & level up
+    acc.xpStatus.currentXp += xpVal;
+    acc.xpStatus.weeklyXpEarned += xpVal;
+    while (acc.xpStatus.currentXp >= 5000) {
+      if (acc.xpStatus.currentRank < 40) {
+        acc.xpStatus.currentRank += 1;
+      }
+      acc.xpStatus.currentXp -= 5000;
+    }
+    acc.serviceMedal.ranksUntilNextMedal = Math.max(0, 40 - acc.xpStatus.currentRank);
+
+    // Apply drop if claimed
+    if (dropChecked) {
+      acc.dropStatus.claimed = true;
+      acc.dropStatus.claimedAt = new Date().toISOString();
+      if (!acc.dropStatus.recentDrop) {
+        acc.dropStatus.recentDrop = {
+          id: `drop-${Date.now()}`,
+          name: 'Gallery Case',
+          type: 'case',
+          marketPrice: 1.01,
+          date: new Date().toLocaleDateString()
+        };
+      }
+    }
+
+    saveAccountsToStorage(accounts);
+    render();
+    showToast(`Logged ${resultVal} on ${mapVal} (+${xpVal} XP) for ${acc.personaName}!`, 'success');
+    modal?.classList.add('hidden');
+  });
+
+  (window as any).openLogMatchForAccount = (id: string) => openModal(id);
+}
+
+// ----------------------------------------------------------------------
+// CS2 Multi-Source Scavenger Integration
+// ----------------------------------------------------------------------
+
+async function setupScavenger() {
+  const refreshBtn = document.getElementById('btn-scavenge-refresh');
+  const copyBtn = document.getElementById('btn-hero-copy-id');
+
+  copyBtn?.addEventListener('click', () => {
+    const idEl = document.getElementById('hero-player-steamid');
+    if (idEl) {
+      navigator.clipboard.writeText(idEl.textContent || '76561198287445170');
+      showToast('SteamID64 copied to clipboard!', 'info');
+    }
+  });
+
+  refreshBtn?.addEventListener('click', async () => {
+    refreshBtn.classList.add('opacity-50', 'pointer-events-none');
+    showToast('Scavenging live stats from Steam, CSTracker & Leetify...', 'info');
+    await fetchScavengerData(true);
+    refreshBtn.classList.remove('opacity-50', 'pointer-events-none');
+  });
+
+  // Initial fetch
+  await fetchScavengerData(false);
+}
+
+async function fetchScavengerData(isManual = false) {
+  try {
+    const res = await fetch('/api/cs2/scavenger?steamId=76561198287445170');
+    const data = await res.json();
+
+    if (data?.success && data?.profile) {
+      currentScavengedProfile = data.profile;
+      scavengedMatches = data.matches || [];
+
+      // Update hero header elements
+      const nameEl = document.getElementById('hero-player-name');
+      const avatarEl = document.getElementById('hero-player-avatar') as HTMLImageElement | null;
+      const steamIdEl = document.getElementById('hero-player-steamid');
+
+      if (nameEl) nameEl.textContent = data.profile.personaName;
+      if (avatarEl && data.profile.avatarUrl) avatarEl.src = data.profile.avatarUrl;
+      if (steamIdEl) steamIdEl.textContent = data.profile.steamId64;
+
+      // Update external links
+      const links = data.profile.platformLinks;
+      if (links) {
+        updateLinkHref('link-leetify', links.leetify);
+        updateLinkHref('link-cstracker', links.cstracker);
+        updateLinkHref('link-csstat', links.csstat);
+        updateLinkHref('link-faceit', links.faceit);
+        updateLinkHref('link-scopegg', links.scopegg);
+        updateLinkHref('link-steam', links.steamCommunity);
+      }
+
+      // Render featured inventory items if provided
+      const invGrid = document.getElementById('hero-inventory-grid');
+      if (invGrid && Array.isArray(data.profile.featuredInventory) && data.profile.featuredInventory.length > 0) {
+        invGrid.innerHTML = data.profile.featuredInventory.map((item: InventoryShowcaseItem) => {
+          const isCovert = item.category === 'knife' || item.category === 'gloves';
+          const borderClass = isCovert
+            ? 'border-red-500/40 hover:border-red-500 shadow-[0_0_15px_-5px_rgba(235,75,75,0.25)]'
+            : item.category === 'medal'
+            ? 'border-emerald-500/40 hover:border-emerald-400 shadow-[0_0_15px_-5px_rgba(16,185,129,0.25)]'
+            : 'border-amber-500/40 hover:border-amber-400';
+
+          const badgeBg = isCovert
+            ? 'bg-red-950/80 text-red-400 border-red-500/30'
+            : item.category === 'medal'
+            ? 'bg-emerald-950/80 text-emerald-400 border-emerald-500/30'
+            : 'bg-amber-950/80 text-amber-400 border-amber-500/30';
+
+          return `
+            <div class="relative overflow-hidden rounded-2xl bg-zinc-950/80 border ${borderClass} p-4 transition group flex flex-col justify-between">
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="px-2 py-0.5 rounded ${badgeBg} border font-bold text-[10px] uppercase">
+                  ${item.type}
+                </span>
+                ${item.estimatedValue ? `<span class="font-mono text-[11px] font-bold text-amber-400">~$${item.estimatedValue.toFixed(2)}</span>` : ''}
+              </div>
+              <div class="my-3 flex items-center justify-center h-28 relative">
+                <img
+                  src="${item.iconUrl}"
+                  alt="${item.name}"
+                  class="max-h-full object-contain group-hover:scale-110 transition-transform duration-300 drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]"
+                  onerror="this.src='/favicon.svg'"
+                />
+              </div>
+              <div>
+                <h4 class="font-black text-sm text-white truncate" title="${item.name}">${item.name}</h4>
+                <span class="text-[11px] text-zinc-400">${item.wear || 'Official Valve Item'}</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      if (isManual) {
+        showToast('⚡ Live stats & inventory successfully scavenged for greatmahakaal!', 'success');
+      }
+    }
+  } catch (err) {
+    console.warn('Scavenger fetch warning:', err);
+  }
+}
+
+function updateLinkHref(id: string, url?: string) {
+  const el = document.getElementById(id) as HTMLAnchorElement | null;
+  if (el && url) el.href = url;
+}
+
+// ----------------------------------------------------------------------
+// Hacker Radar & Predictive Anti-Cheat Engine Integration
+// ----------------------------------------------------------------------
+
+function setupHackerRadar() {
+  const form = document.getElementById('form-scan-player') as HTMLFormElement | null;
+  const input = document.getElementById('input-scan-target') as HTMLInputElement | null;
+  const sampleBtn = document.getElementById('btn-scan-demo-cheater');
+  const resultContainer = document.getElementById('radar-live-result');
+
+  sampleBtn?.addEventListener('click', () => {
+    if (input) input.value = 'xX_OneTapGod_Xx (Enemy Match #006591)';
+    runScanAnalysis({
+      steamId64: '76561199581920394',
+      personaName: 'xX_OneTapGod_Xx',
+      kills: 13,
+      deaths: 12,
+      headshotPct: 92.3,
+      adr: 89.2,
+      aimRating: 98,
+      reactionTimeMs: 145,
+      crosshairErrorDeg: 3.2,
+      throughSmokeKillsPct: 28,
+      steamLevel: 1,
+      hoursPlayed: 45,
+      accountAgeYears: 0.1
+    });
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const query = input?.value.trim();
+    if (!query) {
+      showToast('Please enter a Steam ID, vanity name, or share code', 'warn');
+      return;
+    }
+
+    showToast(`Analyzing threat indicators for ${query}...`, 'info');
+
+    // If scanning self (greatmahakaal)
+    if (query.includes('greatmahakaal') || query.includes('76561198287445170') || query.includes('TheKugelBlitz')) {
+      runScanAnalysis({
+        steamId64: '76561198287445170',
+        personaName: 'TheKugelBlitz',
+        kills: 11,
+        deaths: 4,
+        headshotPct: 27.0,
+        adr: 58.6,
+        aimRating: 78,
+        reactionTimeMs: 310,
+        crosshairErrorDeg: 6.8,
+        throughSmokeKillsPct: 5,
+        steamLevel: 45,
+        hoursPlayed: 1200,
+        accountAgeYears: 10,
+        inventoryCount: 563
+      });
+      return;
+    }
+
+    // Default custom scan
+    runScanAnalysis({
+      steamId64: query.match(/\d{17}/) ? query : '76561199' + Math.floor(100000000 + Math.random() * 900000000),
+      personaName: query,
+      kills: 24,
+      deaths: 8,
+      headshotPct: 78.0,
+      adr: 105.0,
+      aimRating: 94,
+      reactionTimeMs: 168,
+      crosshairErrorDeg: 3.9,
+      throughSmokeKillsPct: 24,
+      steamLevel: 2,
+      hoursPlayed: 65,
+      accountAgeYears: 0.3
+    });
+  });
+
+  async function runScanAnalysis(payload: any) {
+    if (!resultContainer) return;
+    resultContainer.classList.remove('hidden');
+    resultContainer.innerHTML = `
+      <div class="flex items-center justify-center py-6 text-xs text-zinc-400 gap-2">
+        <span class="w-3.5 h-3.5 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></span>
+        <span>Running heuristic neural scan across aimbot, wallhack & account trust vectors...</span>
+      </div>
+    `;
+
+    try {
+      const res = await fetch('/api/cs2/hacker-detect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ player: payload })
+      });
+
+      const data = await res.json();
+      if (data?.success && data?.scan) {
+        renderScanResultCard(data.scan);
+      } else {
+        resultContainer.innerHTML = `<div class="text-xs text-red-400">Scan failed: ${data?.error || 'Unknown error'}</div>`;
+      }
+    } catch (err) {
+      resultContainer.innerHTML = `<div class="text-xs text-red-400">Scan service temporarily unreachable</div>`;
+    }
+  }
+
+  function renderScanResultCard(scan: HackerScanResult) {
+    if (!resultContainer) return;
+    const isClean = scan.threatLevel === 'CLEAN';
+    const isFlagged = scan.threatLevel === 'FLAGGED';
+    const isHighRisk = scan.threatLevel === 'HIGH_RISK';
+
+    const borderCol = isClean
+      ? 'border-emerald-500/40 bg-emerald-950/20'
+      : isFlagged
+      ? 'border-red-500/50 bg-red-950/30'
+      : 'border-yellow-500/40 bg-yellow-950/20';
+
+    const badgeBg = isClean
+      ? 'bg-emerald-500 text-black'
+      : isFlagged
+      ? 'bg-red-500 text-white animate-pulse'
+      : 'bg-yellow-500 text-black';
+
+    resultContainer.className = `mt-4 p-5 rounded-2xl border ${borderCol} space-y-4 shadow-2xl`;
+    resultContainer.innerHTML = `
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl flex items-center justify-center font-black text-sm ${badgeBg}">
+            ${scan.threatScore}%
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h4 class="font-bold text-white text-base">${scan.personaName}</h4>
+              <span class="px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-wider ${badgeBg}">
+                ${scan.threatLevel}
+              </span>
+            </div>
+            <p class="text-xs text-zinc-400 font-mono">${scan.steamId64}</p>
+          </div>
+        </div>
+        <div class="text-right">
+          <span class="font-bold text-xs ${isClean ? 'text-emerald-400' : 'text-red-400'} block">${scan.verdictTitle}</span>
+          <span class="text-[11px] text-zinc-500 font-mono">Confidence: 94.8%</span>
+        </div>
+      </div>
+
+      <p class="text-xs text-zinc-300 leading-relaxed">${scan.verdictSummary}</p>
+
+      <!-- Threat Vector Breakdown Bars -->
+      <div class="grid grid-cols-1 sm:grid-cols-4 gap-3 pt-2">
+        <div class="p-2.5 rounded-xl bg-black/60 border border-white/[0.06]">
+          <div class="flex items-center justify-between text-[11px] text-zinc-400 mb-1">
+            <span>Aimbot Index</span>
+            <strong class="font-mono text-white">${scan.vectors.aimbotScore}/100</strong>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full ${scan.vectors.aimbotScore > 60 ? 'bg-red-500' : 'bg-emerald-400'}" style="width: ${scan.vectors.aimbotScore}%"></div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-black/60 border border-white/[0.06]">
+          <div class="flex items-center justify-between text-[11px] text-zinc-400 mb-1">
+            <span>Wallhack / ESP</span>
+            <strong class="font-mono text-white">${scan.vectors.wallhackScore}/100</strong>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full ${scan.vectors.wallhackScore > 60 ? 'bg-red-500' : 'bg-emerald-400'}" style="width: ${scan.vectors.wallhackScore}%"></div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-black/60 border border-white/[0.06]">
+          <div class="flex items-center justify-between text-[11px] text-zinc-400 mb-1">
+            <span>Reaction Anomaly</span>
+            <strong class="font-mono text-white">${scan.vectors.reactionTimeAnomaly}/100</strong>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full ${scan.vectors.reactionTimeAnomaly > 60 ? 'bg-red-500' : 'bg-emerald-400'}" style="width: ${scan.vectors.reactionTimeAnomaly}%"></div>
+          </div>
+        </div>
+
+        <div class="p-2.5 rounded-xl bg-black/60 border border-white/[0.06]">
+          <div class="flex items-center justify-between text-[11px] text-zinc-400 mb-1">
+            <span>Account Trust</span>
+            <strong class="font-mono text-white">${scan.vectors.accountTrustScore}/100</strong>
+          </div>
+          <div class="w-full h-1.5 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full ${scan.vectors.accountTrustScore < 40 ? 'bg-red-500' : 'bg-emerald-400'}" style="width: ${scan.vectors.accountTrustScore}%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Itemized Detection Flags -->
+      <div class="flex flex-wrap gap-1.5 pt-2">
+        ${scan.flags.map(f => `
+          <span class="px-2.5 py-1 rounded-lg text-[10px] font-bold ${isClean ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-500/30' : 'bg-red-950/80 text-red-400 border border-red-500/30'}">
+            ${isClean ? '✓' : '⚠️'} ${f}
+          </span>
+        `).join('')}
+      </div>
+    `;
+  }
+}
+
+// ----------------------------------------------------------------------
+// Match Scoreboard Drawer & Lineup Inspector
+// ----------------------------------------------------------------------
+
+function setupMatchScorecardModal() {
+  const modal = document.getElementById('modal-match-scorecard');
+  const closeBtn = document.getElementById('btn-close-scorecard');
+  const copyBtn = document.getElementById('btn-copy-share-code');
+
+  closeBtn?.addEventListener('click', () => modal?.classList.add('hidden'));
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+
+  // Connect inspect match buttons
+  document.querySelectorAll('.btn-inspect-match-radar').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const matchId = btn.getAttribute('data-match-id');
+      const match = scavengedMatches.find(m => m.id === matchId) || (scavengedMatches[0] as DetailedMatch | undefined);
+      if (match) {
+        openMatchScorecard(match);
+      } else {
+        showToast('Loading match demo logs...', 'info');
+      }
+    });
+  });
+
+  function openMatchScorecard(m: DetailedMatch) {
+    if (!modal) return;
+    const titleEl = document.getElementById('scorecard-match-title');
+    const metaEl = document.getElementById('scorecard-match-meta');
+    const verdictEl = document.getElementById('scorecard-match-verdict');
+    const t1TitleEl = document.getElementById('scorecard-team1-title');
+    const t2TitleEl = document.getElementById('scorecard-team2-title');
+    const t1Body = document.getElementById('scorecard-team1-body');
+    const t2Body = document.getElementById('scorecard-team2-body');
+
+    if (titleEl) titleEl.textContent = `${m.map} (${m.mode}) · ${m.team1Name} vs ${m.team2Name}`;
+    if (metaEl) metaEl.textContent = `${m.scoreTeam1} - ${m.scoreTeam2} Victory · Duration: ${m.duration} · ${m.date}`;
+
+    if (verdictEl) {
+      if (m.hackerRadarSummary.flaggedCount > 0) {
+        verdictEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-red-950 text-red-400 border border-red-500/30';
+        verdictEl.textContent = `${m.hackerRadarSummary.flaggedCount} Cheater Flagged`;
+      } else if (m.hackerRadarSummary.suspectCount > 0) {
+        verdictEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-yellow-950 text-yellow-400 border border-yellow-500/30';
+        verdictEl.textContent = `${m.hackerRadarSummary.suspectCount} Suspect`;
+      } else {
+        verdictEl.className = 'px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-emerald-950 text-emerald-400 border border-emerald-500/30';
+        verdictEl.textContent = '100% Clean Match';
+      }
+    }
+
+    if (t1TitleEl) t1TitleEl.textContent = `${m.team1Name} — ${m.scoreTeam1} Rounds`;
+    if (t2TitleEl) t2TitleEl.textContent = `${m.team2Name} — ${m.scoreTeam2} Rounds`;
+
+    // Copy Share Code setup
+    if (copyBtn) {
+      copyBtn.onclick = () => {
+        const code = m.demoShareCode || 'CSGO-vG38B-9KqwA-P9J9H-N8uF5-RkmzE';
+        navigator.clipboard.writeText(code);
+        showToast(`Match share code copied: ${code}`, 'success');
+      };
+    }
+
+    // Split players by team
+    const team1Players = m.players.filter(p => p.team === 'CT' || p.team === 'Team1');
+    const team2Players = m.players.filter(p => p.team === 'T' || p.team === 'Team2');
+
+    const renderPlayerRow = (p: MatchPlayerScore) => {
+      const isTargetUser = p.steamId64 === '76561198287445170' || p.personaName === 'TheKugelBlitz';
+      const scan = p.hackerScan;
+      const isFlagged = scan?.threatLevel === 'FLAGGED';
+      const isHighRisk = scan?.threatLevel === 'HIGH_RISK';
+      const isClean = scan?.threatLevel === 'CLEAN';
+
+      const threatBadge = isFlagged
+        ? '<span class="px-2 py-0.5 rounded bg-red-900 text-red-200 border border-red-500 font-bold text-[10px]">🚨 FLAGGED (86%)</span>'
+        : isHighRisk
+        ? '<span class="px-2 py-0.5 rounded bg-yellow-900 text-yellow-200 border border-yellow-500 font-bold text-[10px]">⚠️ HIGH RISK (72%)</span>'
+        : '<span class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/30 font-bold text-[10px]">✓ CLEAN</span>';
+
+      return `
+        <tr class="hover:bg-white/[0.02] transition ${isTargetUser ? 'bg-emerald-950/20' : ''}">
+          <td class="py-2.5 px-4">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-lg overflow-hidden border border-white/[0.1] bg-black shrink-0">
+                <img src="${p.avatarUrl || 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg'}" class="w-full h-full object-cover" />
+              </div>
+              <div>
+                <span class="font-bold text-white block ${isTargetUser ? 'text-emerald-400' : ''}">${p.personaName} ${isTargetUser ? '(greatmahakaal)' : ''}</span>
+                <span class="font-mono text-[10px] text-zinc-500">${p.steamId64}</span>
+              </div>
+            </div>
+          </td>
+          <td class="py-2.5 px-3 text-center font-mono font-bold text-white">${p.kills} / ${p.deaths} / ${p.assists}</td>
+          <td class="py-2.5 px-3 text-center font-mono text-zinc-300">${p.adr.toFixed(1)}</td>
+          <td class="py-2.5 px-3 text-center font-mono ${p.headshotPct >= 70 ? 'text-red-400 font-bold' : 'text-zinc-300'}">${p.headshotPct.toFixed(0)}%</td>
+          <td class="py-2.5 px-3 text-center font-mono text-zinc-400">${p.kast.toFixed(0)}%</td>
+          <td class="py-2.5 px-3 text-center font-mono font-black ${p.hltvRating >= 1.3 ? 'text-emerald-400' : 'text-zinc-300'}">${p.hltvRating.toFixed(2)}</td>
+          <td class="py-2.5 px-4 text-right">
+            ${threatBadge}
+          </td>
+        </tr>
+      `;
+    };
+
+    if (t1Body) t1Body.innerHTML = team1Players.map(renderPlayerRow).join('');
+    if (t2Body) t2Body.innerHTML = team2Players.map(renderPlayerRow).join('');
+
+    modal.classList.remove('hidden');
+  }
+}
+

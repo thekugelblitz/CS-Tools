@@ -26,25 +26,44 @@ import Icons from './Icons.astro';
     <!-- Center Navigation Tabs -->
     <nav class="hidden md:flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-white/[0.08]">
       <button
+        id="tab-nav-command"
+        class="nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-zinc-800 transition cursor-pointer flex items-center gap-1.5"
+        data-target="section-command-center"
+      >
+        <span>👑</span>
+        <span>TheKugelBlitz</span>
+      </button>
+      <button
+        id="tab-nav-hacker-radar"
+        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-red-400 transition cursor-pointer flex items-center gap-1.5"
+        data-target="section-hacker-radar"
+      >
+        <span>🛡️</span>
+        <span>Hacker Radar</span>
+      </button>
+      <button
         id="tab-nav-fleet"
-        class="nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-zinc-800 transition cursor-pointer"
+        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer flex items-center gap-1.5"
         data-target="section-fleet"
       >
-        📡 Fleet Radar
+        <span>📦</span>
+        <span>Drop Fleet</span>
       </button>
       <button
         id="tab-nav-matches"
-        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer"
+        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer flex items-center gap-1.5"
         data-target="section-live-matches"
       >
-        ⚔️ Live Matches
+        <span>⚔️</span>
+        <span>Pro Matches</span>
       </button>
       <button
         id="tab-nav-leaderboard"
-        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer"
+        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer flex items-center gap-1.5"
         data-target="section-pro-leaderboard"
       >
-        🏆 Pro Rankings
+        <span>🏆</span>
+        <span>Rankings</span>
       </button>
     </nav>
 
@@ -81,9 +100,11 @@ import Icons from './Icons.astro';
   </div>
 
   <!-- Mobile Tab Bar -->
-  <div class="md:hidden flex items-center justify-around border-t border-white/[0.06] bg-black px-2 py-1.5">
-    <button class="nav-tab active text-xs font-bold text-white px-2 py-1" data-target="section-fleet">📡 Fleet</button>
-    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1" data-target="section-live-matches">⚔️ Matches</button>
-    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1" data-target="section-pro-leaderboard">🏆 Rankings</button>
+  <div class="md:hidden flex items-center justify-around border-t border-white/[0.06] bg-black px-2 py-1.5 overflow-x-auto">
+    <button class="nav-tab active text-xs font-bold text-white px-2 py-1 whitespace-nowrap" data-target="section-command-center">👑 Profile</button>
+    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-hacker-radar">🛡️ Radar</button>
+    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-fleet">📦 Fleet</button>
+    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-live-matches">⚔️ Matches</button>
+    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-pro-leaderboard">🏆 Rank</button>
   </div>
 </header>

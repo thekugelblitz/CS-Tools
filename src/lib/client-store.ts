@@ -28,8 +28,20 @@ export function loadAccountsFromStorage(): SteamAccount[] {
       saveAccountsToStorage(INITIAL_DEMO_ACCOUNTS);
       return INITIAL_DEMO_ACCOUNTS;
     }
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : INITIAL_DEMO_ACCOUNTS;
+    let parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed) || parsed.length === 0) {
+      saveAccountsToStorage(INITIAL_DEMO_ACCOUNTS);
+      return INITIAL_DEMO_ACCOUNTS;
+    }
+    // Ensure greatmahakaal-main is present and at the front
+    const hasGreatmahakaal = parsed.some(
+      (a: SteamAccount) => a.id === 'greatmahakaal-main' || a.steamId64 === '76561198287445170' || a.customUrl === 'greatmahakaal'
+    );
+    if (!hasGreatmahakaal) {
+      parsed = [INITIAL_DEMO_ACCOUNTS[0], ...parsed];
+      saveAccountsToStorage(parsed);
+    }
+    return parsed;
   } catch {
     return INITIAL_DEMO_ACCOUNTS;
   }

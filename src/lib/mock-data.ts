@@ -2,34 +2,34 @@ import type { SteamAccount } from './types';
 
 export const INITIAL_DEMO_ACCOUNTS: SteamAccount[] = [
   {
-    id: 'demo-acc-1',
-    steamId64: '76561198034201948',
-    customUrl: 's1mple_pro_main',
-    personaName: '★ Main - Aleksandr',
-    avatarUrl: 'https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg',
-    profileUrl: 'https://steamcommunity.com/id/s1mple_pro_main',
+    id: 'greatmahakaal-main',
+    steamId64: '76561198287445170',
+    customUrl: 'greatmahakaal',
+    personaName: 'TheKugelBlitz',
+    avatarUrl: 'https://avatars.akamai.steamstatic.com/bd44a769f5b88b66bb922967115499dbfdcf70b5_full.jpg',
+    profileUrl: 'https://steamcommunity.com/id/greatmahakaal/',
     vacBanned: false,
     communityBanned: false,
     primeStatus: true,
     dropStatus: {
       claimed: false,
       claimedAt: null,
-      notes: 'Needs 1 DM match to get level up drop'
+      notes: 'Weekly Care Package Available! Eligible for Weapon Case + Skin'
     },
     xpStatus: {
-      currentRank: 39,
-      currentXp: 4120,
+      currentRank: 38,
+      currentXp: 3840,
       multiplier: 'overachieving',
-      weeklyXpEarned: 1800,
+      weeklyXpEarned: 2400,
       estimatedMatchesNeeded: 2
     },
     serviceMedal: {
       currentYear: 2026,
-      tier: 3,
-      serviceMedalsOwned: ['2024 Service Medal (Tier 2)', '2025 Service Medal (Tier 3)', '2026 Service Medal (Tier 2)'],
-      ranksUntilNextMedal: 1
+      tier: 2,
+      serviceMedalsOwned: ['2026 Service Medal (Tier 2 Emerald)', 'Premier Season Four Medal'],
+      ranksUntilNextMedal: 2
     },
-    tags: ['Main', 'High Priority', 'Near Medal'],
+    tags: ['Main Spotlight', '10-Yr Veteran', '★ Kukri Fade FN'],
     lastChecked: new Date().toISOString()
   },
   {

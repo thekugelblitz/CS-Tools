@@ -8,6 +8,9 @@ import AccountContainer from '../components/AccountContainer.astro';
 import MarketTicker from '../components/MarketTicker.astro';
 import LiveMatches from '../components/LiveMatches.astro';
 import ProLeaderboard from '../components/ProLeaderboard.astro';
+import PlayerCommandCenter from '../components/PlayerCommandCenter.astro';
+import HackerRadar from '../components/HackerRadar.astro';
+import MatchScorecardModal from '../components/MatchScorecardModal.astro';
 import AddAccountModal from '../components/AddAccountModal.astro';
 import EditAccountModal from '../components/EditAccountModal.astro';
 import LogMatchModal from '../components/LogMatchModal.astro';
@@ -15,7 +18,7 @@ import SettingsModal from '../components/SettingsModal.astro';
 import Icons from '../components/Icons.astro';
 ---
 
-<Layout title="CS2 Multi-Account Drop & XP Radar | Live AMOLED Tracker">
+<Layout title="CS2 Intelligence & Hacker Radar | greatmahakaal Live AMOLED Dashboard">
   <!-- Navbar -->
   <Navbar />
 
@@ -24,8 +27,14 @@ import Icons from '../components/Icons.astro';
     <!-- Live Weekly Drop Pool Market Prices Ticker -->
     <MarketTicker />
 
-    <!-- SECTION 1: Fleet Radar (Accounts, Reset Countdown, XP) -->
-    <div id="section-fleet" class="space-y-6">
+    <!-- SECTION 0: TheKugelBlitz / greatmahakaal Spotlight Command Center -->
+    <PlayerCommandCenter />
+
+    <!-- SECTION 1: Hacker & Cheater Prediction Radar -->
+    <HackerRadar />
+
+    <!-- SECTION 2: Fleet Radar (Accounts, Reset Countdown, XP) -->
+    <div id="section-fleet" class="space-y-6 hidden">
       <!-- Live Weekly Care Package Reset Countdown -->
       <ResetCountdown />
 
@@ -39,10 +48,10 @@ import Icons from '../components/Icons.astro';
       <AccountContainer />
     </div>
 
-    <!-- SECTION 2: Live CS2 Pro Match Tracker -->
+    <!-- SECTION 3: Live CS2 Pro Match Tracker -->
     <LiveMatches />
 
-    <!-- SECTION 3: World Pro Leaderboard & Ratings -->
+    <!-- SECTION 4: World Pro Leaderboard & Ratings -->
     <ProLeaderboard />
 
     <!-- Informational CS2 Drop & XP Rules Section -->
@@ -104,6 +113,7 @@ import Icons from '../components/Icons.astro';
   <EditAccountModal />
   <LogMatchModal />
   <SettingsModal />
+  <MatchScorecardModal />
 
   <!-- Client-side script initialization -->
   <script>
