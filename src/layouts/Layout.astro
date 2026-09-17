@@ -1,0 +1,79 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'CS2 Drop & XP Radar | AMOLED Multi-Account Tracker',
+  description = 'High-performance AMOLED dashboard for Counter-Strike 2 multi-account drop tracking, weekly reset countdown, XP multipliers, and service medals.'
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark bg-black">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    
+    <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-black text-zinc-100 selection:bg-emerald-500/20 selection:text-emerald-300 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
+    <!-- Subtle top ambient light glow -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[800px] h-[220px] bg-gradient-to-b from-emerald-500/10 via-cyan-500/5 to-transparent blur-3xl pointer-events-none -z-10"></div>
+    
+    <slot />
+
+    <!-- Audio synthesizer for satisfying drop claim chime -->
+    <script is:inline>
+      window.playDropChime = function() {
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          const ctx = new AudioContext();
+          
+          const now = ctx.currentTime;
+          const osc1 = ctx.createOscillator();
+          const osc2 = ctx.createOscillator();
+          const gainNode = ctx.createGain();
+
+          osc1.type = 'sine';
+          osc1.frequency.setValueAtTime(523.25, now); // C5
+          osc1.frequency.exponentialRampToValueAtTime(659.25, now + 0.1); // E5
+          osc1.frequency.exponentialRampToValueAtTime(783.99, now + 0.22); // G5
+          osc1.frequency.exponentialRampToValueAtTime(1046.50, now + 0.35); // C6
+
+          osc2.type = 'triangle';
+          osc2.frequency.setValueAtTime(261.63, now); // C4
+          osc2.frequency.exponentialRampToValueAtTime(523.25, now + 0.35);
+
+          gainNode.gain.setValueAtTime(0.18, now);
+          gainNode.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+
+          osc1.connect(gainNode);
+          osc2.connect(gainNode);
+          gainNode.connect(ctx.destination);
+
+          osc1.start(now);
+          osc2.start(now);
+          osc1.stop(now + 0.6);
+          osc2.stop(now + 0.6);
+        } catch (e) {
+          // Audio context might be restricted before interaction
+        }
+      };
+    </script>
+  </body>
+</html>

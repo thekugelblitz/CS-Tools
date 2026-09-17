@@ -1,0 +1,104 @@
+---
+import Icons from './Icons.astro';
+---
+
+<section class="relative overflow-hidden rounded-2xl bg-surface-1 border border-white/[0.08] p-5 sm:p-6 mb-8">
+  <!-- Ambient background glow behind timer -->
+  <div class="absolute -right-10 -top-10 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute -left-10 -bottom-10 w-72 h-72 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+    <!-- Left Info -->
+    <div class="space-y-1.5">
+      <div class="flex items-center gap-2">
+        <span class="relative flex h-2 w-2">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+        </span>
+        <h2 class="text-xs font-semibold uppercase tracking-widest text-emerald-400">
+          Official CS2 Weekly Care Package Reset
+        </h2>
+      </div>
+      <p class="text-xl sm:text-2xl font-bold text-white tracking-tight">
+        Next Drop Reset in <span id="reset-summary-label" class="text-emerald-400">Loading...</span>
+      </p>
+      <p class="text-xs sm:text-sm text-zinc-400 max-w-xl">
+        Drops reset globally on <strong class="text-zinc-200">Wednesday 01:00 UTC (Tuesday 8:00 PM CT)</strong>. Earn your weekly rank up before the countdown hits zero!
+      </p>
+    </div>
+
+    <!-- Right: Futuristic Digital Clock Tiles -->
+    <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+      <div class="flex flex-col items-center justify-center w-16 sm:w-20 py-2.5 sm:py-3 rounded-xl bg-black border border-white/[0.08] shadow-inner">
+        <span id="countdown-days" class="text-xl sm:text-3xl font-extrabold font-mono text-emerald-400 tracking-tight">00</span>
+        <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider mt-0.5">Days</span>
+      </div>
+      <span class="text-xl font-bold text-zinc-600">:</span>
+
+      <div class="flex flex-col items-center justify-center w-16 sm:w-20 py-2.5 sm:py-3 rounded-xl bg-black border border-white/[0.08] shadow-inner">
+        <span id="countdown-hours" class="text-xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">00</span>
+        <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider mt-0.5">Hours</span>
+      </div>
+      <span class="text-xl font-bold text-zinc-600">:</span>
+
+      <div class="flex flex-col items-center justify-center w-16 sm:w-20 py-2.5 sm:py-3 rounded-xl bg-black border border-white/[0.08] shadow-inner">
+        <span id="countdown-minutes" class="text-xl sm:text-3xl font-extrabold font-mono text-white tracking-tight">00</span>
+        <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider mt-0.5">Mins</span>
+      </div>
+      <span class="text-xl font-bold text-zinc-600">:</span>
+
+      <div class="flex flex-col items-center justify-center w-16 sm:w-20 py-2.5 sm:py-3 rounded-xl bg-black border border-white/[0.08] shadow-inner">
+        <span id="countdown-seconds" class="text-xl sm:text-3xl font-extrabold font-mono text-cyan-400 tracking-tight">00</span>
+        <span class="text-[10px] uppercase font-bold text-zinc-500 tracking-wider mt-0.5">Secs</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Weekly Cycle Progress Bar -->
+  <div class="mt-6 pt-4 border-t border-white/[0.06]">
+    <div class="flex items-center justify-between text-xs text-zinc-400 mb-2">
+      <span class="flex items-center gap-1.5">
+        <Icons name="xp" class="w-3.5 h-3.5 text-emerald-400" />
+        Weekly Cycle Progress: <strong id="cycle-progress-text" class="text-zinc-200">0%</strong>
+      </span>
+      <span id="reset-exact-utc" class="text-zinc-500 font-mono text-[11px] hidden sm:inline">Wednesday 01:00 UTC</span>
+    </div>
+    <div class="w-full h-2 bg-black rounded-full overflow-hidden border border-white/[0.06] p-0.5">
+      <div
+        id="cycle-progress-bar"
+        class="h-full bg-gradient-to-r from-emerald-500 via-cyan-500 to-emerald-400 rounded-full transition-all duration-1000"
+        style="width: 0%"
+      ></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { getResetCycleInfo } from '../lib/reset-timer';
+
+  function updateTimer() {
+    const info = getResetCycleInfo();
+    const daysEl = document.getElementById('countdown-days');
+    const hoursEl = document.getElementById('countdown-hours');
+    const minsEl = document.getElementById('countdown-minutes');
+    const secsEl = document.getElementById('countdown-seconds');
+    const progressEl = document.getElementById('cycle-progress-bar');
+    const progressText = document.getElementById('cycle-progress-text');
+    const summaryLabel = document.getElementById('reset-summary-label');
+    const exactUtc = document.getElementById('reset-exact-utc');
+
+    if (daysEl) daysEl.textContent = String(info.daysRemaining).padStart(2, '0');
+    if (hoursEl) hoursEl.textContent = String(info.hoursRemaining).padStart(2, '0');
+    if (minsEl) minsEl.textContent = String(info.minutesRemaining).padStart(2, '0');
+    if (secsEl) secsEl.textContent = String(info.secondsRemaining).padStart(2, '0');
+
+    if (progressEl) progressEl.style.width = `${info.cycleProgressPercent}%`;
+    if (progressText) progressText.textContent = `${info.cycleProgressPercent}% complete`;
+    if (summaryLabel) summaryLabel.textContent = `${info.daysRemaining}d ${info.hoursRemaining}h ${info.minutesRemaining}m`;
+    if (exactUtc) exactUtc.textContent = `Target: ${info.formattedLocal}`;
+  }
+
+  // Update immediately and then every second
+  updateTimer();
+  setInterval(updateTimer, 1000);
+</script>

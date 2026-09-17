@@ -1,0 +1,57 @@
+---
+import Icons from './Icons.astro';
+---
+
+<header class="sticky top-0 z-40 border-b border-white/[0.08] bg-black/80 backdrop-blur-xl">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+    <!-- Brand Logo -->
+    <div class="flex items-center gap-3">
+      <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-surface-1 border border-emerald-500/30 text-emerald-400 glow-emerald">
+        <Icons name="drop-box" class="w-5 h-5 text-emerald-400 animate-pulse" />
+        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-black"></span>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <span class="font-extrabold tracking-wider text-white text-lg sm:text-xl">
+            DROP<span class="text-emerald-400">RADAR</span>
+          </span>
+          <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 rounded-full">
+            CS2 Prime
+          </span>
+        </div>
+        <p class="text-xs text-zinc-400 hidden sm:block">Multi-Account Drop, XP & Medal Tracker</p>
+      </div>
+    </div>
+
+    <!-- Right Actions -->
+    <div class="flex items-center gap-2 sm:gap-3">
+      <!-- Quick Demo Reset Button (Convenient for testing) -->
+      <button
+        id="btn-demo-data"
+        title="Load Demo Accounts"
+        class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] rounded-lg transition"
+      >
+        <Icons name="refresh" class="w-3.5 h-3.5" />
+        <span>Demo Data</span>
+      </button>
+
+      <!-- JSON Export / Import Button -->
+      <button
+        id="btn-open-settings"
+        title="Settings & Backup"
+        class="p-2 text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] rounded-lg transition"
+      >
+        <Icons name="settings" class="w-4 h-4" />
+      </button>
+
+      <!-- Add Account Button -->
+      <button
+        id="btn-open-add-modal"
+        class="inline-flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-xl transition glow-emerald cursor-pointer"
+      >
+        <Icons name="plus" class="w-4 h-4 text-black stroke-[3]" />
+        <span>Add Account</span>
+      </button>
+    </div>
+  </div>
+</header>

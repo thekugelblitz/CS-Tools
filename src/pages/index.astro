@@ -1,0 +1,98 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import ResetCountdown from '../components/ResetCountdown.astro';
+import StatsOverview from '../components/StatsOverview.astro';
+import ControlsBar from '../components/ControlsBar.astro';
+import AccountContainer from '../components/AccountContainer.astro';
+import AddAccountModal from '../components/AddAccountModal.astro';
+import EditAccountModal from '../components/EditAccountModal.astro';
+import SettingsModal from '../components/SettingsModal.astro';
+import Icons from '../components/Icons.astro';
+---
+
+<Layout title="CS2 Multi-Account Drop & XP Radar | AMOLED Tracker">
+  <!-- Navbar -->
+  <Navbar />
+
+  <!-- Main Dashboard Viewport -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+    <!-- Live Weekly Care Package Reset Countdown -->
+    <ResetCountdown />
+
+    <!-- Fleet Metrics Overview -->
+    <StatsOverview />
+
+    <!-- Filters, Search & Bulk Actions Bar -->
+    <ControlsBar />
+
+    <!-- Accounts Cards & Table Views -->
+    <AccountContainer />
+
+    <!-- Informational CS2 Drop & XP Rules Section -->
+    <section class="mt-12 pt-8 border-t border-white/[0.08] text-zinc-400">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Card 1 -->
+        <div class="p-5 rounded-2xl bg-surface-1 border border-white/[0.06]">
+          <div class="flex items-center gap-2 text-white font-bold text-sm mb-2">
+            <Icons name="drop-box" class="w-4 h-4 text-emerald-400" />
+            <span>Weekly Care Package</span>
+          </div>
+          <p class="text-xs leading-relaxed text-zinc-400">
+            Earn ~5,000 XP in a week to rank up and claim your Care Package. You get to choose 2 items out of 4 (typically a Weapon Case, Weapon Skin, or Graffiti). Unclaimed drops do not roll over!
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="p-5 rounded-2xl bg-surface-1 border border-white/[0.06]">
+          <div class="flex items-center gap-2 text-white font-bold text-sm mb-2">
+            <Icons name="xp" class="w-4 h-4 text-cyan-400" />
+            <span>XP Bonus & Reduced Penalties</span>
+          </div>
+          <p class="text-xs leading-relaxed text-zinc-400">
+            Each week begins with <strong>Overachieving Bonus XP</strong> (~3x-4x multiplier). Once you surpass 11,167 XP in a single week, a severe <strong>Reduced XP gain (0.175x)</strong> is applied until Wednesday reset.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="p-5 rounded-2xl bg-surface-1 border border-white/[0.06]">
+          <div class="flex items-center gap-2 text-white font-bold text-sm mb-2">
+            <Icons name="medal" class="w-4 h-4 text-purple-400" />
+            <span>Service Medals & Prestige</span>
+          </div>
+          <p class="text-xs leading-relaxed text-zinc-400">
+            Upon reaching <strong>Profile Rank 40 (Global General)</strong>, you can reset your rank to 1 to claim the current calendar year Service Medal or upgrade its color tier (Tier 1 Grey up to Tier 6 Ruby Red).
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="mt-16 border-t border-white/[0.08] bg-surface-1/60 py-6 text-center text-xs text-zinc-500">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span class="font-bold text-zinc-300">CS2 Drop Radar</span>
+        <span class="text-zinc-600">|</span>
+        <span>AMOLED Multi-Account Manager</span>
+      </div>
+      <p class="text-zinc-500 text-[11px]">
+        Counter-Strike and Steam are registered trademarks of Valve Corporation. This project is not affiliated with Valve.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Modals -->
+  <AddAccountModal />
+  <EditAccountModal />
+  <SettingsModal />
+
+  <!-- Client-side script initialization -->
+  <script>
+    import { initDashboard } from '../scripts/dashboard-app';
+    document.addEventListener('DOMContentLoaded', () => {
+      initDashboard();
+    });
+  </script>
+</Layout>

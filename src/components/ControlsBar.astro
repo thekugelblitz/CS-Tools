@@ -1,0 +1,110 @@
+---
+import Icons from './Icons.astro';
+---
+
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+  <!-- Left: Search & Filter Tabs -->
+  <div class="flex flex-wrap items-center gap-2 sm:gap-3 flex-1">
+    <!-- Search Bar -->
+    <div class="relative min-w-[240px] flex-1 max-w-md">
+      <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-zinc-500">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <input
+        type="text"
+        id="input-search"
+        placeholder="Search account, SteamID64, or tag..."
+        class="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-surface-1 border border-white/[0.08] rounded-xl text-white placeholder-zinc-500 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 transition"
+      />
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="flex items-center p-1 rounded-xl bg-surface-1 border border-white/[0.08] text-xs font-medium">
+      <button
+        id="filter-btn-all"
+        class="filter-tab px-3 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 transition cursor-pointer"
+        data-filter="all"
+      >
+        All
+      </button>
+      <button
+        id="filter-btn-available"
+        class="filter-tab px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition cursor-pointer"
+        data-filter="available"
+      >
+        Drops Ready
+      </button>
+      <button
+        id="filter-btn-claimed"
+        class="filter-tab px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition cursor-pointer"
+        data-filter="claimed"
+      >
+        Claimed
+      </button>
+      <button
+        id="filter-btn-medal"
+        class="filter-tab px-3 py-1.5 rounded-lg text-zinc-400 hover:text-white transition cursor-pointer"
+        data-filter="near-medal"
+      >
+        Near Medal
+      </button>
+    </div>
+  </div>
+
+  <!-- Right: Bulk Actions & View Switcher -->
+  <div class="flex items-center gap-2 shrink-0 justify-end">
+    <!-- Bulk Drop Reset / Claim Menu -->
+    <div class="relative">
+      <button
+        id="btn-bulk-menu"
+        class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-medium text-zinc-300 hover:text-white bg-surface-1 border border-white/[0.08] hover:border-white/[0.16] rounded-xl transition cursor-pointer"
+      >
+        <span>Bulk Actions</span>
+        <svg class="w-3.5 h-3.5 text-zinc-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"></path>
+        </svg>
+      </button>
+
+      <div
+        id="bulk-dropdown"
+        class="hidden absolute right-0 mt-2 w-48 rounded-xl bg-surface-2 border border-white/[0.1] shadow-2xl p-1.5 z-30"
+      >
+        <button
+          id="btn-bulk-mark-claimed"
+          class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs text-yellow-400 hover:bg-yellow-950/40 rounded-lg transition"
+        >
+          <Icons name="check" class="w-3.5 h-3.5" />
+          <span>Mark All Claimed</span>
+        </button>
+        <button
+          id="btn-bulk-reset-available"
+          class="w-full text-left flex items-center gap-2 px-3 py-2 text-xs text-emerald-400 hover:bg-emerald-950/40 rounded-lg transition"
+        >
+          <Icons name="refresh" class="w-3.5 h-3.5" />
+          <span>Reset All to Available</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- View Switcher -->
+    <div class="flex items-center p-1 rounded-xl bg-surface-1 border border-white/[0.08]">
+      <button
+        id="btn-view-grid"
+        title="Card Grid View"
+        class="p-1.5 rounded-lg bg-zinc-800 text-white transition cursor-pointer"
+      >
+        <Icons name="grid" class="w-4 h-4" />
+      </button>
+      <button
+        id="btn-view-table"
+        title="High Density Table View"
+        class="p-1.5 rounded-lg text-zinc-500 hover:text-zinc-300 transition cursor-pointer"
+      >
+        <Icons name="table" class="w-4 h-4" />
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+---
+import Icons from './Icons.astro';
+---
+
+<section class="relative min-h-[400px]">
+  <!-- Loading state -->
+  <div id="accounts-loading" class="flex flex-col items-center justify-center py-24 text-zinc-500">
+    <div class="w-10 h-10 border-2 border-emerald-500/30 border-t-emerald-400 rounded-full animate-spin mb-4"></div>
+    <p class="text-sm font-medium text-zinc-400">Loading Steam Fleet Data...</p>
+  </div>
+
+  <!-- Empty state (hidden by default) -->
+  <div id="accounts-empty" class="hidden flex flex-col items-center justify-center py-20 text-center rounded-2xl bg-surface-1 border border-white/[0.08] p-8">
+    <div class="w-16 h-16 rounded-2xl bg-zinc-900 border border-white/[0.08] flex items-center justify-center text-zinc-500 mb-4">
+      <Icons name="steam" class="w-8 h-8" />
+    </div>
+    <h3 class="text-lg font-bold text-white mb-1">No Steam Accounts Found</h3>
+    <p class="text-sm text-zinc-400 max-w-sm mb-6">
+      Add your Steam profile URL or SteamID64 to track your weekly drops, rank XP, and service medals.
+    </p>
+    <div class="flex items-center gap-3">
+      <button
+        id="empty-btn-add"
+        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-xl transition glow-emerald cursor-pointer"
+      >
+        <Icons name="plus" class="w-4 h-4 stroke-[3]" />
+        <span>Add Steam Account</span>
+      </button>
+      <button
+        id="empty-btn-demo"
+        class="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold text-zinc-300 hover:text-white bg-zinc-900 border border-white/[0.08] rounded-xl transition cursor-pointer"
+      >
+        <Icons name="refresh" class="w-4 h-4" />
+        <span>Load Demo Accounts</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Card Grid View Container -->
+  <div id="account-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-4 sm:gap-6">
+    <!-- Populated dynamically by client-render script -->
+  </div>
+
+  <!-- High-Density Table View Container -->
+  <div id="account-table-wrapper" class="hidden overflow-x-auto rounded-2xl bg-surface-1 border border-white/[0.08]">
+    <table class="w-full text-left text-xs sm:text-sm">
+      <thead class="bg-black/80 text-zinc-400 uppercase font-mono text-[11px] border-b border-white/[0.08]">
+        <tr>
+          <th class="py-3.5 px-4 font-semibold">Account</th>
+          <th class="py-3.5 px-4 font-semibold">Drop Status</th>
+          <th class="py-3.5 px-4 font-semibold">Rank & XP Progress</th>
+          <th class="py-3.5 px-4 font-semibold">XP Multiplier</th>
+          <th class="py-3.5 px-4 font-semibold">Service Medal</th>
+          <th class="py-3.5 px-4 font-semibold text-right">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="account-table-body" class="divide-y divide-white/[0.04]">
+        <!-- Populated dynamically -->
+      </tbody>
+    </table>
+  </div>
+</section>

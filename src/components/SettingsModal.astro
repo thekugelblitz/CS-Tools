@@ -1,0 +1,116 @@
+---
+import Icons from './Icons.astro';
+---
+
+<div
+  id="modal-settings"
+  class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md transition-opacity"
+>
+  <div class="relative w-full max-w-lg rounded-2xl bg-surface-1 border border-white/[0.12] shadow-2xl p-6 sm:p-7 overflow-y-auto max-h-[90vh]">
+    <!-- Close button -->
+    <button
+      id="btn-close-settings-modal"
+      class="absolute top-5 right-5 p-1.5 text-zinc-400 hover:text-white rounded-lg hover:bg-zinc-800 transition"
+    >
+      <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="6"></line>
+      </svg>
+    </button>
+
+    <!-- Header -->
+    <div class="flex items-center gap-3 mb-5">
+      <div class="p-2.5 rounded-xl bg-zinc-800 border border-white/[0.1] text-zinc-300">
+        <Icons name="settings" class="w-5 h-5" />
+      </div>
+      <div>
+        <h3 class="text-lg font-bold text-white">Settings & Fleet Backup</h3>
+        <p class="text-xs text-zinc-400">Configure Steam API connection and data portability</p>
+      </div>
+    </div>
+
+    <div class="space-y-6">
+      <!-- Steam Web API Key Section -->
+      <div class="space-y-2">
+        <label class="block text-xs font-semibold text-zinc-200">
+          Steam Web API Key (Optional)
+        </label>
+        <input
+          type="password"
+          id="settings-input-api-key"
+          placeholder="Paste your 32-character Steam API Key..."
+          class="w-full px-3 py-2 text-xs sm:text-sm bg-black border border-white/[0.1] rounded-xl text-white font-mono placeholder-zinc-600 focus:outline-none focus:border-emerald-500 transition"
+        />
+        <p class="text-[11px] text-zinc-500">
+          Not required! Used only to bypass public rate limits. Get one free from
+          <a
+            href="https://steamcommunity.com/dev/apikey"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-emerald-400 hover:underline"
+          >
+            steamcommunity.com/dev/apikey
+          </a>.
+        </p>
+      </div>
+
+      <!-- Preferences -->
+      <div class="p-3.5 rounded-xl bg-black border border-white/[0.08] space-y-3">
+        <label class="flex items-center justify-between cursor-pointer">
+          <div>
+            <span class="block text-xs font-bold text-white">Sound Effects</span>
+            <span class="text-[11px] text-zinc-400">Play high-tech audio chime when marking drops</span>
+          </div>
+          <input
+            type="checkbox"
+            id="settings-input-sound"
+            checked
+            class="w-5 h-5 accent-emerald-400 rounded cursor-pointer"
+          />
+        </label>
+      </div>
+
+      <!-- Backup & Restore -->
+      <div class="space-y-3">
+        <h4 class="text-xs font-semibold uppercase tracking-wider text-zinc-400">
+          Fleet Data Portability
+        </h4>
+        <div class="grid grid-cols-2 gap-3">
+          <button
+            type="button"
+            id="btn-export-json"
+            class="flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-semibold text-zinc-200 hover:text-white bg-zinc-900 border border-white/[0.08] hover:border-white/[0.16] rounded-xl transition cursor-pointer"
+          >
+            <Icons name="download" class="w-4 h-4 text-emerald-400" />
+            <span>Export Fleet JSON</span>
+          </button>
+          <label
+            class="flex items-center justify-center gap-2 px-3 py-2.5 text-xs font-semibold text-zinc-200 hover:text-white bg-zinc-900 border border-white/[0.08] hover:border-white/[0.16] rounded-xl transition cursor-pointer"
+          >
+            <Icons name="upload" class="w-4 h-4 text-cyan-400" />
+            <span>Import Fleet JSON</span>
+            <input type="file" id="settings-input-file" accept=".json" class="hidden" />
+          </label>
+        </div>
+      </div>
+
+      <!-- Factory Reset -->
+      <div class="pt-2 border-t border-white/[0.08] flex items-center justify-between">
+        <button
+          type="button"
+          id="btn-restore-demo"
+          class="text-xs text-zinc-400 hover:text-emerald-400 transition underline cursor-pointer"
+        >
+          Reset to Demo Accounts
+        </button>
+        <button
+          type="button"
+          id="btn-wipe-all"
+          class="text-xs text-red-400 hover:text-red-300 transition underline cursor-pointer"
+        >
+          Wipe All Accounts
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --bg-oled: #000000;
+    --bg-surface-1: #070709;
+    --bg-surface-2: #0e0f14;
+    --bg-surface-3: #16171e;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-highlight: rgba(255, 255, 255, 0.16);
+    --accent-emerald: #10b981;
+    --accent-gold: #eab308;
+    --accent-cyan: #06b6d4;
+    --accent-purple: #a855f7;
+    --accent-red: #ef4444;
+  }
+
+  body {
+    background-color: #000000;
+    color: #f3f4f6;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+}
+
+/* AMOLED Custom Utilities */
+.bg-oled {
+  background-color: #000000;
+}
+
+.bg-surface-1 {
+  background-color: #070709;
+}
+
+.bg-surface-2 {
+  background-color: #0e0f14;
+}
+
+.bg-surface-3 {
+  background-color: #16171e;
+}
+
+.border-oled {
+  border-color: rgba(255, 255, 255, 0.08);
+}
+
+.border-oled-glow {
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Neon Glows */
+.glow-emerald {
+  box-shadow: 0 0 25px -4px rgba(16, 185, 129, 0.28), 0 0 10px -2px rgba(16, 185, 129, 0.15);
+}
+
+.glow-gold {
+  box-shadow: 0 0 25px -4px rgba(234, 179, 8, 0.28), 0 0 10px -2px rgba(234, 179, 8, 0.15);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 25px -4px rgba(6, 182, 212, 0.28), 0 0 10px -2px rgba(6, 182, 212, 0.15);
+}
+
+.glow-purple {
+  box-shadow: 0 0 25px -4px rgba(168, 85, 247, 0.28), 0 0 10px -2px rgba(168, 85, 247, 0.15);
+}
+
+.glow-red {
+  box-shadow: 0 0 25px -4px rgba(239, 68, 68, 0.28), 0 0 10px -2px rgba(239, 68, 68, 0.15);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f222e;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #32374a;
+}
+
+/* Subtle grid backdrop for AMOLED depth */
+.amoled-grid {
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Pulse badge animation */
+@keyframes soft-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(0.96);
+  }
+}
+
+.animate-soft-pulse {
+  animation: soft-pulse 2.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
