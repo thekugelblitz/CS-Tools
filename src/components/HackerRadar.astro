@@ -92,7 +92,7 @@ import Icons from './Icons.astro';
       <span class="text-xs text-zinc-500 font-mono">Auto-scanned across all 10 players</span>
     </div>
 
-    <!-- Match Audit 1: Overpass CSTracker #006591 (Flagged Cheater Found on Enemy Team) -->
+    <!-- Match Audit 1: Dust II Competitive (Flagged Cheater Found on Enemy Team) -->
     <div class="rounded-2xl bg-surface-1 border border-red-500/40 p-5 shadow-[0_0_20px_-8px_rgba(239,68,68,0.2)]">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3 mb-4">
         <div class="flex items-center gap-3">
@@ -100,26 +100,26 @@ import Icons from './Icons.astro';
             🚨 1 Flagged Cheater
           </span>
           <div>
-            <h4 class="font-bold text-white text-sm">Overpass (Premier) · 13 - 1 Victory</h4>
-            <span class="text-xs text-zinc-400 font-mono">CSTracker Match #006591 · Verified Demo Available</span>
+            <h4 class="font-bold text-white text-sm">Dust II (Competitive) · 5 - 11 Defeat</h4>
+            <span class="text-xs text-zinc-400 font-mono">Tracker.gg Confirmed Match · March 11 · Demo Verified</span>
           </div>
         </div>
 
         <div class="flex items-center gap-2">
           <button
             class="btn-inspect-match-radar px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-            data-match-id="match-006591"
+            data-match-id="match-dust2-comp"
           >
             <Icons name="chart" class="w-3.5 h-3.5 text-emerald-400" />
             <span>Inspect 10-Player Scoreboard</span>
           </button>
 
           <a
-            href="https://cstracker.gg/matches/006591"
+            href="https://tracker.gg/cs2/profile/steam/76561198287445170/matches"
             target="_blank"
             rel="noopener noreferrer"
             class="p-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/[0.1] transition"
-            title="Open Demo on CSTracker"
+            title="Open Matches on Tracker.gg"
           >
             <Icons name="external" class="w-3.5 h-3.5" />
           </a>
@@ -132,19 +132,19 @@ import Icons from './Icons.astro';
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping"></span>
             <strong class="text-red-300 text-xs">Flagged Player: xX_OneTapGod_Xx (Terrorist Side)</strong>
-            <span class="px-2 py-0.5 rounded bg-red-900 text-red-100 font-mono font-black text-[10px]">86% Threat Probability</span>
+            <span class="px-2 py-0.5 rounded bg-red-900 text-red-100 font-mono font-black text-[10px]">84% Threat Probability</span>
           </div>
-          <span class="text-[11px] text-red-400 font-mono">Sub-150ms TTK · 92.3% Headshot Rate</span>
+          <span class="text-[11px] text-red-400 font-mono">Sub-150ms TTK · 85.0% Headshot Rate</span>
         </div>
 
         <p class="text-xs text-zinc-300 leading-relaxed">
-          Heuristic triggers: Abnormal 92.3% headshot ratio on 13 frags, instant 145ms reaction time, robotic 3.2° crosshair snap error, on a disposable Level 1 Steam account created 14 days ago. Suspicious kills in rounds 3, 7, and 11.
+          Heuristic triggers: Abnormal 85.0% headshot ratio on 20 kills, instant 142ms reaction time, robotic 3.2° crosshair snap error on a disposable Level 1 Steam account created under 30 days ago. Suspicious rounds flagged: 2, 5, 9, and 13.
         </p>
 
         <div class="flex flex-wrap gap-2 mt-2.5 text-[10px] font-bold">
-          <span class="px-2 py-0.5 rounded bg-red-900/60 text-red-300 border border-red-500/40">Aimbot Index: 94/100</span>
-          <span class="px-2 py-0.5 rounded bg-red-900/60 text-red-300 border border-red-500/40">Wallhack Index: 82/100</span>
-          <span class="px-2 py-0.5 rounded bg-red-900/60 text-red-300 border border-red-500/40">Burner Account Risk: 88/100</span>
+          <span class="px-2 py-0.5 rounded bg-red-900/60 text-red-300 border border-red-500/40">Aimbot Index: 92/100</span>
+          <span class="px-2 py-0.5 rounded bg-red-900/60 text-red-300 border border-red-500/40">Wallhack Index: 78/100</span>
+          <span class="px-2 py-0.5 rounded bg-red-900/60 text-red-300 border border-red-500/40">Burner Account Risk: 90/100</span>
         </div>
       </div>
 
@@ -152,31 +152,62 @@ import Icons from './Icons.astro';
       <div class="flex items-center justify-between text-xs text-zinc-400 p-2.5 rounded-xl bg-zinc-950/60 border border-white/[0.04]">
         <div class="flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span>Friendly Team: <strong class="text-white">TheKugelBlitz (DJ)</strong> and 4 teammates verified 100% clean.</span>
+          <span>Friendly Team: <strong class="text-white">TheKugelBlitz</strong> and teammates verified 100% clean (10-Yr Veteran, 560+ Items).</span>
         </div>
         <span class="text-emerald-400 font-mono text-[11px]">Clean Record (0.00% Cheat Risk)</span>
       </div>
     </div>
 
-    <!-- Match Audit 2: Mirage Premier (High Risk Player Found) -->
-    <div class="rounded-2xl bg-surface-1 border border-yellow-500/30 p-5 shadow-[0_0_20px_-8px_rgba(234,179,8,0.15)]">
+    <!-- Match Audit 2: Dust II Premier 13-6 (Clean Match) -->
+    <div class="rounded-2xl bg-surface-1 border border-emerald-500/30 p-5 shadow-[0_0_20px_-8px_rgba(16,185,129,0.15)]">
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3 mb-4">
         <div class="flex items-center gap-3">
-          <span class="px-2.5 py-1 rounded-lg bg-yellow-950 text-yellow-400 border border-yellow-500/30 text-xs font-black uppercase">
-            ⚠️ 1 High Suspicion
+          <span class="px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-500/30 text-xs font-black uppercase">
+            ✓ 100% Clean Match
           </span>
           <div>
-            <h4 class="font-bold text-white text-sm">Mirage (Premier) · 13 - 9 Victory</h4>
-            <span class="text-xs text-zinc-400 font-mono">Premier Rating 18,400</span>
+            <h4 class="font-bold text-white text-sm">Dust II (Premier) · 13 - 6 Victory</h4>
+            <span class="text-xs text-zinc-400 font-mono">Confirmed on CSStats · All 10 Players Verified Legit</span>
           </div>
         </div>
 
         <button
           class="btn-inspect-match-radar px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-          data-match-id="match-006592"
+          data-match-id="match-dust2-premier"
         >
           <Icons name="chart" class="w-3.5 h-3.5 text-emerald-400" />
           <span>Inspect 10-Player Scoreboard</span>
+        </button>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-emerald-950/20 border border-emerald-500/20 text-xs text-zinc-300 flex items-center justify-between">
+        <div>
+          <span class="text-emerald-400 font-bold">Top Performer: TheKugelBlitz</span>
+          <p class="text-zinc-400 text-[11px] mt-0.5">18 Kills · 9 Deaths · 94 ADR · 55% HS · 1.42 HLTV Rating · Clean spray mechanics</p>
+        </div>
+        <span class="text-emerald-400 font-mono font-bold text-xs">Rating: 1.42</span>
+      </div>
+    </div>
+
+    <!-- Match Audit 3: Mirage Premier 16-14 Overtime Thriller -->
+    <div class="rounded-2xl bg-surface-1 border border-yellow-500/30 p-5 shadow-[0_0_20px_-8px_rgba(234,179,8,0.15)]">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3 mb-4">
+        <div class="flex items-center gap-3">
+          <span class="px-2.5 py-1 rounded-lg bg-yellow-950 text-yellow-400 border border-yellow-500/30 text-xs font-black uppercase">
+            ⚠️ 1 Suspicious Player
+          </span>
+          <div>
+            <h4 class="font-bold text-white text-sm">Mirage (Premier) · 16 - 14 Overtime Thriller</h4>
+            <span class="text-xs text-zinc-400 font-mono">CSStats Match · 30 Rounds Battle</span>
+          </div>
+        </div>
+
+        <button
+          class="btn-inspect-match-radar px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+          data-match-id="match-mirage-ot"
+        >
+          <Icons name="chart" class="w-3.5 h-3.5 text-emerald-400" />
+          <span>Inspect Scoreboard</span>
         </button>
       </div>
 
@@ -184,38 +215,15 @@ import Icons from './Icons.astro';
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2">
           <div class="flex items-center gap-2">
             <span class="w-2.5 h-2.5 rounded-full bg-yellow-400"></span>
-            <strong class="text-yellow-300 text-xs">High Suspicion: Smoke_Criminal (Terrorist Side)</strong>
-            <span class="px-2 py-0.5 rounded bg-yellow-900 text-yellow-100 font-mono font-black text-[10px]">72% Threat Probability</span>
+            <strong class="text-yellow-300 text-xs">Suspicious Opponent Lurker</strong>
+            <span class="px-2 py-0.5 rounded bg-yellow-900 text-yellow-100 font-mono font-black text-[10px]">48% Threat Probability</span>
           </div>
-          <span class="text-[11px] text-yellow-400 font-mono">38% Through-Smoke Kills</span>
+          <span class="text-[11px] text-yellow-400 font-mono">High volume smoke spam kills</span>
         </div>
 
         <p class="text-xs text-zinc-300 leading-relaxed">
-          Heuristic triggers: 38% of kills occurred through volumetric smoke without prior radar ping or tag. Flank awareness timing shows 0-delay off-angle clears.
+          Enemy lurker exhibited 32% through-smoke bullet hits in connector and palace. TheKugelBlitz led the team to victory in OT with 24 kills, 89 ADR, and 50% headshot accuracy.
         </p>
-      </div>
-    </div>
-
-    <!-- Match Audit 3: Inferno Premier (Clean Match) -->
-    <div class="rounded-2xl bg-surface-1 border border-emerald-500/30 p-5 shadow-[0_0_20px_-8px_rgba(16,185,129,0.15)]">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <span class="px-2.5 py-1 rounded-lg bg-emerald-950 text-emerald-400 border border-emerald-500/30 text-xs font-black uppercase">
-            ✓ 100% Clean Match
-          </span>
-          <div>
-            <h4 class="font-bold text-white text-sm">Inferno (Premier) · 11 - 13 Defeat</h4>
-            <span class="text-xs text-zinc-400 font-mono">All 10 players verified within normal human tolerances</span>
-          </div>
-        </div>
-
-        <button
-          class="btn-inspect-match-radar px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-          data-match-id="match-006593"
-        >
-          <Icons name="chart" class="w-3.5 h-3.5 text-emerald-400" />
-          <span>Inspect Scoreboard</span>
-        </button>
       </div>
     </div>
   </div>

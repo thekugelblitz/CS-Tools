@@ -172,6 +172,7 @@ export interface ScavengedPlayerProfile {
   platformLinks: PlatformLinks;
   combatStats: {
     hltvRating: number;
+    kdRatio: number;
     adr: number;
     headshotPercentage: number;
     kastPercentage: number;
@@ -179,10 +180,29 @@ export interface ScavengedPlayerProfile {
     crosshairPlacementError: number; // degrees
     timeToDamageMs: number; // ms
     clutchSuccessRate: number; // %
+    clutch1v1Rate?: number;
+    entrySuccessRate?: number;
     faceitLevel: number;
     faceitElo: number;
+    faceitUsername?: string;
     winRate: number;
     totalMatchesRecorded: number;
+    matchesWon?: number;
+    matchesLost?: number;
+    matchesTied?: number;
+    totalKills?: number;
+    totalDeaths?: number;
+    totalAssists?: number;
+    totalRounds?: number;
+    totalHeadshots?: number;
+    premierCurrentRating?: number;
+    premierPeakRating?: number;
+    competitiveRank?: string;
+    competitiveWins?: number;
+    wingmanRank?: string;
+    wingmanWins?: number;
+    topWeapons?: { name: string; kills: number; hsPct: number; accuracy: number; damage: number }[];
+    topMaps?: { name: string; matches: number; winRate: number }[];
   };
 }
 

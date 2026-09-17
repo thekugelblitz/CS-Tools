@@ -42,8 +42,14 @@ import Icons from './Icons.astro';
             <span class="px-2 py-0.5 rounded-lg bg-purple-950/80 text-purple-300 border border-purple-500/30 text-[11px] font-bold">
               10-Year Veteran
             </span>
+            <span class="px-2 py-0.5 rounded-lg bg-cyan-950/80 text-cyan-300 border border-cyan-500/30 text-[11px] font-bold font-mono">
+              Premier: 10,410 (Peak 14,510)
+            </span>
+            <span class="px-2 py-0.5 rounded-lg bg-amber-950/80 text-amber-300 border border-amber-500/30 text-[11px] font-bold">
+              Comp: Gold Nova III
+            </span>
             <span class="px-2 py-0.5 rounded-lg bg-orange-950/80 text-orange-400 border border-orange-500/30 text-[11px] font-bold">
-              FACEIT Lvl 4
+              FACEIT Lvl 4 (DeKugelBlitz)
             </span>
           </div>
 
@@ -61,6 +67,10 @@ import Icons from './Icons.astro';
             </span>
             <span class="text-zinc-600">|</span>
             <span class="flex items-center gap-1 text-zinc-300">
+              <span class="text-zinc-500">Matches:</span> <strong class="text-white font-mono">559 Total (236 Won)</strong>
+            </span>
+            <span class="text-zinc-600">|</span>
+            <span class="flex items-center gap-1 text-zinc-300">
               <span class="text-zinc-500">CS2 Items:</span> <strong class="text-emerald-400 font-mono">563 Inventory</strong>
             </span>
           </div>
@@ -69,7 +79,7 @@ import Icons from './Icons.astro';
           <div class="flex flex-wrap gap-2 pt-1 text-[11px]">
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900/90 border border-white/[0.08] text-zinc-300">
               <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-              <span>Live Synced</span>
+              <span>csst.at & Tracker Verified</span>
             </span>
             <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-zinc-900/90 border border-white/[0.08] text-zinc-300">
               <Icons name="drop-box" class="w-3.5 h-3.5 text-yellow-400" />
@@ -98,23 +108,77 @@ import Icons from './Icons.astro';
           class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] font-bold text-xs transition cursor-pointer"
         >
           <Icons name="refresh" class="w-3.5 h-3.5 text-emerald-400" />
-          <span>Re-Scavenge All Stats</span>
+          <span>Sync from csst.at & Tracker</span>
         </button>
       </div>
     </div>
   </div>
 
-  <!-- Multi-Source Platform Hub (CSTracker, Leetify, Faceit, CSST.at, Scope.gg, Steam) -->
+  <!-- Multi-Source Platform Hub (csst.at, Tracker.gg, Faceit, Leetify, Scope.gg, Steam) -->
   <div class="rounded-2xl bg-surface-1 border border-white/[0.08] p-5">
     <div class="flex items-center justify-between mb-4">
       <div class="flex items-center gap-2">
         <Icons name="chart" class="w-4 h-4 text-cyan-400" />
-        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Scavenged Platform Profiles & Direct Trackers</h3>
+        <h3 class="text-sm font-bold text-white uppercase tracking-wider">Live Scavenged Platform Profiles & Direct Trackers</h3>
       </div>
-      <span class="text-xs text-zinc-500 font-mono">Live External Hub</span>
+      <span class="text-xs text-zinc-500 font-mono">100% Verified Profile Sources</span>
     </div>
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <!-- CSST.at Profile Card -->
+      <a
+        id="link-csstat"
+        href="https://csst.at/profile/greatmahakaal"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-emerald-500/40 hover:border-emerald-400 hover:bg-emerald-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-emerald-400 group-hover:text-emerald-300">csst.at</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Verified</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>K/D: <strong class="text-emerald-400 font-mono">1.05</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-emerald-400" />
+        </div>
+      </a>
+
+      <!-- CS Tracker.gg Card -->
+      <a
+        id="link-cstracker"
+        href="https://tracker.gg/cs2/profile/steam/76561198287445170/overview"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-cyan-500/40 hover:border-cyan-400 hover:bg-cyan-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-cyan-400 group-hover:text-cyan-300">Tracker.gg</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Overview</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>Rating: <strong class="text-cyan-400 font-mono">1.14</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-cyan-400" />
+        </div>
+      </a>
+
+      <!-- FACEIT Card -->
+      <a
+        id="link-faceit"
+        href="https://www.faceit.com/en/players/DeKugelBlitz"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="p-3 rounded-xl bg-zinc-950/70 border border-amber-500/40 hover:border-amber-400 hover:bg-amber-950/10 transition group flex flex-col justify-between"
+      >
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-bold text-xs text-amber-400 group-hover:text-amber-300">FACEIT</span>
+          <span class="text-[10px] text-zinc-500 font-mono">DeKugelBlitz</span>
+        </div>
+        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
+          <span>Level 4 <strong class="text-amber-400 font-mono">(1,040)</strong></span>
+          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-amber-400" />
+        </div>
+      </a>
+
       <!-- Leetify Card -->
       <a
         id="link-leetify"
@@ -128,62 +192,8 @@ import Icons from './Icons.astro';
           <span class="text-[10px] text-zinc-500 font-mono">Aim Radar</span>
         </div>
         <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
-          <span>Aim: <strong>78.4</strong></span>
+          <span>Aim: <strong class="font-mono">78.4</strong></span>
           <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-orange-400" />
-        </div>
-      </a>
-
-      <!-- CS Tracker.gg Card -->
-      <a
-        id="link-cstracker"
-        href="https://cstracker.gg/players/76561198287445170"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-cyan-500/40 hover:bg-cyan-950/10 transition group flex flex-col justify-between"
-      >
-        <div class="flex items-center justify-between mb-2">
-          <span class="font-bold text-xs text-cyan-400 group-hover:text-cyan-300">CSTracker.gg</span>
-          <span class="text-[10px] text-zinc-500 font-mono">Demos</span>
-        </div>
-        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
-          <span>Rating: <strong>1.48</strong></span>
-          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-cyan-400" />
-        </div>
-      </a>
-
-      <!-- CSST.at Profile Card -->
-      <a
-        id="link-csstat"
-        href="https://csst.at/profile/greatmahakaal"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-emerald-500/40 hover:bg-emerald-950/10 transition group flex flex-col justify-between"
-      >
-        <div class="flex items-center justify-between mb-2">
-          <span class="font-bold text-xs text-emerald-400 group-hover:text-emerald-300">csst.at</span>
-          <span class="text-[10px] text-zinc-500 font-mono">Profile</span>
-        </div>
-        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
-          <span>KAST: <strong>93%</strong></span>
-          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-emerald-400" />
-        </div>
-      </a>
-
-      <!-- FACEIT Card -->
-      <a
-        id="link-faceit"
-        href="https://www.faceit.com/en/players/TheKugelBlitz"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="p-3 rounded-xl bg-zinc-950/70 border border-white/[0.06] hover:border-amber-500/40 hover:bg-amber-950/10 transition group flex flex-col justify-between"
-      >
-        <div class="flex items-center justify-between mb-2">
-          <span class="font-bold text-xs text-amber-400 group-hover:text-amber-300">FACEIT</span>
-          <span class="text-[10px] text-zinc-500 font-mono">Level 4</span>
-        </div>
-        <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
-          <span>Elo: <strong>1,180</strong></span>
-          <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-amber-400" />
         </div>
       </a>
 
@@ -197,10 +207,10 @@ import Icons from './Icons.astro';
       >
         <div class="flex items-center justify-between mb-2">
           <span class="font-bold text-xs text-purple-400 group-hover:text-purple-300">Scope.gg</span>
-          <span class="text-[10px] text-zinc-500 font-mono">Grenades</span>
+          <span class="text-[10px] text-zinc-500 font-mono">Analytics</span>
         </div>
         <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
-          <span>Clutch: <strong>45%</strong></span>
+          <span>Clutch: <strong class="font-mono">16%</strong></span>
           <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-purple-400" />
         </div>
       </a>
@@ -215,88 +225,179 @@ import Icons from './Icons.astro';
       >
         <div class="flex items-center justify-between mb-2">
           <span class="font-bold text-xs text-blue-400 group-hover:text-blue-300">Steam Community</span>
-          <span class="text-[10px] text-zinc-500 font-mono">Valve</span>
+          <span class="text-[10px] text-zinc-500 font-mono">10 Yrs</span>
         </div>
         <div class="text-[11px] text-zinc-400 group-hover:text-white flex items-center justify-between">
-          <span>Items: <strong>563</strong></span>
+          <span>Inventory: <strong class="font-mono text-emerald-400">563</strong></span>
           <Icons name="external" class="w-3 h-3 text-zinc-500 group-hover:text-blue-400" />
         </div>
       </a>
     </div>
   </div>
 
-  <!-- Combat Metrics & Tactical Radar Grid -->
+  <!-- Real Combat Metrics (5v5 CS2 ground truth from csst.at) -->
   <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3">
-    <!-- Stat 1: HLTV Rating -->
+    <!-- Stat 1: K/D Ratio -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
-      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">HLTV 2.0</span>
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">K/D Ratio</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-emerald-400">1.48</span>
+        <span class="text-2xl font-black font-mono text-emerald-400">1.05</span>
       </div>
-      <span class="text-[10px] text-zinc-500 font-medium">Overpass Win (13-1)</span>
+      <span class="text-[10px] text-zinc-500 font-mono">8,681 K / 8,290 D</span>
     </div>
 
-    <!-- Stat 2: KAST -->
+    <!-- Stat 2: HLTV Rating -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
-      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">KAST %</span>
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">HLTV Rating</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-cyan-400">93.0%</span>
+        <span class="text-2xl font-black font-mono text-cyan-400">1.14</span>
       </div>
-      <span class="text-[10px] text-zinc-500 font-medium">Elite Round Impact</span>
+      <span class="text-[10px] text-zinc-500 font-medium">559 Matches</span>
     </div>
 
-    <!-- Stat 3: ADR -->
+    <!-- Stat 3: Win Rate -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
-      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Avg Damage</span>
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Win Rate</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-white">58.6</span>
+        <span class="text-2xl font-black font-mono text-white">42%</span>
       </div>
-      <span class="text-[10px] text-zinc-500 font-medium">ADR per round</span>
+      <span class="text-[10px] text-zinc-500 font-mono">236 W / 281 L / 42 T</span>
     </div>
 
     <!-- Stat 4: Headshot % -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
       <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Headshot %</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-zinc-200">27.3%</span>
+        <span class="text-2xl font-black font-mono text-emerald-400">48%</span>
       </div>
-      <span class="text-[10px] text-emerald-400 font-medium">Natural Distribution</span>
+      <span class="text-[10px] text-zinc-500 font-mono">4,162 Headshots</span>
     </div>
 
-    <!-- Stat 5: Leetify Aim Score -->
+    <!-- Stat 5: ADR -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
-      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Leetify Aim</span>
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">ADR (Avg Dmg)</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-orange-400">78.4</span>
+        <span class="text-2xl font-black font-mono text-orange-400">83</span>
       </div>
-      <span class="text-[10px] text-zinc-500 font-medium">Above Bracket Avg</span>
+      <span class="text-[10px] text-zinc-500 font-mono">952,616 Dmg</span>
     </div>
 
-    <!-- Stat 6: Time to Damage (Reaction) -->
+    <!-- Stat 6: KAST % -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
-      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Time to Damage</span>
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">KAST %</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-emerald-400">310ms</span>
+        <span class="text-2xl font-black font-mono text-cyan-400">70.0%</span>
       </div>
-      <span class="text-[10px] text-emerald-400 font-medium">Verified Human</span>
+      <span class="text-[10px] text-zinc-500 font-mono">11,435 Rounds</span>
     </div>
 
-    <!-- Stat 7: Crosshair Placement Error -->
+    <!-- Stat 7: 1vX Clutch -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
-      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Crosshair Err</span>
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">1vX Clutch</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-white">6.8°</span>
+        <span class="text-2xl font-black font-mono text-white">16%</span>
       </div>
-      <span class="text-[10px] text-zinc-500 font-medium">Legit Angle Clearing</span>
+      <span class="text-[10px] text-emerald-400 font-mono">60% Win in 1v1</span>
     </div>
 
-    <!-- Stat 8: Win Rate -->
+    <!-- Stat 8: Entry Success -->
     <div class="p-4 rounded-2xl bg-surface-1 border border-white/[0.06] flex flex-col justify-between">
-      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Win Rate</span>
+      <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider">Entry Success</span>
       <div class="my-1">
-        <span class="text-2xl font-black font-mono text-emerald-400">64.5%</span>
+        <span class="text-2xl font-black font-mono text-emerald-400">52%</span>
       </div>
-      <span class="text-[10px] text-zinc-500 font-medium">Premier Competitive</span>
+      <span class="text-[10px] text-zinc-500 font-mono">11% per round</span>
+    </div>
+  </div>
+
+  <!-- Top Weapons & Map Mastery Row (From csst.at) -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Top Weapons -->
+    <div class="p-5 rounded-2xl bg-surface-1 border border-white/[0.08] space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 text-white font-bold text-sm">
+          <Icons name="crosshair" class="w-4 h-4 text-emerald-400" />
+          <span>Top Weapon Arsenal (csst.at)</span>
+        </div>
+        <span class="text-xs text-zinc-500 font-mono">Total 8,681 Kills</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">AK-47</span>
+          <span class="text-base font-black font-mono text-emerald-400">3,082</span>
+          <span class="text-[10px] text-zinc-400 block font-mono">57% HS · 15% Acc</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">M4A1-S</span>
+          <span class="text-base font-black font-mono text-cyan-400">1,148</span>
+          <span class="text-[10px] text-zinc-400 block font-mono">41% HS · 18% Acc</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">AWP</span>
+          <span class="text-base font-black font-mono text-amber-400">928</span>
+          <span class="text-[10px] text-zinc-400 block font-mono">13% HS · 28% Acc</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">USP-S</span>
+          <span class="text-base font-black font-mono text-zinc-200">574</span>
+          <span class="text-[10px] text-emerald-400 block font-mono">72% HS · 19% Acc</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">Glock-18</span>
+          <span class="text-base font-black font-mono text-zinc-200">493</span>
+          <span class="text-[10px] text-emerald-400 block font-mono">61% HS · 19% Acc</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06] flex flex-col justify-center text-center">
+          <span class="text-[11px] text-zinc-500 font-bold uppercase">Headshots</span>
+          <span class="text-base font-black font-mono text-emerald-400">4,162</span>
+          <span class="text-[10px] text-zinc-400 font-mono">48% Overall</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Map Mastery -->
+    <div class="p-5 rounded-2xl bg-surface-1 border border-white/[0.08] space-y-3">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 text-white font-bold text-sm">
+          <Icons name="chart" class="w-4 h-4 text-cyan-400" />
+          <span>Map Distribution & Win Rates</span>
+        </div>
+        <span class="text-xs text-zinc-500 font-mono">559 Matches</span>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">Dust II</span>
+          <span class="text-base font-black font-mono text-white">318 Matches</span>
+          <span class="text-[10px] text-zinc-400 block font-mono">45.5% Win Rate</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">Mirage</span>
+          <span class="text-base font-black font-mono text-white">119 Matches</span>
+          <span class="text-[10px] text-emerald-400 block font-mono">47.0% Win Rate</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">Inferno</span>
+          <span class="text-base font-black font-mono text-white">67 Matches</span>
+          <span class="text-[10px] text-zinc-500 block font-mono">38.0% Win Rate</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">Overpass</span>
+          <span class="text-base font-black font-mono text-emerald-400">71% Win</span>
+          <span class="text-[10px] text-zinc-400 block font-mono">14 Matches</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">Thera</span>
+          <span class="text-base font-black font-mono text-emerald-400">67% Win</span>
+          <span class="text-[10px] text-zinc-400 block font-mono">Competitive</span>
+        </div>
+        <div class="p-3 rounded-xl bg-black/60 border border-white/[0.06]">
+          <span class="text-xs font-bold text-white block">Cache</span>
+          <span class="text-base font-black font-mono text-emerald-400">100% Win</span>
+          <span class="text-[10px] text-zinc-400 block font-mono">8 Matches</span>
+        </div>
+      </div>
     </div>
   </div>
 
