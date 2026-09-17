@@ -1,0 +1,28 @@
+services:
+  cs2-drop-radar:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: cs2-drop-radar:latest
+    container_name: cs2-drop-radar
+    restart: unless-stopped
+    ports:
+      - "${PORT:-4321}:4321"
+    environment:
+      - NODE_ENV=production
+      - HOST=0.0.0.0
+      - PORT=4321
+      - STEAM_API_KEY=${STEAM_API_KEY:-}
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:4321/ || exit 1"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+# If deploying in Dokploy Compose mode with Traefik container routing,
+# you can optionally attach to dokploy-network:
+# networks:
+#   default:
+#     name: dokploy-network
+#     external: true

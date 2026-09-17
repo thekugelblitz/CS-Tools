@@ -1,0 +1,26 @@
+# Dependencies & local builds
+node_modules
+dist
+.astro
+
+# Git & IDEs
+.git
+.github
+.vscode
+.idea
+
+# Environment & local secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS artifacts
+.DS_Store
+Thumbs.db
