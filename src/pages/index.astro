@@ -5,29 +5,45 @@ import ResetCountdown from '../components/ResetCountdown.astro';
 import StatsOverview from '../components/StatsOverview.astro';
 import ControlsBar from '../components/ControlsBar.astro';
 import AccountContainer from '../components/AccountContainer.astro';
+import MarketTicker from '../components/MarketTicker.astro';
+import LiveMatches from '../components/LiveMatches.astro';
+import ProLeaderboard from '../components/ProLeaderboard.astro';
 import AddAccountModal from '../components/AddAccountModal.astro';
 import EditAccountModal from '../components/EditAccountModal.astro';
+import LogMatchModal from '../components/LogMatchModal.astro';
 import SettingsModal from '../components/SettingsModal.astro';
 import Icons from '../components/Icons.astro';
 ---
 
-<Layout title="CS2 Multi-Account Drop & XP Radar | AMOLED Tracker">
+<Layout title="CS2 Multi-Account Drop & XP Radar | Live AMOLED Tracker">
   <!-- Navbar -->
   <Navbar />
 
   <!-- Main Dashboard Viewport -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-    <!-- Live Weekly Care Package Reset Countdown -->
-    <ResetCountdown />
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 space-y-8">
+    <!-- Live Weekly Drop Pool Market Prices Ticker -->
+    <MarketTicker />
 
-    <!-- Fleet Metrics Overview -->
-    <StatsOverview />
+    <!-- SECTION 1: Fleet Radar (Accounts, Reset Countdown, XP) -->
+    <div id="section-fleet" class="space-y-6">
+      <!-- Live Weekly Care Package Reset Countdown -->
+      <ResetCountdown />
 
-    <!-- Filters, Search & Bulk Actions Bar -->
-    <ControlsBar />
+      <!-- Fleet Metrics Overview -->
+      <StatsOverview />
 
-    <!-- Accounts Cards & Table Views -->
-    <AccountContainer />
+      <!-- Filters, Search & Bulk Actions Bar -->
+      <ControlsBar />
+
+      <!-- Accounts Cards & Table Views -->
+      <AccountContainer />
+    </div>
+
+    <!-- SECTION 2: Live CS2 Pro Match Tracker -->
+    <LiveMatches />
+
+    <!-- SECTION 3: World Pro Leaderboard & Ratings -->
+    <ProLeaderboard />
 
     <!-- Informational CS2 Drop & XP Rules Section -->
     <section class="mt-12 pt-8 border-t border-white/[0.08] text-zinc-400">
@@ -78,7 +94,7 @@ import Icons from '../components/Icons.astro';
         <span>AMOLED Multi-Account Manager</span>
       </div>
       <p class="text-zinc-500 text-[11px]">
-        Counter-Strike and Steam are registered trademarks of Valve Corporation. This project is not affiliated with Valve.
+        Counter-Strike and Steam are registered trademarks of Valve Corporation. Live match data powered by CS Pro Open API.
       </p>
     </div>
   </footer>
@@ -86,6 +102,7 @@ import Icons from '../components/Icons.astro';
   <!-- Modals -->
   <AddAccountModal />
   <EditAccountModal />
+  <LogMatchModal />
   <SettingsModal />
 
   <!-- Client-side script initialization -->

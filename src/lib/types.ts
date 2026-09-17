@@ -11,6 +11,20 @@ export interface DropItem {
   date: string;
 }
 
+export interface PlayerMatchLog {
+  id: string;
+  timestamp: string;
+  map: string;
+  mode: 'Premier' | 'Competitive' | 'Wingman' | 'Deathmatch' | 'Casual';
+  result: 'Win' | 'Loss' | 'Tie';
+  roundsWon: number;
+  roundsLost: number;
+  kills: number;
+  deaths: number;
+  xpEarned: number;
+  dropReceived?: boolean;
+}
+
 export interface SteamAccount {
   id: string;
   steamId64: string;
@@ -47,6 +61,9 @@ export interface SteamAccount {
     ranksUntilNextMedal: number; // 40 - currentRank
   };
 
+  // Match History
+  matchLogs?: PlayerMatchLog[];
+
   // Metadata
   tags?: string[];
   lastChecked: string;
@@ -62,4 +79,56 @@ export interface ResetCycleInfo {
   minutesRemaining: number;
   secondsRemaining: number;
   cycleProgressPercent: number;
+}
+
+// Live Open API Models
+export interface CS2MatchMap {
+  id: number;
+  name: string;
+  team1_score: number;
+  team2_score: number;
+}
+
+export interface CS2MatchTeam {
+  id: number;
+  name: string;
+  score: number;
+  rank: number;
+}
+
+export interface CS2Match {
+  id: number;
+  team1: CS2MatchTeam;
+  team2: CS2MatchTeam;
+  maps: CS2MatchMap[];
+  best_of: number;
+  date: string;
+  event: string;
+  winner?: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface ProPlayerStat {
+  id: number;
+  name: string;
+  rank: number;
+  k: number;
+  d: number;
+  swing: number;
+  adr: number;
+  kast: number;
+  rating: number;
+  N: number;
+}
+
+export interface CaseMarketPrice {
+  name: string;
+  marketHashName: string;
+  lowestPrice: string;
+  medianPrice: string;
+  volume: string;
+  lastUpdated: string;
+  icon: string;
 }

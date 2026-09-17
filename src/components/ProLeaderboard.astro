@@ -1,0 +1,55 @@
+---
+// ProLeaderboard.astro
+---
+
+<section id="section-pro-leaderboard" class="hidden space-y-6">
+  <!-- Header Bar -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-950 border border-white/[0.08] p-5 rounded-2xl">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-yellow-950 text-yellow-400 border border-yellow-500/30">
+          🏆 TOP 100 PLAYERS
+        </span>
+        <span class="text-xs text-zinc-500 font-mono">Live Pro Rating & Performance</span>
+      </div>
+      <h2 class="text-xl font-black tracking-wide text-white">CS2 World Pro Leaderboard</h2>
+      <p class="text-xs text-zinc-400">Official tournament performance metrics for the world's highest rated Counter-Strike 2 players.</p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        id="btn-refresh-leaderboard"
+        class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/[0.08] hover:border-yellow-500/40 transition cursor-pointer"
+      >
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        Refresh Leaderboard
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div id="leaderboard-loading" class="h-64 bg-zinc-950 border border-white/[0.05] rounded-2xl animate-pulse"></div>
+
+  <!-- Table View Container -->
+  <div id="leaderboard-table-wrapper" class="bg-zinc-950 border border-white/[0.08] rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-black/80 text-[11px] text-zinc-400 uppercase tracking-wider border-b border-white/[0.06]">
+          <tr>
+            <th class="py-3.5 px-4 font-bold"># Rank</th>
+            <th class="py-3.5 px-4 font-bold">Player</th>
+            <th class="py-3.5 px-4 font-bold text-center">HLTV Rating</th>
+            <th class="py-3.5 px-4 font-bold text-center">ADR</th>
+            <th class="py-3.5 px-4 font-bold text-center">KAST %</th>
+            <th class="py-3.5 px-4 font-bold text-center">Kills / Deaths</th>
+            <th class="py-3.5 px-4 font-bold text-center">+/- Diff</th>
+            <th class="py-3.5 px-4 font-bold text-center">Maps</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-table-body" class="divide-y divide-white/[0.04]">
+          <!-- Rendered dynamically by dashboard-app.ts -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

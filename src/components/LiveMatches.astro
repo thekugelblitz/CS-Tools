@@ -1,0 +1,48 @@
+---
+// LiveMatches.astro
+---
+
+<section id="section-live-matches" class="hidden space-y-6">
+  <!-- Header Bar -->
+  <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-zinc-950 border border-white/[0.08] p-5 rounded-2xl">
+    <div>
+      <div class="flex items-center gap-2 mb-1">
+        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          LIVE PRO API
+        </span>
+        <span class="text-xs text-zinc-500 font-mono">Updated Daily · Open Data</span>
+      </div>
+      <h2 class="text-xl font-black tracking-wide text-white">CS2 Pro Match Tracker</h2>
+      <p class="text-xs text-zinc-400">Live & recent competitive tournament match results from top CS2 teams worldwide.</p>
+    </div>
+
+    <div class="flex items-center gap-3">
+      <button
+        id="btn-refresh-matches"
+        class="flex items-center gap-2 px-3 py-2 rounded-xl text-xs font-bold bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/[0.08] hover:border-emerald-500/40 transition cursor-pointer"
+      >
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+        Refresh Matches
+      </button>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div id="matches-loading" class="grid grid-cols-1 md:grid-cols-2 gap-4 py-8">
+    <div class="h-44 bg-zinc-950 border border-white/[0.05] rounded-2xl animate-pulse"></div>
+    <div class="h-44 bg-zinc-950 border border-white/[0.05] rounded-2xl animate-pulse"></div>
+  </div>
+
+  <!-- Matches Grid Container -->
+  <div id="matches-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <!-- Rendered dynamically by dashboard-app.ts -->
+  </div>
+
+  <!-- Error / Empty State -->
+  <div id="matches-empty" class="hidden text-center py-16 bg-zinc-950 border border-white/[0.06] rounded-2xl">
+    <svg class="w-12 h-12 text-zinc-600 mx-auto mb-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+    <p class="text-white font-bold mb-1">No Matches Available</p>
+    <p class="text-xs text-zinc-500">Could not retrieve live match results. Please try refreshing.</p>
+  </div>
+</section>

@@ -334,8 +334,7 @@ function renderCardHtml(acc: SteamAccount): string {
   const gradientClass = getAvatarColorGradient(acc.personaName);
 
   return `
-    <div class="relative rounded-2xl bg-surface-1 border ${
-      isClaimed ? 'border-white/[0.08]' : 'border-emerald-500/30 shadow-[0_0_20px_-8px_rgba(16,185,129,0.18)]'
+    <div class="relative rounded-2xl bg-surface-1 border ${isClaimed ? 'border-white/[0.08]' : 'border-emerald-500/30 shadow-[0_0_20px_-8px_rgba(16,185,129,0.18)]'
     } p-5 hover:border-white/[0.18] transition-all flex flex-col justify-between group" data-account-id="${acc.id}">
       
       <!-- Top Row: Avatar & Profile Info -->
@@ -343,9 +342,8 @@ function renderCardHtml(acc: SteamAccount): string {
         <div class="flex items-start justify-between gap-3 mb-4">
           <div class="flex items-center gap-3">
             <div class="relative">
-              <div class="w-13 h-13 rounded-xl overflow-hidden border-2 ${
-                isClaimed ? 'border-yellow-500/50' : 'border-emerald-400'
-              } bg-black shrink-0 relative">
+              <div class="w-13 h-13 rounded-xl overflow-hidden border-2 ${isClaimed ? 'border-yellow-500/50' : 'border-emerald-400'
+    } bg-black shrink-0 relative">
                 <img
                   src="${acc.avatarUrl}"
                   alt="${acc.personaName}"
@@ -357,9 +355,8 @@ function renderCardHtml(acc: SteamAccount): string {
                   ${initials}
                 </div>
               </div>
-              <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full ${
-                acc.vacBanned ? 'bg-red-500' : 'bg-emerald-500'
-              } ring-2 ring-black" title="${acc.vacBanned ? 'VAC Banned' : 'Clean / Prime'}"></span>
+              <span class="absolute -bottom-1 -right-1 w-3.5 h-3.5 rounded-full ${acc.vacBanned ? 'bg-red-500' : 'bg-emerald-500'
+    } ring-2 ring-black" title="${acc.vacBanned ? 'VAC Banned' : 'Clean / Prime'}"></span>
             </div>
             <div>
               <div class="flex items-center gap-2">
@@ -385,18 +382,16 @@ function renderCardHtml(acc: SteamAccount): string {
 
           <!-- Quick Drop Action Button -->
           <button
-            class="btn-toggle-drop px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${
-              isClaimed
-                ? 'bg-yellow-950/60 text-yellow-400 border border-yellow-500/40 hover:bg-yellow-900/60'
-                : 'bg-emerald-400 text-black hover:bg-emerald-300 glow-emerald'
-            }"
+            class="btn-toggle-drop px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer ${isClaimed
+      ? 'bg-yellow-950/60 text-yellow-400 border border-yellow-500/40 hover:bg-yellow-900/60'
+      : 'bg-emerald-400 text-black hover:bg-emerald-300 glow-emerald'
+    }"
             data-account-id="${acc.id}"
           >
-            ${
-              isClaimed
-                ? `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Claimed`
-                : `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg> Drop Ready`
-            }
+            ${isClaimed
+      ? `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Claimed`
+      : `<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg> Drop Ready`
+    }
           </button>
         </div>
 
@@ -404,23 +399,21 @@ function renderCardHtml(acc: SteamAccount): string {
         <div class="p-3 rounded-xl bg-black border border-white/[0.06] mb-4">
           <div class="flex items-center justify-between text-xs mb-1">
             <span class="text-zinc-400 font-medium">Care Package Status:</span>
-            ${
-              isClaimed
-                ? `<span class="font-bold text-yellow-400 flex items-center gap-1">
+            ${isClaimed
+      ? `<span class="font-bold text-yellow-400 flex items-center gap-1">
                     ${acc.dropStatus.recentDrop?.name || 'Care Package'} 
                     ${acc.dropStatus.recentDrop?.marketPrice ? `<span class="font-mono text-zinc-400">($${acc.dropStatus.recentDrop.marketPrice.toFixed(2)})</span>` : ''}
                    </span>`
-                : `<span class="font-bold text-emerald-400 flex items-center gap-1">
+      : `<span class="font-bold text-emerald-400 flex items-center gap-1">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span> Available to Earn
                    </span>`
-            }
+    }
           </div>
           <p class="text-[11px] text-zinc-500">
-            ${
-              isClaimed
-                ? `Claimed on ${acc.dropStatus.claimedAt ? new Date(acc.dropStatus.claimedAt).toLocaleDateString() : 'This Cycle'}. Next eligible after Wednesday reset.`
-                : `Level up in-game once this week to unlock your 2-choice Care Package.`
-            }
+            ${isClaimed
+      ? `Claimed on ${acc.dropStatus.claimedAt ? new Date(acc.dropStatus.claimedAt).toLocaleDateString() : 'This Cycle'}. Next eligible after Wednesday reset.`
+      : `Level up in-game once this week to unlock your 2-choice Care Package.`
+    }
           </p>
         </div>
 
@@ -563,11 +556,10 @@ function renderTableRowHtml(acc: SteamAccount): string {
       <!-- Drop Status -->
       <td class="py-3 px-4">
         <button
-          class="btn-toggle-drop px-2.5 py-1 text-xs font-bold rounded-lg transition cursor-pointer ${
-            isClaimed
-              ? 'bg-yellow-950/60 text-yellow-400 border border-yellow-500/40'
-              : 'bg-emerald-400 text-black hover:bg-emerald-300'
-          }"
+          class="btn-toggle-drop px-2.5 py-1 text-xs font-bold rounded-lg transition cursor-pointer ${isClaimed
+      ? 'bg-yellow-950/60 text-yellow-400 border border-yellow-500/40'
+      : 'bg-emerald-400 text-black hover:bg-emerald-300'
+    }"
           data-account-id="${acc.id}"
         >
           ${isClaimed ? 'Claimed' : 'Drop Ready'}
@@ -889,12 +881,12 @@ function setupAddModal() {
         claimedAt: isClaimed ? new Date().toISOString() : null,
         recentDrop: isClaimed
           ? {
-              id: `drop-${Date.now()}`,
-              name: 'Kilowatt Case',
-              type: 'case',
-              marketPrice: 1.84,
-              date: new Date().toLocaleDateString()
-            }
+            id: `drop-${Date.now()}`,
+            name: 'Kilowatt Case',
+            type: 'case',
+            marketPrice: 1.84,
+            date: new Date().toLocaleDateString()
+          }
           : undefined
       },
       xpStatus: {

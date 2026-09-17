@@ -23,23 +23,48 @@ import Icons from './Icons.astro';
       </div>
     </div>
 
+    <!-- Center Navigation Tabs -->
+    <nav class="hidden md:flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-white/[0.08]">
+      <button
+        id="tab-nav-fleet"
+        class="nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-zinc-800 transition cursor-pointer"
+        data-target="section-fleet"
+      >
+        📡 Fleet Radar
+      </button>
+      <button
+        id="tab-nav-matches"
+        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer"
+        data-target="section-live-matches"
+      >
+        ⚔️ Live Matches
+      </button>
+      <button
+        id="tab-nav-leaderboard"
+        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer"
+        data-target="section-pro-leaderboard"
+      >
+        🏆 Pro Rankings
+      </button>
+    </nav>
+
     <!-- Right Actions -->
     <div class="flex items-center gap-2 sm:gap-3">
-      <!-- Quick Demo Reset Button (Convenient for testing) -->
+      <!-- Log Match Button -->
       <button
-        id="btn-demo-data"
-        title="Load Demo Accounts"
-        class="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] rounded-lg transition"
+        id="btn-open-log-match"
+        title="Log a competitive match"
+        class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] hover:border-emerald-500/40 rounded-xl transition cursor-pointer"
       >
-        <Icons name="refresh" class="w-3.5 h-3.5" />
-        <span>Demo Data</span>
+        <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+        <span class="hidden sm:inline">Log Match</span>
       </button>
 
-      <!-- JSON Export / Import Button -->
+      <!-- Settings Button -->
       <button
         id="btn-open-settings"
         title="Settings & Backup"
-        class="p-2 text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] rounded-lg transition"
+        class="p-2 text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] rounded-xl transition cursor-pointer"
       >
         <Icons name="settings" class="w-4 h-4" />
       </button>
@@ -53,5 +78,12 @@ import Icons from './Icons.astro';
         <span>Add Account</span>
       </button>
     </div>
+  </div>
+
+  <!-- Mobile Tab Bar -->
+  <div class="md:hidden flex items-center justify-around border-t border-white/[0.06] bg-black px-2 py-1.5">
+    <button class="nav-tab active text-xs font-bold text-white px-2 py-1" data-target="section-fleet">📡 Fleet</button>
+    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1" data-target="section-live-matches">⚔️ Matches</button>
+    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1" data-target="section-pro-leaderboard">🏆 Rankings</button>
   </div>
 </header>

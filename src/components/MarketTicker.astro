@@ -1,0 +1,24 @@
+---
+// MarketTicker.astro
+---
+
+<section id="section-market-prices" class="space-y-4">
+  <div class="flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+      <h3 class="text-xs font-bold uppercase tracking-wider text-zinc-400">Live CS2 Weekly Drop Pool Market Prices</h3>
+      <span class="text-[10px] font-mono text-zinc-500">Steam Community Market API</span>
+    </div>
+    <span id="market-last-updated" class="text-[11px] text-zinc-500 font-mono">Syncing prices...</span>
+  </div>
+
+  <div id="market-cards-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+    <!-- Rendered dynamically by dashboard-app.ts -->
+    <div class="h-24 bg-zinc-950 border border-white/[0.05] rounded-xl animate-pulse"></div>
+    <div class="h-24 bg-zinc-950 border border-white/[0.05] rounded-xl animate-pulse"></div>
+    <div class="h-24 bg-zinc-950 border border-white/[0.05] rounded-xl animate-pulse"></div>
+    <div class="h-24 bg-zinc-950 border border-white/[0.05] rounded-xl animate-pulse"></div>
+    <div class="h-24 bg-zinc-950 border border-white/[0.05] rounded-xl animate-pulse"></div>
+    <div class="h-24 bg-zinc-950 border border-white/[0.05] rounded-xl animate-pulse"></div>
+  </div>
+</section>

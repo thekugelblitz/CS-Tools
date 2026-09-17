@@ -1,0 +1,104 @@
+---
+// LogMatchModal.astro
+---
+
+<div id="modal-log-match" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm hidden">
+  <div class="relative w-full max-w-md bg-zinc-950 border border-white/[0.1] rounded-2xl p-6 shadow-2xl space-y-5">
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-white/[0.08] pb-4">
+      <div>
+        <h3 class="text-lg font-black text-white">Log CS2 Match</h3>
+        <p id="log-match-account-name" class="text-xs text-emerald-400 font-mono">Account: —</p>
+      </div>
+      <button id="btn-close-log-match" class="text-zinc-400 hover:text-white transition cursor-pointer">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <!-- Form -->
+    <form id="form-log-match" class="space-y-4">
+      <input type="hidden" id="log-match-account-id" value="" />
+
+      <!-- Map & Mode Selection -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">Map</label>
+          <select id="log-match-map" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+            <option value="Mirage">Mirage</option>
+            <option value="Dust2">Dust II</option>
+            <option value="Inferno">Inferno</option>
+            <option value="Nuke">Nuke</option>
+            <option value="Ancient">Ancient</option>
+            <option value="Anubis">Anubis</option>
+            <option value="Vertigo">Vertigo</option>
+            <option value="Cache">Cache</option>
+            <option value="Office">Office</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">Mode</label>
+          <select id="log-match-mode" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+            <option value="Premier">Premier</option>
+            <option value="Competitive">Competitive</option>
+            <option value="Wingman">Wingman</option>
+            <option value="Deathmatch">Deathmatch</option>
+            <option value="Casual">Casual</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Result & Score -->
+      <div class="grid grid-cols-3 gap-3">
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">Result</label>
+          <select id="log-match-result" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none">
+            <option value="Win">Win</option>
+            <option value="Loss">Loss</option>
+            <option value="Tie">Tie</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">Rounds Won</label>
+          <input type="number" id="log-match-won" min="0" max="30" value="13" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none font-mono" />
+        </div>
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">Rounds Lost</label>
+          <input type="number" id="log-match-lost" min="0" max="30" value="8" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none font-mono" />
+        </div>
+      </div>
+
+      <!-- Personal Stats -->
+      <div class="grid grid-cols-3 gap-3">
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">Kills</label>
+          <input type="number" id="log-match-kills" min="0" value="19" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none font-mono" />
+        </div>
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">Deaths</label>
+          <input type="number" id="log-match-deaths" min="0" value="12" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-white focus:border-emerald-500 focus:outline-none font-mono" />
+        </div>
+        <div>
+          <label class="block text-xs text-zinc-400 font-bold mb-1.5">XP Earned</label>
+          <input type="number" id="log-match-xp" min="0" step="10" value="480" class="w-full bg-black border border-white/[0.1] rounded-xl px-3 py-2 text-sm text-emerald-400 focus:border-emerald-500 focus:outline-none font-mono font-bold" />
+        </div>
+      </div>
+
+      <!-- Care Package Received Checkbox -->
+      <div class="flex items-center gap-3 bg-zinc-900/60 p-3 rounded-xl border border-white/[0.06]">
+        <input type="checkbox" id="log-match-drop-check" class="w-4 h-4 rounded text-emerald-500 bg-black border-white/20 focus:ring-0 focus:outline-none cursor-pointer" />
+        <label for="log-match-drop-check" class="text-xs text-zinc-300 font-medium cursor-pointer">
+          🎁 Weekly Care Package drop received in this match
+        </label>
+      </div>
+
+      <div class="flex justify-end gap-3 pt-2">
+        <button type="button" id="btn-cancel-log-match" class="px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white bg-zinc-900 transition cursor-pointer">
+          Cancel
+        </button>
+        <button type="submit" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-400 hover:bg-emerald-300 text-black transition cursor-pointer">
+          Save Match Log
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
