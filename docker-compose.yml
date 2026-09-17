@@ -8,6 +8,7 @@ services:
     restart: unless-stopped
     expose:
       - "4321"
+      - "3000"
     ports:
       - "${PORT:-4321}:4321"
     environment:
