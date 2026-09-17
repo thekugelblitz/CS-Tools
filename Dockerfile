@@ -44,8 +44,8 @@ COPY --chown=node:node --from=builder /app/dist ./dist
 EXPOSE 4321
 
 # Built-in health check for Dokploy / container orchestration
-HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD wget -qO- http://localhost:4321/ || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \
+  CMD node -e "fetch('http://127.0.0.1:4321/').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
 
 # Start Astro standalone Node.js server
 CMD ["node", "./dist/server/entry.mjs"]
