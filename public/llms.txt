@@ -5,11 +5,14 @@
 ## Core Features
 - **CS2 Hacker & Cheater Radar**: Real-time telemetry scanner evaluating aim snapping, Time-To-Kill (TTK < 150ms), crosshair placement, and wallhack probability on every match.
 - **Match Scorecard Drawer**: 10-player comprehensive scoreboard displaying exact HLTV 2.0 ratings, ADR, KAST%, Headshot percentages, and MVP distribution.
+- **Leetify Tactical Aim & Mechanics**: Crosshair placement error (degrees), time-to-damage (ms), counter-strafing accuracy %, and opening duel win rates.
+- **CSStats Ban Watcher**: Audits players in match history who subsequently received VAC or Game bans, estimating Premier rating rollback points.
 - **360° Drop & XP Intelligence**: Accurate live countdown to Valve's global weekly reset (Wednesday 00:00 UTC), Steam inventory drop case audit, and weekly 5,000 XP rank-up multiplier bracket calculation.
 - **User Authentication & Multi-Account Tracking**: Sign up, log in, or 1-click Quick Connect via Steam profile to track accounts and fleet drops.
 
 ## Important Links & Endpoints
 - [Dashboard Homepage](https://cs2live.top/): Complete live AMOLED intelligence command center.
+- [Tracker Comparison](https://cs2live.top/compare): 2026 technical comparison of CS2Live vs Leetify, Tracker.gg, and CSStats.
 - [Brand Identity & Kit](https://cs2live.top/brand): Visual brand guidelines, logo assets, and color codes.
 - [Real-Time Scavenger API](https://cs2live.top/api/cs2/scavenger): JSON feed providing verified player profile stats, 10 scraped CSTracker/csst.at matches with hacker indications, and weekly drop cycle status.
 

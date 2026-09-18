@@ -135,6 +135,28 @@ function setupQuickLook() {
       renderMatchesList();
     });
   });
+
+  // Competitive Intel Navigation Tabs (Matches, Aim, Weapons, Maps, Bans, Pro)
+  const intelTabs = document.querySelectorAll('.btn-intel-tab');
+  intelTabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const targetId = tab.getAttribute('data-tab');
+      intelTabs.forEach((t) => {
+        t.classList.remove('active', 'bg-zinc-800', 'text-white');
+        t.classList.add('bg-zinc-950', 'text-zinc-400');
+      });
+      tab.classList.add('active', 'bg-zinc-800', 'text-white');
+      tab.classList.remove('bg-zinc-950', 'text-zinc-400');
+
+      document.querySelectorAll('.intel-tab-pane').forEach((pane) => {
+        pane.classList.add('hidden');
+      });
+
+      if (targetId) {
+        document.getElementById(targetId)?.classList.remove('hidden');
+      }
+    });
+  });
 }
 
 // -------------------------------------------------------------
@@ -266,6 +288,100 @@ function renderPlayerDossier() {
       xpBar.style.width = `${pct}%`;
     }
   }
+
+  // 1. Render Recent Form Streak (Competitor feature)
+  const streakContainer = document.getElementById('hub-form-streak-container');
+  if (streakContainer && c.recentFormStreak) {
+    streakContainer.innerHTML = c.recentFormStreak.map((res) => {
+      const isW = res === 'W';
+      const isL = res === 'L';
+      const colorClass = isW
+        ? 'bg-emerald-950 text-emerald-400 border-emerald-500/40'
+        : isL
+        ? 'bg-red-950 text-red-400 border-red-500/40'
+        : 'bg-yellow-950 text-yellow-400 border-yellow-500/40';
+      return `<span class="w-5 h-5 rounded flex items-center justify-center text-[10px] font-mono font-black border ${colorClass}">${res}</span>`;
+    }).join('');
+  }
+
+  // 2. Render Leetify Aim & Utility metrics
+  const elCrosshair = document.getElementById('intel-crosshair');
+  const elTtd = document.getElementById('intel-ttd');
+  const elStrafe = document.getElementById('intel-counter-strafe');
+  const elFlash = document.getElementById('intel-flash');
+  const elOpening = document.getElementById('intel-opening');
+  const elUtility = document.getElementById('intel-utility');
+
+  if (elCrosshair && c.crosshairPlacementError) elCrosshair.textContent = `${c.crosshairPlacementError.toFixed(1)}°`;
+  if (elTtd && c.timeToDamageMs) elTtd.textContent = `${c.timeToDamageMs} ms`;
+  if (elStrafe && c.counterStrafingPct) elStrafe.textContent = `${c.counterStrafingPct.toFixed(1)}%`;
+  if (elFlash && c.flashEfficiencySec) elFlash.textContent = `${c.flashEfficiencySec.toFixed(2)}s`;
+  if (elOpening && c.openingDuelWinRate) elOpening.textContent = `${c.openingDuelWinRate.toFixed(1)}%`;
+  if (elUtility && c.utilityDamagePerRound) elUtility.textContent = `${c.utilityDamagePerRound.toFixed(1)} ADR`;
+
+  // 3. Render Weapon Arsenal Grid (CSTracker / HLTV feature)
+  const weaponsContainer = document.getElementById('intel-weapons-grid');
+  if (weaponsContainer && c.topWeapons) {
+    weaponsContainer.innerHTML = c.topWeapons.map((w) => {
+      return `
+        <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold text-white text-sm">${w.name}</span>
+            <span class="text-xs font-mono font-bold text-emerald-400">${w.kills.toLocaleString()} Kills</span>
+          </div>
+          <div class="space-y-1 text-xs">
+            <div class="flex justify-between text-zinc-400">
+              <span>Headshot Ratio</span>
+              <strong class="text-white font-mono">${w.hsPct}%</strong>
+            </div>
+            <div class="w-full h-1.5 bg-black rounded-full overflow-hidden">
+              <div class="h-full bg-yellow-400" style="width: ${w.hsPct}%"></div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-[11px] font-mono text-zinc-500 pt-1 border-t border-white/[0.04]">
+            <span>Accuracy: ${w.accuracy}%</span>
+            <span>Damage: ${w.damage.toLocaleString()}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 4. Render Active Duty Maps Grid (Leetify / HLTV feature)
+  const mapsContainer = document.getElementById('intel-maps-grid');
+  if (mapsContainer && c.topMaps) {
+    mapsContainer.innerHTML = c.topMaps.map((m) => {
+      const isPositive = m.winRate >= 50;
+      return `
+        <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2.5">
+          <div class="flex items-center justify-between">
+            <span class="font-extrabold text-white text-sm uppercase tracking-wider">${m.name.replace('de_', '')}</span>
+            <span class="text-xs font-mono font-bold ${isPositive ? 'text-emerald-400' : 'text-zinc-400'}">${m.winRate.toFixed(1)}% WR</span>
+          </div>
+          <div class="w-full h-1.5 bg-black rounded-full overflow-hidden">
+            <div class="h-full ${isPositive ? 'bg-emerald-400' : 'bg-red-400'}" style="width: ${m.winRate}%"></div>
+          </div>
+          <div class="flex items-center justify-between text-[11px] font-mono text-zinc-500">
+            <span>${m.matches} Matches Played</span>
+            <span class="text-zinc-400">${isPositive ? 'Favored Map' : 'Needs Practice'}</span>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // 5. Render Pro Benchmarks
+  const proHltv = document.getElementById('pro-comp-hltv');
+  const proAdr = document.getElementById('pro-comp-adr');
+  const proHs = document.getElementById('pro-comp-hs');
+  const proTtd = document.getElementById('pro-comp-ttd');
+  const proStrafe = document.getElementById('pro-comp-strafe');
+
+  if (proHltv) proHltv.textContent = c.hltvRating.toFixed(2);
+  if (proAdr) proAdr.textContent = c.adr.toFixed(1);
+  if (proHs) proHs.textContent = `${c.headshotPercentage.toFixed(1)}%`;
+  if (proTtd && c.timeToDamageMs) proTtd.textContent = `${c.timeToDamageMs} ms`;
+  if (proStrafe && c.counterStrafingPct) proStrafe.textContent = `${c.counterStrafingPct.toFixed(1)}%`;
 }
 
 // -------------------------------------------------------------

@@ -6,6 +6,7 @@
 User-agent: *
 Allow: /
 Allow: /brand
+Allow: /compare
 Allow: /api/cs2/scavenger
 Disallow: /api/steam/
 Disallow: /_astro/

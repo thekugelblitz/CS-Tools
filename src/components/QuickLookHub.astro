@@ -73,7 +73,7 @@ import Icons from './Icons.astro';
   <div id="hub-loading-indicator" class="hidden p-12 text-center rounded-2xl bg-zinc-950 border border-white/[0.08] space-y-3">
     <div class="inline-block w-8 h-8 border-3 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
     <p class="text-sm font-bold text-zinc-300">Scavenging Live Player Intel, Telemetry & Drops...</p>
-    <p class="text-xs text-zinc-500 font-mono">Querying CSTracker.gg & Steam Network...</p>
+    <p class="text-xs text-zinc-500 font-mono">Querying CSTracker.gg, Steam & Leetify telemetry...</p>
   </div>
 
   <!-- Active Player Dossier Header Card -->
@@ -109,13 +109,23 @@ import Icons from './Icons.astro';
             <span id="hub-player-tenure" class="text-zinc-400">10-Year Veteran</span>
           </div>
 
-          <!-- Cross-Platform Profile Links -->
-          <div class="flex items-center gap-2 pt-1 text-xs">
-            <a id="hub-link-steam" href="https://steamcommunity.com/id/greatmahakaal/" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-white transition underline underline-offset-2">Steam Profile</a>
-            <span class="text-zinc-700">|</span>
-            <a id="hub-link-csstat" href="https://csst.at/profile/greatmahakaal" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-emerald-400 transition underline underline-offset-2">csst.at</a>
-            <span class="text-zinc-700">|</span>
-            <a id="hub-link-cstracker" href="https://tracker.gg/cs2/profile/steam/76561198287445170/overview" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-cyan-400 transition underline underline-offset-2">CSTracker.gg</a>
+          <!-- Cross-Platform Profile Links & Recent Form -->
+          <div class="flex flex-wrap items-center gap-3 pt-1 text-xs">
+            <div class="flex items-center gap-2 text-zinc-400">
+              <a id="hub-link-steam" href="https://steamcommunity.com/id/greatmahakaal/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition underline underline-offset-2">Steam Profile</a>
+              <span class="text-zinc-700">|</span>
+              <a id="hub-link-csstat" href="https://csst.at/profile/greatmahakaal" target="_blank" rel="noopener noreferrer" class="hover:text-emerald-400 transition underline underline-offset-2">csst.at</a>
+              <span class="text-zinc-700">|</span>
+              <a id="hub-link-cstracker" href="https://tracker.gg/cs2/profile/steam/76561198287445170/overview" target="_blank" rel="noopener noreferrer" class="hover:text-cyan-400 transition underline underline-offset-2">CSTracker.gg</a>
+            </div>
+
+            <!-- Recent Form Streak (Competitor Feature) -->
+            <div class="flex items-center gap-1.5 ml-auto sm:ml-0 bg-black/40 px-2.5 py-1 rounded-lg border border-white/[0.06]">
+              <span class="text-[10px] uppercase font-bold text-zinc-500">Recent Form:</span>
+              <div id="hub-form-streak-container" class="flex items-center gap-1">
+                <!-- Dynamically populated W/L pills -->
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -232,8 +242,31 @@ import Icons from './Icons.astro';
     </div>
   </div>
 
-  <!-- Unified Match Intelligence Feed (with Title Hacker Threat Indication) -->
-  <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-5">
+  <!-- Competitive Modules Navigation Tabs -->
+  <div class="flex items-center gap-2 overflow-x-auto pb-1 border-b border-white/[0.08]">
+    <button class="btn-intel-tab active px-4 py-2 rounded-xl text-xs font-bold text-white bg-zinc-800 transition cursor-pointer flex items-center gap-2 whitespace-nowrap" data-tab="tab-matches">
+      <span>🛡️ Match Radar & Scores</span>
+    </button>
+    <button class="btn-intel-tab px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white bg-zinc-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap" data-tab="tab-aim">
+      <span>🎯 Leetify Aim & Utility</span>
+    </button>
+    <button class="btn-intel-tab px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white bg-zinc-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap" data-tab="tab-weapons">
+      <span>🔫 Weapon Arsenal</span>
+    </button>
+    <button class="btn-intel-tab px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white bg-zinc-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap" data-tab="tab-maps">
+      <span>🗺️ Map Mastery</span>
+    </button>
+    <button class="btn-intel-tab px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white bg-zinc-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap" data-tab="tab-bans">
+      <span>⚖️ CSStats Ban Watcher</span>
+      <span class="px-1.5 py-0.2 rounded bg-red-950 text-red-400 text-[10px] font-mono border border-red-500/30">2 Banned</span>
+    </button>
+    <button class="btn-intel-tab px-4 py-2 rounded-xl text-xs font-bold text-zinc-400 hover:text-white bg-zinc-950 transition cursor-pointer flex items-center gap-2 whitespace-nowrap" data-tab="tab-pro">
+      <span>🏆 Pro Benchmarks</span>
+    </button>
+  </div>
+
+  <!-- MODULE 1: Unified Match Intelligence Feed (with Title Hacker Threat Indication) -->
+  <div id="tab-matches" class="intel-tab-pane p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-5">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
       <div>
         <h2 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
@@ -259,9 +292,291 @@ import Icons from './Icons.astro';
       </div>
     </div>
 
-    <!-- Match List Grid / Stack (Mobile Optimized) -->
+    <!-- Match List Grid / Stack -->
     <div id="hub-matches-list" class="space-y-3">
       <!-- Injected via JavaScript -->
+    </div>
+  </div>
+
+  <!-- MODULE 2: Leetify Aim, Mechanics & Utility Intelligence -->
+  <div id="tab-aim" class="intel-tab-pane hidden p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-6">
+    <div class="border-b border-white/[0.08] pb-4">
+      <h2 class="text-lg sm:text-xl font-extrabold text-white">Leetify Tactical Aim & Utility Intelligence</h2>
+      <p class="text-xs text-zinc-400">Micro-telemetry analyzing crosshair placement error, reaction time, and counter-strafing.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Crosshair Placement</span>
+          <span class="text-xs font-mono font-bold text-emerald-400">6.8° Error</span>
+        </div>
+        <div class="text-2xl font-black text-white font-mono" id="intel-crosshair">6.8°</div>
+        <p class="text-[11px] text-zinc-500">Average degrees off the enemy head upon angle entry. (Pro avg: 5.5° - 7.0°)</p>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Reaction Time (TTD)</span>
+          <span class="text-xs font-mono font-bold text-cyan-400">310ms</span>
+        </div>
+        <div class="text-2xl font-black text-white font-mono" id="intel-ttd">310 ms</div>
+        <p class="text-[11px] text-zinc-500">Natural human reaction to first damage. (Cheaters trigger <150ms)</p>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Counter-Strafing</span>
+          <span class="text-xs font-mono font-bold text-purple-400">86.4%</span>
+        </div>
+        <div class="text-2xl font-black text-white font-mono" id="intel-counter-strafe">86.4%</div>
+        <p class="text-[11px] text-zinc-500">Percentage of initial shots fired with zero movement velocity error.</p>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Flashbang Efficiency</span>
+          <span class="text-xs font-mono font-bold text-yellow-400">2.35s</span>
+        </div>
+        <div class="text-2xl font-black text-white font-mono" id="intel-flash">2.35s / Flash</div>
+        <p class="text-[11px] text-zinc-500">Average duration opponents are completely blinded per thrown flash grenade.</p>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Opening Duel (Entry) Win</span>
+          <span class="text-xs font-mono font-bold text-emerald-400">52.0%</span>
+        </div>
+        <div class="text-2xl font-black text-white font-mono" id="intel-opening">52.0%</div>
+        <p class="text-[11px] text-zinc-500">First engagement win rate on 14.5% entry attempts per round.</p>
+      </div>
+
+      <div class="p-4 rounded-2xl bg-zinc-900/60 border border-white/[0.06] space-y-2">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-bold text-zinc-400 uppercase tracking-wider">Utility Damage / Round</span>
+          <span class="text-xs font-mono font-bold text-cyan-400">18.4 HP</span>
+        </div>
+        <div class="text-2xl font-black text-white font-mono" id="intel-utility">18.4 ADR</div>
+        <p class="text-[11px] text-zinc-500">Average damage dealt via HE Grenades and Incendiaries per round.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 3: Weapon Arsenal & Mastery -->
+  <div id="tab-weapons" class="intel-tab-pane hidden p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-6">
+    <div class="border-b border-white/[0.08] pb-4">
+      <h2 class="text-lg sm:text-xl font-extrabold text-white">Weapon Mastery & Arsenal Breakdown</h2>
+      <p class="text-xs text-zinc-400">Frags, headshot accuracy, and total damage across your primary loadout.</p>
+    </div>
+
+    <div id="intel-weapons-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Injected via JavaScript -->
+    </div>
+  </div>
+
+  <!-- MODULE 4: Map Mastery Matrix -->
+  <div id="tab-maps" class="intel-tab-pane hidden p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-6">
+    <div class="border-b border-white/[0.08] pb-4">
+      <h2 class="text-lg sm:text-xl font-extrabold text-white">Active Duty Pool Map Mastery</h2>
+      <p class="text-xs text-zinc-400">Win rates, round distributions, and matches recorded per active competitive map.</p>
+    </div>
+
+    <div id="intel-maps-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Injected via JavaScript -->
+    </div>
+  </div>
+
+  <!-- MODULE 5: CSStats Ban Watcher -->
+  <div id="tab-bans" class="intel-tab-pane hidden p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
+      <div>
+        <h2 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+          <span>CSStats Ban Watcher & Anti-Cheat Audit</span>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-red-950 text-red-400 border border-red-500/40">
+            2 Cheaters Caught
+          </span>
+        </h2>
+        <p class="text-xs text-zinc-400">
+          Tracking players in your recent matches who have subsequently received VAC or Game bans.
+        </p>
+      </div>
+
+      <!-- Rollback Score Badge -->
+      <div class="p-3 rounded-xl bg-red-950/40 border border-red-500/30 text-center shrink-0">
+        <span class="text-[10px] uppercase font-bold text-zinc-400 block">Rating Protected / Refunded</span>
+        <span class="text-base sm:text-lg font-mono font-black text-emerald-400">+420 Points</span>
+      </div>
+    </div>
+
+    <div class="space-y-3">
+      <div class="p-4 rounded-xl bg-zinc-900/60 border border-red-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-red-950/80 border border-red-500/40 flex items-center justify-center text-red-400 font-bold">
+            VAC
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-white text-sm">NitroXcellerate</span>
+              <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-red-900 text-red-200 border border-red-500">VAC BANNED</span>
+            </div>
+            <p class="text-xs text-zinc-400 font-mono mt-0.5">Encountered in Match #47789540 (Nuke 3-13) · Banned 2 days ago</p>
+          </div>
+        </div>
+        <span class="text-xs font-mono text-emerald-400 font-bold">+210 ELO Refund Eligible</span>
+      </div>
+
+      <div class="p-4 rounded-xl bg-zinc-900/60 border border-red-500/20 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-red-950/80 border border-red-500/40 flex items-center justify-center text-red-400 font-bold">
+            OW
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-bold text-white text-sm">SpinBotter</span>
+              <span class="px-2 py-0.5 text-[10px] font-bold rounded bg-red-900 text-red-200 border border-red-500">GAME BAN (OVERWATCH)</span>
+            </div>
+            <p class="text-xs text-zinc-400 font-mono mt-0.5">Encountered in Match #28912298 (Ancient 10-13) · Banned 5 days ago</p>
+          </div>
+        </div>
+        <span class="text-xs font-mono text-emerald-400 font-bold">+210 ELO Refund Eligible</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODULE 6: Pro & Tier 1 Benchmark Comparison -->
+  <div id="tab-pro" class="intel-tab-pane hidden p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-6">
+    <div class="border-b border-white/[0.08] pb-4">
+      <h2 class="text-lg sm:text-xl font-extrabold text-white">Tier 1 Pro & Premier Benchmark Comparison</h2>
+      <p class="text-xs text-zinc-400">See how your combat mechanics compare against average Premier players and elite Tier 1 pros (s1mple / donk).</p>
+    </div>
+
+    <div class="overflow-x-auto rounded-2xl border border-white/[0.08] bg-black/60">
+      <table class="w-full text-left text-xs min-w-[500px]">
+        <thead class="bg-zinc-900 text-[11px] uppercase tracking-wider text-zinc-400 border-b border-white/[0.06]">
+          <tr>
+            <th class="py-3 px-4">Metric</th>
+            <th class="py-3 px-4 text-center text-emerald-400 font-bold">Your Stats</th>
+            <th class="py-3 px-4 text-center text-zinc-300">Premier Avg (10k-14k)</th>
+            <th class="py-3 px-4 text-center text-yellow-400 font-bold">Tier 1 Pro (s1mple / donk)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/[0.04] font-mono">
+          <tr>
+            <td class="py-3 px-4 font-sans font-bold text-white">HLTV 2.0 Rating</td>
+            <td class="py-3 px-4 text-center text-emerald-400 font-black" id="pro-comp-hltv">1.14</td>
+            <td class="py-3 px-4 text-center text-zinc-400">1.02</td>
+            <td class="py-3 px-4 text-center text-yellow-400 font-bold">1.34</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans font-bold text-white">Average Damage (ADR)</td>
+            <td class="py-3 px-4 text-center text-emerald-400 font-black" id="pro-comp-adr">83.0</td>
+            <td class="py-3 px-4 text-center text-zinc-400">74.5</td>
+            <td class="py-3 px-4 text-center text-yellow-400 font-bold">91.2</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans font-bold text-white">Headshot Ratio</td>
+            <td class="py-3 px-4 text-center text-emerald-400 font-black" id="pro-comp-hs">48.0%</td>
+            <td class="py-3 px-4 text-center text-zinc-400">41.0%</td>
+            <td class="py-3 px-4 text-center text-yellow-400 font-bold">58.0%</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans font-bold text-white">Reaction Time (TTD)</td>
+            <td class="py-3 px-4 text-center text-emerald-400 font-black" id="pro-comp-ttd">310 ms</td>
+            <td class="py-3 px-4 text-center text-zinc-400">380 ms</td>
+            <td class="py-3 px-4 text-center text-yellow-400 font-bold">210 ms</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans font-bold text-white">Counter-Strafing</td>
+            <td class="py-3 px-4 text-center text-emerald-400 font-black" id="pro-comp-strafe">86.4%</td>
+            <td class="py-3 px-4 text-center text-zinc-400">76.0%</td>
+            <td class="py-3 px-4 text-center text-yellow-400 font-bold">94.0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- High-Value SEO Comparison Card -->
+  <div class="p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-6">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-wider mb-2">
+          <span>Competitive Advantage</span>
+        </div>
+        <h2 class="text-lg sm:text-xl font-extrabold text-white">
+          Why CS2Live? The Modern Alternative to Leetify, Tracker.gg & CSStats
+        </h2>
+        <p class="text-xs text-zinc-400 mt-1 max-w-2xl">
+          Engineered from scratch to combine Leetify's aim telemetry, CSTracker's live matches, and CSStats' ban notifications with real-time cheater prediction and weekly drop tracking.
+        </p>
+      </div>
+
+      <a
+        href="/compare"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition shrink-0"
+      >
+        <span>Full Comparison Guide</span>
+        <Icons name="arrow-right" class="w-3.5 h-3.5" />
+      </a>
+    </div>
+
+    <!-- Features Comparison Grid -->
+    <div class="overflow-x-auto rounded-2xl border border-white/[0.06] bg-black/60">
+      <table class="w-full text-left text-xs min-w-[550px]">
+        <thead class="bg-zinc-900/80 text-[11px] uppercase tracking-wider text-zinc-400 border-b border-white/[0.06]">
+          <tr>
+            <th class="py-3 px-4">Feature</th>
+            <th class="py-3 px-3 text-center text-emerald-400 font-black">CS2Live</th>
+            <th class="py-3 px-3 text-center text-zinc-400">Leetify</th>
+            <th class="py-3 px-3 text-center text-zinc-400">Tracker.gg</th>
+            <th class="py-3 px-3 text-center text-zinc-400">CSStats</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-white/[0.04] font-mono">
+          <tr>
+            <td class="py-3 px-4 font-sans text-white font-semibold">Real-Time Hacker Radar in Match Titles</td>
+            <td class="py-3 px-3 text-center text-emerald-400 font-bold">✓ Yes (Live)</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans text-white font-semibold">360° Drop Reset & Inventory Audit</td>
+            <td class="py-3 px-3 text-center text-emerald-400 font-bold">✓ Yes (Auto)</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans text-white font-semibold">10-Player Interactive Scoreboard Drawers</td>
+            <td class="py-3 px-3 text-center text-emerald-400 font-bold">✓ Included</td>
+            <td class="py-3 px-3 text-center text-yellow-500">Partial (Pro)</td>
+            <td class="py-3 px-3 text-center text-zinc-400">✓ Yes</td>
+            <td class="py-3 px-3 text-center text-zinc-400">✓ Yes</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans text-white font-semibold">Micro-Aim & Counter-Strafing Telemetry</td>
+            <td class="py-3 px-3 text-center text-emerald-400 font-bold">✓ Included</td>
+            <td class="py-3 px-3 text-center text-emerald-400">✓ Yes</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans text-white font-semibold">VAC Ban Wave & Rating Refund Tracker</td>
+            <td class="py-3 px-3 text-center text-emerald-400 font-bold">✓ Included</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+            <td class="py-3 px-3 text-center text-zinc-600">✕ No</td>
+            <td class="py-3 px-3 text-center text-emerald-400">✓ Yes</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 font-sans text-white font-semibold">100% Free & No Ad Clutter</td>
+            <td class="py-3 px-3 text-center text-emerald-400 font-bold">✓ 100% Free</td>
+            <td class="py-3 px-3 text-center text-red-400">$7.99 / mo</td>
+            <td class="py-3 px-3 text-center text-yellow-500">Heavy Ads</td>
+            <td class="py-3 px-3 text-center text-yellow-500">Heavy Ads</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </section>

@@ -1,0 +1,160 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Icons from '../components/Icons.astro';
+---
+
+<Layout
+  title="CS2 Tracker Comparison: CS2Live vs Leetify vs Tracker.gg vs CSStats (2026)"
+  description="Comprehensive 2026 comparison of CS2 stats tracking tools. Discover why CS2Live provides the fastest real-time cheater detection radar, weekly care package drop tracking, and full 10-player scoreboards 100% free."
+  canonical="https://cs2live.top/compare"
+>
+  <Navbar />
+
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+    <!-- Header Hero -->
+    <div class="border-b border-white/[0.08] pb-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-4">
+        <span>2026 CS2 Analytics Benchmark</span>
+      </div>
+      <h1 class="text-3xl sm:text-5xl font-black text-white tracking-tight">
+        The Ultimate CS2 Tracker Comparison
+      </h1>
+      <p class="mt-3 text-sm sm:text-base text-zinc-400 max-w-3xl leading-relaxed">
+        Looking for the best Counter-Strike 2 tracking platform? We analyzed <strong class="text-white">CS2Live</strong>, <strong class="text-white">Leetify</strong>, <strong class="text-white">Tracker.gg (CSTracker)</strong>, and <strong class="text-white">CSStats.gg</strong> to help you choose the right telemetry engine for competitive Premier, Faceit, and weekly care package farming.
+      </p>
+    </div>
+
+    <!-- Core Comparison Matrix -->
+    <section class="space-y-6">
+      <div class="flex items-center justify-between">
+        <div>
+          <h2 class="text-xl font-bold text-white">Feature Matrix & Capabilities</h2>
+          <p class="text-xs text-zinc-400">Direct technical comparison across primary tracker features.</p>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-3xl border border-white/[0.08] bg-zinc-950 shadow-2xl">
+        <table class="w-full text-left text-xs sm:text-sm min-w-[650px]">
+          <thead class="bg-zinc-900/80 text-[11px] sm:text-xs uppercase tracking-wider text-zinc-400 border-b border-white/[0.08]">
+            <tr>
+              <th class="py-4 px-5">Capability</th>
+              <th class="py-4 px-4 text-center text-emerald-400 font-black bg-emerald-950/20">CS2Live.top</th>
+              <th class="py-4 px-4 text-center text-zinc-300">Leetify</th>
+              <th class="py-4 px-4 text-center text-zinc-300">Tracker.gg</th>
+              <th class="py-4 px-4 text-center text-zinc-300">CSStats.gg</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-white/[0.06] font-mono">
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">Live Cheater & Hacker Threat Radar</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold bg-emerald-950/10">✓ Included (Live Heuristics)</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">Weekly Care Package Drop Reset Timer</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold bg-emerald-950/10">✓ Live (Wed 00:00 UTC)</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">Steam Inventory Drop Verification Audit</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold bg-emerald-950/10">✓ Automated Active Pool Scan</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">Full 10-Player Scorecard Drawers</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold bg-emerald-950/10">✓ 5v5 Full Rosters</td>
+              <td class="py-3.5 px-4 text-center text-yellow-500">Partial (Paywalled)</td>
+              <td class="py-3.5 px-4 text-center text-zinc-300">✓ Yes</td>
+              <td class="py-3.5 px-4 text-center text-zinc-300">✓ Yes</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">Crosshair Error & Counter-Strafing</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold bg-emerald-950/10">✓ Built-In</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold">✓ Built-In</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">VAC & Overwatch Ban Notification Tracker</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold bg-emerald-950/10">✓ Included (+Rating Rollback)</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold">✓ Included</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">Multi-Account Drop Fleet Management</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-bold bg-emerald-950/10">✓ 1-Click Track & Switch</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+              <td class="py-3.5 px-4 text-center text-zinc-600">✕ No</td>
+            </tr>
+            <tr>
+              <td class="py-3.5 px-5 font-sans font-bold text-white">Subscription Pricing & Monetization</td>
+              <td class="py-3.5 px-4 text-center text-emerald-400 font-black bg-emerald-950/20">100% Free Forever</td>
+              <td class="py-3.5 px-4 text-center text-red-400">$7.99 / month</td>
+              <td class="py-3.5 px-4 text-center text-yellow-500">Ad-Supported</td>
+              <td class="py-3.5 px-4 text-center text-yellow-500">Ad-Supported</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Deep-Dive Breakdown Sections -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- CS2Live vs Leetify -->
+      <div class="p-6 rounded-2xl bg-zinc-950 border border-white/[0.08] space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+          <Icons name="target" class="w-5 h-5" />
+        </div>
+        <h3 class="text-lg font-bold text-white">CS2Live vs Leetify</h3>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          While Leetify charges $7.99/mo for pro matchmaking analysis, CS2Live delivers crosshair placement errors, human reaction timings (TTD), and opening duel rates completely free—plus an automated live anti-cheat radar not found anywhere on Leetify.
+        </p>
+      </div>
+
+      <!-- CS2Live vs Tracker.gg -->
+      <div class="p-6 rounded-2xl bg-zinc-950 border border-white/[0.08] space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+          <Icons name="chart" class="w-5 h-5" />
+        </div>
+        <h3 class="text-lg font-bold text-white">CS2Live vs Tracker.gg</h3>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          Tracker.gg provides basic match statistics but suffers from ad clutter and lacks cheater threat heuristics. CS2Live features an AMOLED dark design with zero video ads, sub-150ms pre-fire warnings, and weekly drop cycle tracking.
+        </p>
+      </div>
+
+      <!-- CS2Live vs CSStats.gg -->
+      <div class="p-6 rounded-2xl bg-zinc-950 border border-white/[0.08] space-y-3">
+        <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
+          <Icons name="shield-check" class="w-5 h-5" />
+        </div>
+        <h3 class="text-lg font-bold text-white">CS2Live vs CSStats.gg</h3>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          CSStats is famous for checking if players were subsequently VAC banned. CS2Live integrates this ban wave tracking natively, alongside full weapon loadouts, multi-account drop status, and live server ratings.
+        </p>
+      </div>
+    </section>
+
+    <!-- Call to Action Banner -->
+    <div class="p-8 rounded-3xl bg-gradient-to-r from-emerald-950/60 via-zinc-900 to-zinc-950 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="space-y-1 text-center sm:text-left">
+        <h3 class="text-xl sm:text-2xl font-black text-white">Ready to Inspect Your CS2 Intel?</h3>
+        <p class="text-xs text-zinc-400">Quick look any player or sign in to track your personal drop readiness.</p>
+      </div>
+      <a
+        href="/"
+        class="px-6 py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-sm transition glow-emerald cursor-pointer shrink-0"
+      >
+        Launch Quick Look Dashboard
+      </a>
+    </div>
+  </main>
+</Layout>

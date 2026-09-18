@@ -201,6 +201,22 @@ export interface ScavengedPlayerProfile {
     competitiveWins?: number;
     wingmanRank?: string;
     wingmanWins?: number;
+    counterStrafingPct?: number;
+    flashEfficiencySec?: number;
+    utilityDamagePerRound?: number;
+    openingDuelWinRate?: number;
+    openingDuelAttemptRate?: number;
+    recentFormStreak?: ('W' | 'L' | 'T')[];
+    vacBansDetected?: {
+      totalPlayersScanned: number;
+      bannedPlayersFound: number;
+      pendingEloRollback: number;
+      bannedList: { personaName: string; steamId64: string; banType: string; matchId: string; dateBanned: string }[];
+    };
+    proComparison?: {
+      tier1Pro: { persona: string; hltv: number; adr: number; hsPct: number; ttdMs: number; counterStrafePct: number };
+      premierAvg: { ratingTier: string; hltv: number; adr: number; hsPct: number; ttdMs: number; counterStrafePct: number };
+    };
     topWeapons?: { name: string; kills: number; hsPct: number; accuracy: number; damage: number }[];
     topMaps?: { name: string; matches: number; winRate: number }[];
   };

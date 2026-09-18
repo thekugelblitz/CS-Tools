@@ -1,17 +1,44 @@
 # CS2Live (https://cs2live.top) - Full Knowledge Base & System Documentation
 
 ## Overview
-CS2Live is an esports analytics and drop intelligence system designed specifically for Counter-Strike 2 players, Premier competitive teams, and inventory managers.
+CS2Live is an esports analytics, hacker detection, and drop intelligence system designed specifically for Counter-Strike 2 players, Premier competitive teams, and inventory managers. It combines the deep aim telemetry of Leetify, the weapon and map mastery of CSTracker / Tracker.gg, and the VAC ban watcher of CSStats.gg into a single, lightning-fast, ad-free platform.
 
-### 1. Match Intelligence & Hacker Detection
+---
+
+### 1. Match Intelligence & Hacker Radar
 - Every match analyzed by CS2Live includes a real-time integrity and telemetry scan.
 - Telemetry attributes inspected:
-  - **Reaction Time / TTK (Time-To-Kill)**: Flagged if consistently under 150ms.
+  - **Reaction Time / TTD (Time-To-Damage)**: Flagged if consistently under 150ms.
   - **Headshot Percentage**: Flagged if exceeding 80% on rifles or high-volume engagements.
-  - **Crosshair Pre-Aim Placement**: Flagged if wallhack pre-aim score exceeds 90%.
+  - **Crosshair Pre-Aim Placement**: Flagged if wallhack pre-aim score exceeds 90% or crosshair snaps through geometry.
   - **Suspicion Badges**: Matches are marked as `[Cheater Flagged: <PlayerName>]`, `[High Suspicion: ESP/Wallhack]`, or `[100% Clean Verified]`.
 
-### 2. CS2 Weekly Care Package Reset Engine
+---
+
+### 2. Leetify-Grade Micro-Telemetry (100% Free)
+Unlike Leetify which charges $7.99/month for Pro analytics, CS2Live calculates sub-tick micro-telemetry on all tracked matches:
+- **Crosshair Placement Error**: Angle of divergence (in degrees) when acquiring an enemy on first contact (Pro target: < 6.5°).
+- **Reaction Time (TTD)**: Delay between seeing an enemy model and landing the first bullet damage (Pro target: < 400ms).
+- **Counter-Strafing %**: Percentage of initial rifle engagements initiated with velocity below 34% (Pro target: > 85%).
+- **Flashbang Efficiency**: Average blind duration inflicted on enemies per flash thrown (Pro target: > 2.20s).
+- **Utility Damage / Round (UDPR)**: Explosive and incendiary HE/molotov damage per round (Pro target: > 20.0).
+- **Opening Duel Win Rate**: Success rate on entry and defensive first-contact gunfights (Pro target: > 52%).
+
+---
+
+### 3. Weapon Arsenal & Map Mastery (CSTracker & Tracker.gg Parity)
+- **Weapon Telemetry**: Real-time breakdown of top CS2 weapons (AK-47, M4A1-S, AWP, USP-S, Glock-18, Desert Eagle) tracking Kills, Accuracy %, Headshot Ratio, and average Damage Per Round (ADR).
+- **Active Duty Map Mastery**: Win rates, total matches, and KD splits across Mirage, Inferno, Nuke, Anubis, Ancient, Dust II, and Vertigo.
+
+---
+
+### 4. VAC & Overwatch Ban Watcher (CSStats.gg Parity)
+- Automatically audits all 10 players across every analyzed match for Valve Anti-Cheat (VAC) and game bans.
+- **Rating Rollback Estimation**: Calculates the exact Premier rating points refunded (e.g. `+320 CS Rating Recovered`) when an opponent in a lost match is subsequently banned.
+
+---
+
+### 5. CS2 Weekly Care Package Reset Engine
 - **Global Reset Time**: Wednesday 00:00 UTC (Tuesday 8:00 PM EST / Wednesday 5:30 AM IST).
 - **Qualification Criteria**: A player must earn ~5,000 XP in a single cycle to achieve a Profile Rank-Up. Upon rank-up, the player receives a choice of 2 items out of 4 (Weapon Case + Weapon Skin / Spray).
 - **Active Case Pool**: Cases in the active prime pool include Kilowatt Case, Dreams & Nightmares Case, Revolution Case, Recoil Case, and Fracture Case.
@@ -21,9 +48,20 @@ CS2Live is an esports analytics and drop intelligence system designed specifical
   - Standard Rate: 1.0x multiplier up to ~7,500 XP.
   - Reduced Rate: 0.175x severe penalty after 11,167 XP in a single week.
 
-### 3. API Reference
+---
+
+### 6. Competitor Comparison Summary
+- **Leetify**: $7.99/mo paywall, slow web UI. CS2Live gives all aim metrics free with live anti-cheat scanning.
+- **CSStats.gg**: Outdated UI, manual demo uploads. CS2Live gives instant telemetry and auto-audited bans.
+- **CSTracker / Tracker.gg**: Bloated with video ads and cookie tracking. CS2Live is 0-ad, privacy-first, and ultra-fast.
+- Full matrix at `https://cs2live.top/compare`.
+
+---
+
+### 7. API Reference
 - Endpoint: `GET /api/cs2/scavenger`
+  - Parameters: `steamId`, `input`, `vanity`, or `username`
   - Returns `success: boolean`
-  - Returns `profile`: Verified dossier (SteamID64 `76561198287445170`, Persona `TheKugelBlitz`, Premier rating 10,410, K/D 1.05, 563 inventory items, AK-47 mastery).
+  - Returns `profile`: Verified dossier (SteamID64, Persona, Premier rating, K/D, inventory counts, weapon mastery, combat telemetry).
   - Returns `matches`: Array of 10 recent matches with `hackerBadge`, exact round scores, map, HLTV rating, and user telemetry.
   - Returns `dropIntelligence`: Live reset countdown, cycle start/end dates, inventory drop verification, and drop status (`CLAIMED` or `DUE`).

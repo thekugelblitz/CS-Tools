@@ -187,6 +187,25 @@ export const GET: APIRoute = async ({ url }) => {
       competitiveWins: 340,
       wingmanRank: 'Master Guardian II',
       wingmanWins: 46,
+      counterStrafingPct: 86.4,
+      flashEfficiencySec: 2.35,
+      utilityDamagePerRound: 18.4,
+      openingDuelWinRate: 52.0,
+      openingDuelAttemptRate: 14.5,
+      recentFormStreak: ['W', 'L', 'W', 'L', 'W', 'W', 'W', 'T', 'W', 'L'],
+      vacBansDetected: {
+        totalPlayersScanned: 100,
+        bannedPlayersFound: 2,
+        pendingEloRollback: 420,
+        bannedList: [
+          { personaName: 'NitroXcellerate', steamId64: '76561199581920394', banType: 'VAC Ban', matchId: '47789540', dateBanned: '2 days ago' },
+          { personaName: 'SpinBotter', steamId64: '76561199391029384', banType: 'Game Ban (Overwatch)', matchId: '28912298', dateBanned: '5 days ago' }
+        ]
+      },
+      proComparison: {
+        tier1Pro: { persona: 'Tier 1 Pro (s1mple / donk)', hltv: 1.34, adr: 91.2, hsPct: 58.0, ttdMs: 210, counterStrafePct: 94.0 },
+        premierAvg: { ratingTier: 'Premier 10k-14k Avg', hltv: 1.02, adr: 74.5, hsPct: 41.0, ttdMs: 380, counterStrafePct: 76.0 }
+      },
       topWeapons: [
         { name: 'AK-47', kills: 3082, hsPct: 57, accuracy: 15, damage: 318554 },
         { name: 'M4A1-S', kills: 1148, hsPct: 41, accuracy: 18, damage: 119907 },
@@ -232,6 +251,24 @@ export const GET: APIRoute = async ({ url }) => {
       competitiveWins: 180,
       wingmanRank: 'Distinguished Master Guardian',
       wingmanWins: 38,
+      counterStrafingPct: 88.0,
+      flashEfficiencySec: 2.50,
+      utilityDamagePerRound: 21.0,
+      openingDuelWinRate: 55.0,
+      openingDuelAttemptRate: 16.0,
+      recentFormStreak: ['W', 'W', 'L', 'W', 'W', 'L', 'W'],
+      vacBansDetected: {
+        totalPlayersScanned: 100,
+        bannedPlayersFound: 1,
+        pendingEloRollback: 210,
+        bannedList: [
+          { personaName: 'RageShooter', steamId64: '76561199482910293', banType: 'VAC Ban', matchId: '47396885', dateBanned: '3 days ago' }
+        ]
+      },
+      proComparison: {
+        tier1Pro: { persona: 'Tier 1 Pro (s1mple / donk)', hltv: 1.34, adr: 91.2, hsPct: 58.0, ttdMs: 210, counterStrafePct: 94.0 },
+        premierAvg: { ratingTier: 'Premier 10k-14k Avg', hltv: 1.02, adr: 74.5, hsPct: 41.0, ttdMs: 380, counterStrafePct: 76.0 }
+      },
       topWeapons: [
         { name: 'AK-47', kills: 2190, hsPct: 59, accuracy: 16, damage: 226000 },
         { name: 'M4A1-S', kills: 980, hsPct: 45, accuracy: 19, damage: 102000 },
