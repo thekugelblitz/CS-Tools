@@ -1,0 +1,267 @@
+---
+import Icons from './Icons.astro';
+---
+
+<section class="space-y-6 sm:space-y-8">
+  <!-- Top Quick Look Player Search & Track Bar -->
+  <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950/90 border border-white/[0.08] shadow-2xl backdrop-blur-xl space-y-4">
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>Quick Look CS2 Player</span>
+        </div>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+          Inspect Stats, Cheater Telemetry & Drop Intel
+        </h2>
+      </div>
+
+      <!-- User Auth Quick Action Status -->
+      <div id="quick-auth-banner" class="flex items-center gap-2 text-xs">
+        <!-- Injected via JS based on auth state -->
+      </div>
+    </div>
+
+    <!-- Search Input Bar -->
+    <div class="flex flex-col sm:flex-row items-stretch gap-2.5">
+      <div class="relative flex-1">
+        <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-zinc-500">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </div>
+        <input
+          id="input-quick-player-search"
+          type="text"
+          placeholder="Enter SteamID64, Custom Vanity URL, or Profile Link..."
+          class="w-full pl-10 pr-10 py-3 rounded-xl bg-zinc-900 border border-white/[0.1] focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/50 text-white text-xs sm:text-sm font-mono placeholder:text-zinc-500 outline-none transition"
+        />
+        <button
+          id="btn-clear-quick-search"
+          class="absolute inset-y-0 right-0 pr-3 flex items-center text-zinc-500 hover:text-zinc-300 hidden cursor-pointer"
+        >
+          <Icons name="close" class="w-4 h-4" />
+        </button>
+      </div>
+
+      <button
+        id="btn-execute-quick-search"
+        class="px-5 py-3 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-xs sm:text-sm transition flex items-center justify-center gap-2 cursor-pointer shrink-0 glow-emerald"
+      >
+        <span>Inspect Player</span>
+        <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </button>
+    </div>
+
+    <!-- Quick Check Pills & User Tracked Accounts -->
+    <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+      <span class="text-zinc-500 font-bold text-[11px] uppercase tracking-wider">Quick Suggestions:</span>
+      <button class="btn-quick-pill px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-emerald-400 border border-white/[0.06] text-xs font-mono font-semibold transition cursor-pointer" data-id="greatmahakaal">greatmahakaal</button>
+      <button class="btn-quick-pill px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-cyan-400 border border-white/[0.06] text-xs font-mono font-semibold transition cursor-pointer" data-id="s1mple">s1mple</button>
+      <button class="btn-quick-pill px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-yellow-400 border border-white/[0.06] text-xs font-mono font-semibold transition cursor-pointer" data-id="donk666">donk666</button>
+      <button class="btn-quick-pill px-2.5 py-1 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-zinc-300 hover:text-purple-400 border border-white/[0.06] text-xs font-mono font-semibold transition cursor-pointer" data-id="m0NESY">m0NESY</button>
+
+      <!-- Tracked Profiles Container (Populated when user is signed in) -->
+      <div id="user-tracked-pills" class="flex flex-wrap items-center gap-1.5 ml-auto hidden">
+        <span class="text-emerald-400 font-bold text-[11px] uppercase tracking-wider">My Accounts:</span>
+        <div id="user-tracked-pills-list" class="flex flex-wrap items-center gap-1.5">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State Indicator -->
+  <div id="hub-loading-indicator" class="hidden p-12 text-center rounded-2xl bg-zinc-950 border border-white/[0.08] space-y-3">
+    <div class="inline-block w-8 h-8 border-3 border-emerald-400 border-t-transparent rounded-full animate-spin"></div>
+    <p class="text-sm font-bold text-zinc-300">Scavenging Live Player Intel, Telemetry & Drops...</p>
+    <p class="text-xs text-zinc-500 font-mono">Querying CSTracker.gg & Steam Network...</p>
+  </div>
+
+  <!-- Active Player Dossier Header Card -->
+  <div id="player-dossier-card" class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-6">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pb-6 border-b border-white/[0.08]">
+      <!-- Profile Identification -->
+      <div class="flex items-center gap-4">
+        <div class="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 border-emerald-500/40 bg-black shrink-0 shadow-lg shadow-emerald-500/10">
+          <img
+            id="hub-player-avatar"
+            src="https://avatars.akamai.steamstatic.com/bd44a769f5b88b66bb922967115499dbfdcf70b5_full.jpg"
+            alt="Player Avatar"
+            class="w-full h-full object-cover"
+          />
+          <span class="absolute bottom-1.5 right-1.5 w-3 h-3 rounded-full bg-emerald-500 ring-2 ring-black"></span>
+        </div>
+
+        <div class="space-y-1">
+          <div class="flex flex-wrap items-center gap-2">
+            <h1 id="hub-player-persona" class="text-xl sm:text-2xl font-black text-white tracking-tight">
+              TheKugelBlitz
+            </h1>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+              Prime Verified
+            </span>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 text-xs text-zinc-400">
+            <span id="hub-player-steamid" class="font-mono text-zinc-400">76561198287445170</span>
+            <span>·</span>
+            <span id="hub-player-location">Rajkot, India</span>
+            <span>·</span>
+            <span id="hub-player-tenure" class="text-zinc-400">10-Year Veteran</span>
+          </div>
+
+          <!-- Cross-Platform Profile Links -->
+          <div class="flex items-center gap-2 pt-1 text-xs">
+            <a id="hub-link-steam" href="https://steamcommunity.com/id/greatmahakaal/" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-white transition underline underline-offset-2">Steam Profile</a>
+            <span class="text-zinc-700">|</span>
+            <a id="hub-link-csstat" href="https://csst.at/profile/greatmahakaal" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-emerald-400 transition underline underline-offset-2">csst.at</a>
+            <span class="text-zinc-700">|</span>
+            <a id="hub-link-cstracker" href="https://tracker.gg/cs2/profile/steam/76561198287445170/overview" target="_blank" rel="noopener noreferrer" class="text-zinc-400 hover:text-cyan-400 transition underline underline-offset-2">CSTracker.gg</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ranks & Action Bar -->
+      <div class="flex flex-wrap items-center gap-3">
+        <!-- Track Button -->
+        <button
+          id="btn-track-this-player"
+          class="px-4 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] hover:border-emerald-500/40 text-xs font-bold transition flex items-center gap-2 cursor-pointer"
+        >
+          <Icons name="user" class="w-3.5 h-3.5 text-emerald-400" />
+          <span id="hub-track-label">Track Profile</span>
+        </button>
+
+        <!-- Premier Rating Badge -->
+        <div class="p-3 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-center min-w-[100px]">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 block">Premier Rating</span>
+          <span id="hub-rank-premier" class="text-base sm:text-lg font-mono font-black text-purple-400 block">10,410</span>
+          <span id="hub-rank-premier-peak" class="text-[9px] font-mono text-zinc-500">Peak: 14,510</span>
+        </div>
+
+        <!-- Comp Rank Badge -->
+        <div class="p-3 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-center min-w-[100px]">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 block">Competitive</span>
+          <span id="hub-rank-comp" class="text-xs sm:text-sm font-bold text-yellow-400 block mt-0.5">Gold Nova III</span>
+          <span id="hub-rank-comp-wins" class="text-[9px] font-mono text-zinc-500">340 Wins</span>
+        </div>
+
+        <!-- Wingman Rank Badge -->
+        <div class="p-3 rounded-xl bg-zinc-900/80 border border-white/[0.08] text-center min-w-[100px]">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 block">Wingman</span>
+          <span id="hub-rank-wingman" class="text-xs sm:text-sm font-bold text-cyan-400 block mt-0.5">Master Guardian II</span>
+          <span class="text-[9px] font-mono text-zinc-500">46 Wins</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 360-Degree Drop & XP Radar Widget (Live Weekly Intel) -->
+    <div class="p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-emerald-950/40 via-zinc-900/50 to-zinc-950 border border-emerald-500/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div class="space-y-1.5">
+        <div class="flex items-center gap-2">
+          <span id="hub-drop-badge" class="px-2.5 py-0.5 rounded-full text-xs font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-500/40">
+            ✓ WEEKLY DROP CLAIMED
+          </span>
+          <span id="hub-drop-audit-text" class="text-xs text-zinc-300 font-semibold">
+            Kilowatt Case ($1.84) detected in Steam Inventory
+          </span>
+        </div>
+        <p class="text-xs text-zinc-400">
+          Weekly care packages reset every <strong>Wednesday at 00:00 UTC</strong>. Players earn drops by reaching 5,000 XP for a profile rank-up.
+        </p>
+      </div>
+
+      <!-- Reset Countdown Timer & XP Bar -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 shrink-0">
+        <!-- Countdown -->
+        <div class="p-2.5 rounded-xl bg-black/60 border border-white/[0.08] text-center min-w-[130px]">
+          <span class="text-[10px] uppercase font-bold text-zinc-400 block">Reset Countdown</span>
+          <span id="hub-reset-countdown" class="text-sm font-mono font-black text-emerald-400">--d --h --m --s</span>
+        </div>
+
+        <!-- XP Multiplier -->
+        <div class="space-y-1 min-w-[140px]">
+          <div class="flex items-center justify-between text-xs">
+            <span class="font-bold text-white">Weekly XP</span>
+            <span id="hub-xp-text" class="font-mono text-zinc-400 text-[11px]">4,680 / 5,000</span>
+          </div>
+          <div class="w-full h-2 bg-zinc-900 rounded-full overflow-hidden border border-white/[0.06]">
+            <div id="hub-xp-bar" class="h-full bg-emerald-400 rounded-full transition-all duration-500" style="width: 93%;"></div>
+          </div>
+          <span class="text-[10px] text-zinc-500 block font-mono">Multiplier: 2.0x Active</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Core Combat Stats 6-Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <div class="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06]">
+        <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">HLTV Rating</span>
+        <span id="hub-stat-hltv" class="text-xl font-mono font-black text-emerald-400 mt-1 block">1.14</span>
+        <span class="text-[10px] text-zinc-500 font-mono">559 Matches</span>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06]">
+        <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">K/D Ratio</span>
+        <span id="hub-stat-kd" class="text-xl font-mono font-black text-white mt-1 block">1.05</span>
+        <span id="hub-stat-kills" class="text-[10px] text-zinc-500 font-mono">8,681 / 8,290</span>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06]">
+        <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">Avg Damage (ADR)</span>
+        <span id="hub-stat-adr" class="text-xl font-mono font-black text-cyan-400 mt-1 block">83.0</span>
+        <span class="text-[10px] text-zinc-500 font-mono">11,435 Rounds</span>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06]">
+        <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">Headshot %</span>
+        <span id="hub-stat-hs" class="text-xl font-mono font-black text-yellow-400 mt-1 block">48.0%</span>
+        <span class="text-[10px] text-zinc-500 font-mono">4,162 HS Kills</span>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06]">
+        <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">KAST %</span>
+        <span id="hub-stat-kast" class="text-xl font-mono font-black text-purple-400 mt-1 block">70.0%</span>
+        <span class="text-[10px] text-zinc-500 font-mono">Kill / Assist / Surv</span>
+      </div>
+
+      <div class="p-3.5 rounded-xl bg-zinc-900/60 border border-white/[0.06]">
+        <span class="text-[11px] font-bold text-zinc-400 uppercase tracking-wider block">1v1 Clutch Win</span>
+        <span id="hub-stat-clutch" class="text-xl font-mono font-black text-white mt-1 block">60.0%</span>
+        <span class="text-[10px] text-zinc-500 font-mono">131 W / 86 L</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Unified Match Intelligence Feed (with Title Hacker Threat Indication) -->
+  <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.08] shadow-2xl space-y-5">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/[0.06]">
+      <div>
+        <h2 class="text-lg sm:text-xl font-extrabold text-white flex items-center gap-2">
+          <span>Match History & Hacker Radar</span>
+          <span id="hub-match-count-badge" class="px-2 py-0.5 text-xs font-mono font-bold rounded-full bg-zinc-900 text-zinc-300 border border-white/[0.08]">
+            10 Matches
+          </span>
+        </h2>
+        <p class="text-xs text-zinc-400">
+          Every match is inspected with aimbot, TTK reaction latency, and wallhack pre-aim heuristics. Click any match to inspect full 5v5 rosters.
+        </p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="flex items-center gap-1.5 overflow-x-auto">
+        <button class="btn-match-filter active px-3 py-1.5 rounded-xl bg-zinc-800 text-white font-bold text-xs transition cursor-pointer" data-filter="all">All</button>
+        <button class="btn-match-filter px-3 py-1.5 rounded-xl bg-zinc-900 text-zinc-400 hover:text-red-400 font-bold text-xs transition cursor-pointer flex items-center gap-1" data-filter="flagged">
+          <span>🚨 Flagged</span>
+        </button>
+        <button class="btn-match-filter px-3 py-1.5 rounded-xl bg-zinc-900 text-zinc-400 hover:text-emerald-400 font-bold text-xs transition cursor-pointer flex items-center gap-1" data-filter="clean">
+          <span>✓ Clean</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Match List Grid / Stack (Mobile Optimized) -->
+    <div id="hub-matches-list" class="space-y-3">
+      <!-- Injected via JavaScript -->
+    </div>
+  </div>
+</section>

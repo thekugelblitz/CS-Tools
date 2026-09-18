@@ -2,112 +2,124 @@
 import Icons from './Icons.astro';
 ---
 
-<div id="modal-match-scorecard" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-  <div class="relative w-full max-w-5xl rounded-3xl bg-surface-1 border border-white/[0.1] shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+<div id="modal-match-scorecard" class="fixed inset-0 z-50 hidden flex items-center justify-center p-2 sm:p-4 md:p-6 bg-black/90 backdrop-blur-xl transition-all">
+  <div class="relative w-full max-w-5xl rounded-2xl sm:rounded-3xl bg-zinc-950 border border-white/[0.1] shadow-2xl shadow-emerald-500/5 overflow-hidden flex flex-col max-h-[92vh]">
     <!-- Modal Header -->
-    <div class="flex items-center justify-between p-6 border-b border-white/[0.08] bg-surface-2/60">
+    <div class="flex items-center justify-between p-4 sm:p-6 border-b border-white/[0.08] bg-zinc-900/60">
       <div class="flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400">
+        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 shrink-0">
           <Icons name="chart" class="w-5 h-5" />
         </div>
         <div>
-          <div class="flex items-center gap-2">
-            <h3 id="scorecard-match-title" class="font-extrabold text-white text-lg">
-              Overpass Premier Match #006591
+          <div class="flex flex-wrap items-center gap-2">
+            <h3 id="scorecard-match-title" class="font-extrabold text-white text-base sm:text-lg">
+              Match 10-Player Scorecard
             </h3>
-            <span id="scorecard-match-verdict" class="px-2.5 py-0.5 rounded-full text-xs font-bold uppercase bg-red-950 text-red-400 border border-red-500/30">
-              1 Cheater Flagged
+            <span id="scorecard-match-verdict" class="px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+              100% Clean
             </span>
           </div>
           <p id="scorecard-match-meta" class="text-xs text-zinc-400 font-mono mt-0.5">
-            13 - 1 Victory · Duration: 28:14 · CSTracker Verified Demo
+            Premier Server · Full 5v5 Telemetry & Rosters
           </p>
         </div>
       </div>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 shrink-0">
         <button
           id="btn-copy-share-code"
-          class="px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/[0.08] text-xs font-mono font-bold transition flex items-center gap-1.5 cursor-pointer"
+          class="hidden sm:inline-flex px-3 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-300 border border-white/[0.08] text-xs font-mono font-bold transition items-center gap-1.5 cursor-pointer"
           title="Copy CS2 Match Share Code"
         >
           <Icons name="copy" class="w-3.5 h-3.5 text-emerald-400" />
-          <span>Copy Demo Code</span>
+          <span>Demo Code</span>
         </button>
 
         <button
           id="btn-close-scorecard"
-          class="p-2 rounded-xl text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] transition cursor-pointer"
+          class="p-2.5 rounded-xl text-zinc-400 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] transition cursor-pointer"
+          title="Close Modal"
         >
-          <Icons name="close" class="w-4 h-4" />
+          <Icons name="close" class="w-5 h-5" />
         </button>
       </div>
     </div>
 
-    <!-- Scrollable Scoreboard Body -->
-    <div class="p-6 overflow-y-auto space-y-6 flex-1">
+    <!-- Scrollable Scoreboard Body (Mobile Optimized) -->
+    <div class="p-3 sm:p-6 overflow-y-auto space-y-6 flex-1 text-zinc-200">
       <!-- Team 1 Scoreboard -->
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between px-1">
           <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-cyan-400"></span>
-            <h4 id="scorecard-team1-title" class="font-bold text-white text-sm uppercase tracking-wider">
-              Team 113 (Counter-Terrorists) — 13 Rounds Won
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400 shadow-sm shadow-cyan-400/50"></span>
+            <h4 id="scorecard-team1-title" class="font-extrabold text-white text-xs sm:text-sm uppercase tracking-wider">
+              Teammates (Team 1)
             </h4>
           </div>
-          <span class="text-xs text-emerald-400 font-bold">Match Winners</span>
+          <span id="scorecard-team1-badge" class="text-[11px] font-bold text-emerald-400">Team Roster</span>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-white/[0.08] bg-black/60">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-surface-2 text-[11px] uppercase tracking-wider text-zinc-400 border-b border-white/[0.06]">
+        <div class="overflow-x-auto rounded-xl sm:rounded-2xl border border-white/[0.08] bg-black/60 shadow-inner">
+          <table class="w-full text-left text-xs min-w-[580px]">
+            <thead class="bg-zinc-900/80 text-[10px] sm:text-[11px] uppercase tracking-wider text-zinc-400 border-b border-white/[0.06]">
               <tr>
-                <th class="py-2.5 px-4">Player</th>
-                <th class="py-2.5 px-3 text-center">K / D / A</th>
-                <th class="py-2.5 px-3 text-center">ADR</th>
-                <th class="py-2.5 px-3 text-center">HS%</th>
-                <th class="py-2.5 px-3 text-center">KAST</th>
-                <th class="py-2.5 px-3 text-center">Rating</th>
-                <th class="py-2.5 px-4 text-right">Anti-Cheat Verdict</th>
+                <th class="py-2.5 px-3 sm:px-4">Player</th>
+                <th class="py-2.5 px-2 text-center">K / D / A</th>
+                <th class="py-2.5 px-2 text-center">ADR</th>
+                <th class="py-2.5 px-2 text-center">HS%</th>
+                <th class="py-2.5 px-2 text-center">KAST</th>
+                <th class="py-2.5 px-2 text-center">Rating</th>
+                <th class="py-2.5 px-3 sm:px-4 text-right">Integrity Status</th>
               </tr>
             </thead>
-            <tbody id="scorecard-team1-body" class="divide-y divide-white/[0.04]">
-              <!-- Injected via JavaScript -->
+            <tbody id="scorecard-team1-body" class="divide-y divide-white/[0.04] font-mono">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
         </div>
       </div>
 
       <!-- Team 2 Scoreboard -->
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
+      <div class="space-y-2.5">
+        <div class="flex items-center justify-between px-1">
           <div class="flex items-center gap-2">
-            <span class="w-3 h-3 rounded-full bg-amber-400"></span>
-            <h4 id="scorecard-team2-title" class="font-bold text-white text-sm uppercase tracking-wider">
-              Team 21 (Terrorists) — 1 Round Won
+            <span class="w-2.5 h-2.5 rounded-full bg-amber-400 shadow-sm shadow-amber-400/50"></span>
+            <h4 id="scorecard-team2-title" class="font-extrabold text-white text-xs sm:text-sm uppercase tracking-wider">
+              Opponents (Team 2)
             </h4>
           </div>
-          <span class="text-xs text-zinc-500 font-bold">Defeated</span>
+          <span id="scorecard-team2-badge" class="text-[11px] font-bold text-zinc-500">Enemy Roster</span>
         </div>
 
-        <div class="overflow-x-auto rounded-2xl border border-white/[0.08] bg-black/60">
-          <table class="w-full text-left text-xs">
-            <thead class="bg-surface-2 text-[11px] uppercase tracking-wider text-zinc-400 border-b border-white/[0.06]">
+        <div class="overflow-x-auto rounded-xl sm:rounded-2xl border border-white/[0.08] bg-black/60 shadow-inner">
+          <table class="w-full text-left text-xs min-w-[580px]">
+            <thead class="bg-zinc-900/80 text-[10px] sm:text-[11px] uppercase tracking-wider text-zinc-400 border-b border-white/[0.06]">
               <tr>
-                <th class="py-2.5 px-4">Player</th>
-                <th class="py-2.5 px-3 text-center">K / D / A</th>
-                <th class="py-2.5 px-3 text-center">ADR</th>
-                <th class="py-2.5 px-3 text-center">HS%</th>
-                <th class="py-2.5 px-3 text-center">KAST</th>
-                <th class="py-2.5 px-3 text-center">Rating</th>
-                <th class="py-2.5 px-4 text-right">Anti-Cheat Verdict</th>
+                <th class="py-2.5 px-3 sm:px-4">Player</th>
+                <th class="py-2.5 px-2 text-center">K / D / A</th>
+                <th class="py-2.5 px-2 text-center">ADR</th>
+                <th class="py-2.5 px-2 text-center">HS%</th>
+                <th class="py-2.5 px-2 text-center">KAST</th>
+                <th class="py-2.5 px-2 text-center">Rating</th>
+                <th class="py-2.5 px-3 sm:px-4 text-right">Integrity Status</th>
               </tr>
             </thead>
-            <tbody id="scorecard-team2-body" class="divide-y divide-white/[0.04]">
-              <!-- Injected via JavaScript -->
+            <tbody id="scorecard-team2-body" class="divide-y divide-white/[0.04] font-mono">
+              <!-- Dynamically populated -->
             </tbody>
           </table>
         </div>
+      </div>
+
+      <!-- Mobile Demo Code Helper -->
+      <div class="sm:hidden pt-2 text-center">
+        <button
+          id="btn-copy-share-code-mobile"
+          class="w-full py-2.5 rounded-xl bg-zinc-900 text-zinc-300 border border-white/[0.08] text-xs font-mono font-bold flex items-center justify-center gap-2"
+        >
+          <Icons name="copy" class="w-4 h-4 text-emerald-400" />
+          <span>Copy CS2 Demo Share Code</span>
+        </button>
       </div>
     </div>
   </div>

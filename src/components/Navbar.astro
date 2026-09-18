@@ -2,94 +2,65 @@
 import Icons from './Icons.astro';
 ---
 
-<header class="sticky top-0 z-40 border-b border-white/[0.08] bg-black/80 backdrop-blur-xl">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+<header class="sticky top-0 z-40 border-b border-white/[0.08] bg-black/85 backdrop-blur-xl">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 sm:h-18 flex items-center justify-between gap-3">
     <!-- Brand Logo -->
-    <a href="/" class="flex items-center gap-3 group">
-      <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-zinc-950 border border-emerald-500/30 group-hover:border-emerald-400/60 text-emerald-400 glow-emerald transition">
-        <img src="/logo-icon.svg" alt="CS2Live" class="w-6 h-6" />
+    <a href="/" class="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+      <div class="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-zinc-950 border border-emerald-500/30 group-hover:border-emerald-400/60 text-emerald-400 glow-emerald transition">
+        <img src="/logo-icon.svg" alt="CS2Live" class="w-5 h-5 sm:w-6 sm:h-6" />
         <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-black animate-pulse"></span>
       </div>
       <div>
-        <div class="flex items-center gap-2">
-          <span class="font-extrabold tracking-wider text-white text-lg sm:text-xl">
+        <div class="flex items-center gap-1.5 sm:gap-2">
+          <span class="font-extrabold tracking-wider text-white text-base sm:text-xl">
             CS2<span class="text-emerald-400">LIVE</span>
           </span>
-          <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 rounded-full">
-            LIVE INTEL
+          <span class="px-1.5 py-0.5 text-[9px] sm:text-[10px] font-bold uppercase tracking-widest bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 rounded-full">
+            RADAR
           </span>
         </div>
-        <p class="text-xs text-zinc-400 hidden sm:block">Match Radar, Cheater Predictor & Drops</p>
+        <p class="text-[11px] text-zinc-400 hidden md:block">Stats, Cheater Detector & Drops</p>
       </div>
     </a>
 
-    <!-- Center Navigation Tabs -->
-    <nav class="hidden md:flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-white/[0.08]">
-      <button
-        id="tab-nav-command"
-        class="nav-tab active px-3.5 py-1.5 rounded-lg text-xs font-bold text-white bg-zinc-800 transition cursor-pointer flex items-center gap-1.5"
-        data-target="section-command-center"
+    <!-- Center Navigation Links -->
+    <nav class="hidden md:flex items-center gap-2">
+      <a
+        href="/"
+        class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-zinc-800 hover:bg-zinc-700 transition"
       >
-        <span>👑</span>
-        <span>TheKugelBlitz</span>
-      </button>
-      <button
-        id="tab-nav-hacker-radar"
-        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-red-400 transition cursor-pointer flex items-center gap-1.5"
-        data-target="section-hacker-radar"
+        Quick Look
+      </a>
+      <a
+        href="/brand"
+        class="px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-900 transition"
       >
-        <span>🛡️</span>
-        <span>Hacker Radar</span>
-      </button>
-      <button
-        id="tab-nav-drop-radar"
-        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-emerald-400 transition cursor-pointer flex items-center gap-1.5"
-        data-target="section-drop-radar"
+        Brandkit
+      </a>
+      <a
+        href="/api/cs2/scavenger"
+        target="_blank"
+        class="px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-emerald-400 hover:bg-zinc-900 transition"
       >
-        <span>🎁</span>
-        <span>Drop Radar</span>
-      </button>
-      <button
-        id="tab-nav-fleet"
-        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer flex items-center gap-1.5"
-        data-target="section-fleet"
-      >
-        <span>📦</span>
-        <span>Drop Fleet</span>
-      </button>
-      <button
-        id="tab-nav-matches"
-        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer flex items-center gap-1.5"
-        data-target="section-live-matches"
-      >
-        <span>⚔️</span>
-        <span>Pro Matches</span>
-      </button>
-      <button
-        id="tab-nav-leaderboard"
-        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white transition cursor-pointer flex items-center gap-1.5"
-        data-target="section-pro-leaderboard"
-      >
-        <span>🏆</span>
-        <span>Rankings</span>
-      </button>
+        Live API
+      </a>
     </nav>
 
     <!-- Right Actions -->
-    <div class="flex items-center gap-2 sm:gap-3">
+    <div class="flex items-center gap-2">
       <!-- User Auth Profile & Sign In Container -->
       <div id="nav-auth-container" class="flex items-center">
-        <!-- Unauthenticated Button (Hidden when logged in) -->
+        <!-- Unauthenticated Button (Shown when logged out) -->
         <button
           id="btn-nav-open-auth"
-          class="hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-extrabold transition cursor-pointer"
+          class="inline-flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-emerald-400 text-black text-xs font-extrabold transition cursor-pointer glow-emerald hover:bg-emerald-300"
         >
-          <Icons name="user" class="w-3.5 h-3.5" />
-          <span>Sign In</span>
+          <Icons name="user" class="w-3.5 h-3.5 text-black stroke-[3]" />
+          <span>Sign In to Track</span>
         </button>
 
-        <!-- Authenticated Profile Pill -->
-        <div id="nav-user-profile" class="flex items-center gap-2">
+        <!-- Authenticated Profile Pill (Hidden by default, shown when logged in) -->
+        <div id="nav-user-profile" class="hidden items-center gap-2">
           <button
             id="btn-nav-user-menu"
             class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] hover:border-emerald-500/30 transition cursor-pointer"
@@ -97,55 +68,26 @@ import Icons from './Icons.astro';
           >
             <img
               id="nav-user-avatar"
-              src="https://avatars.akamai.steamstatic.com/bd44a769f5b88b66bb922967115499dbfdcf70b5_full.jpg"
+              src="https://avatars.steamstatic.com/fef49e7fa7e1997310d705b2a6158ff8dc1cdfeb_full.jpg"
               alt="User Avatar"
               class="w-6 h-6 rounded-lg object-cover border border-emerald-500/40"
             />
-            <span id="nav-user-name" class="text-xs font-bold text-white max-w-[110px] truncate hidden sm:inline">TheKugelBlitz</span>
-            <span id="nav-drop-pill" class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-500/30 hidden sm:inline">
-              ✓ Drop
+            <span id="nav-user-name" class="text-xs font-bold text-white max-w-[100px] truncate hidden sm:inline">My Account</span>
+            <span id="nav-user-tracked-count" class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-500/30">
+              0 Saved
             </span>
           </button>
         </div>
       </div>
 
-      <!-- Log Match Button -->
-      <button
-        id="btn-open-log-match"
-        title="Log a competitive match"
-        class="inline-flex items-center gap-1.5 px-3 py-2 text-xs font-bold text-zinc-300 hover:text-white bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] hover:border-emerald-500/40 rounded-xl transition cursor-pointer"
-      >
-        <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-        <span class="hidden sm:inline">Log Match</span>
-      </button>
-
       <!-- Settings Button -->
       <button
         id="btn-open-settings"
-        title="Settings & Backup"
-        class="p-2 text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] rounded-xl transition cursor-pointer"
+        title="Settings & Reset"
+        class="p-2 sm:p-2.5 text-zinc-400 hover:text-white bg-zinc-900/80 hover:bg-zinc-800 border border-white/[0.08] rounded-xl transition cursor-pointer"
       >
         <Icons name="settings" class="w-4 h-4" />
       </button>
-
-      <!-- Add Account Button -->
-      <button
-        id="btn-open-add-modal"
-        class="inline-flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-xl transition glow-emerald cursor-pointer"
-      >
-        <Icons name="plus" class="w-4 h-4 text-black stroke-[3]" />
-        <span class="hidden sm:inline">Add Account</span>
-      </button>
     </div>
-  </div>
-
-  <!-- Mobile Tab Bar -->
-  <div class="md:hidden flex items-center justify-around border-t border-white/[0.06] bg-black px-2 py-1.5 overflow-x-auto">
-    <button class="nav-tab active text-xs font-bold text-white px-2 py-1 whitespace-nowrap" data-target="section-command-center">👑 Profile</button>
-    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-hacker-radar">🛡️ Radar</button>
-    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-drop-radar">🎁 Drop</button>
-    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-fleet">📦 Fleet</button>
-    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-live-matches">⚔️ Matches</button>
-    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-pro-leaderboard">🏆 Rank</button>
   </div>
 </header>
