@@ -1,0 +1,23 @@
+{
+  "name": "CS2Live — CS2 Live Stats & Hacker Radar",
+  "short_name": "CS2Live",
+  "description": "Real-time Counter-Strike 2 match intelligence, live hacker radar, drop reset countdown, and XP analytics.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "32x32 48x48",
+      "type": "image/svg+xml"
+    }
+  ]
+}

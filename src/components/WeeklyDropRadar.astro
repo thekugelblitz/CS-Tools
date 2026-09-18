@@ -1,0 +1,154 @@
+---
+import Icons from './Icons.astro';
+---
+
+<section id="section-drop-radar" class="space-y-6 hidden">
+  <!-- 360-Degree Weekly Drop Intelligence Hero -->
+  <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-emerald-950/40 via-surface-1 to-black border border-emerald-500/30 p-6 sm:p-8 shadow-2xl">
+    <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-emerald-600/10 blur-3xl pointer-events-none"></div>
+
+    <div class="relative z-10 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+      <div class="space-y-2 max-w-2xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-500/30 text-emerald-400 font-extrabold text-xs">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+          <span>CS2 Weekly Care Package Radar</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+          360° Drop & Account XP Intelligence
+        </h2>
+        <p class="text-xs sm:text-sm text-zinc-400 leading-relaxed">
+          Real-time analysis calculating the Wednesday 00:00 UTC drop reset cycle, weekly XP multiplier brackets, and automated inventory audit to confirm care package drop delivery.
+        </p>
+      </div>
+
+      <!-- Live Countdown to Wednesday 00:00 UTC Reset -->
+      <div class="flex items-center gap-3 w-full lg:w-auto">
+        <div class="px-5 py-3.5 rounded-2xl bg-black/80 border border-emerald-500/30 text-center min-w-[140px] flex-1 lg:flex-none">
+          <span class="block text-[10px] font-bold text-zinc-500 uppercase tracking-wider">Next Reset Cycle</span>
+          <span id="drop-countdown-timer" class="text-xl sm:text-2xl font-black font-mono text-emerald-400">Loading...</span>
+          <span class="block text-[10px] text-zinc-500 font-mono mt-0.5">Wed 00:00 UTC</span>
+        </div>
+
+        <div id="drop-status-badge-container" class="px-5 py-3.5 rounded-2xl bg-emerald-950/60 border border-emerald-500/40 text-center min-w-[150px] flex-1 lg:flex-none">
+          <span class="block text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Current Cycle Status</span>
+          <span id="drop-status-text" class="text-lg font-black font-mono text-white flex items-center justify-center gap-1.5">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            <span>CLAIMED</span>
+          </span>
+          <span class="block text-[10px] text-emerald-400/80 font-mono mt-0.5">Verified in Inventory</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Detailed Metric Cards Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+    <!-- Card 1: Weekly XP & Multiplier Tracker -->
+    <div class="rounded-2xl bg-surface-1 border border-white/[0.08] p-5 space-y-4 shadow-lg flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <Icons name="chart" class="w-4 h-4 text-cyan-400" />
+            <h3 class="text-sm font-bold text-white">Weekly XP Bracket</h3>
+          </div>
+          <span id="drop-xp-multiplier" class="px-2 py-0.5 rounded-full bg-cyan-950/80 text-cyan-400 border border-cyan-500/30 text-[10px] font-black uppercase">
+            4x Bonus XP
+          </span>
+        </div>
+
+        <div class="space-y-2 mt-4">
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-zinc-400">XP Progress to Next Rank:</span>
+            <span id="drop-xp-progress-text" class="font-mono font-bold text-white">3,120 / 5,000 XP</span>
+          </div>
+
+          <!-- XP Progress Bar -->
+          <div class="w-full h-3 bg-black rounded-full overflow-hidden border border-white/[0.08] p-0.5">
+            <div id="drop-xp-bar" class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 rounded-full transition-all duration-500" style="width: 62.4%"></div>
+          </div>
+
+          <div class="flex items-center justify-between text-[11px] text-zinc-500 font-mono">
+            <span>Rank 28 (Captain)</span>
+            <span id="drop-xp-remaining-text">1,880 XP to Level Up</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-3 rounded-xl bg-black/40 border border-white/[0.04] text-[11px] text-zinc-400 leading-relaxed">
+        💡 <strong>XP Mechanics</strong>: First 4,500 XP per week grants <strong>4x bonus</strong>. Rank up once every Wednesday reset cycle to trigger the 4-item Care Package!
+      </div>
+    </div>
+
+    <!-- Card 2: Smart Inventory Weekly Drop Audit -->
+    <div class="rounded-2xl bg-surface-1 border border-white/[0.08] p-5 space-y-4 shadow-lg flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <Icons name="drop-box" class="w-4 h-4 text-yellow-400" />
+            <h3 class="text-sm font-bold text-white">Smart Inventory Audit</h3>
+          </div>
+          <span class="text-[10px] font-mono text-emerald-400">Live Scanned</span>
+        </div>
+
+        <div id="drop-recent-item-container" class="mt-4 p-3.5 rounded-xl bg-zinc-950/80 border border-emerald-500/30 flex items-center gap-3">
+          <img
+            id="drop-recent-item-icon"
+            src="https://community.cloudflare.steamstatic.com/economy/image/-9a81dlWLwJ2UUGcVs_nsVtzdOEdtWwKGZZLQHTxDZ7I56KU0Zwwo4NUX4oFJZEHLbXU5A1PIYQNqhpOSV-fRPasw8rsUFJ5KDBZu6-hJA5hx_ffdHMXvYzgxdSOk6WkY-6Fw25Q68cl37-Y84332wewqkVtYTugJY6dIA85ZliE_gC-wLzmhsW_vJvPy3Jj7ygh-z-EyCHl0f2u/300fx300f"
+            alt="Recent Drop"
+            class="w-14 h-14 object-contain drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]"
+          />
+          <div class="flex-1 min-w-0">
+            <span id="drop-recent-item-badge" class="px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 font-bold text-[10px] uppercase">Verified Drop</span>
+            <h4 id="drop-recent-item-name" class="font-bold text-sm text-white truncate mt-1">Kilowatt Case</h4>
+            <div class="flex items-center justify-between text-[11px] text-zinc-400 font-mono mt-0.5">
+              <span id="drop-recent-item-date">Acquired Mar 13</span>
+              <span id="drop-recent-item-value" class="text-amber-400 font-bold">~$0.18</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-[11px] text-zinc-500 font-mono flex items-center justify-between pt-2 border-t border-white/[0.04]">
+        <span>Weekly Drop Pool: 6 Active Cases</span>
+        <span class="text-emerald-400">100% Prime Protected</span>
+      </div>
+    </div>
+
+    <!-- Card 3: Drop Optimization Recommendation -->
+    <div class="rounded-2xl bg-surface-1 border border-white/[0.08] p-5 space-y-4 shadow-lg flex flex-col justify-between">
+      <div>
+        <div class="flex items-center gap-2 mb-2">
+          <Icons name="shield-check" class="w-4 h-4 text-emerald-400" />
+          <h3 class="text-sm font-bold text-white">Care Package Recommendation</h3>
+        </div>
+
+        <p id="drop-recommendation-text" class="text-xs text-zinc-300 leading-relaxed mt-4">
+          Drop verified in inventory (Kilowatt Case). Next care package eligibility unlocks on upcoming Wednesday 00:00 UTC reset.
+        </p>
+
+        <div class="space-y-2 mt-4 text-xs font-mono">
+          <div class="flex items-center justify-between text-zinc-400">
+            <span>Confidence Index:</span>
+            <strong class="text-emerald-400">98.4% (Direct API Audit)</strong>
+          </div>
+          <div class="flex items-center justify-between text-zinc-400">
+            <span>Prime Matchmaking:</span>
+            <strong class="text-white">Active (Eligible)</strong>
+          </div>
+          <div class="flex items-center justify-between text-zinc-400">
+            <span>Valve Account Standing:</span>
+            <strong class="text-emerald-400">Clean (0 VAC Bans)</strong>
+          </div>
+        </div>
+      </div>
+
+      <a
+        href="steam://run/730/"
+        class="w-full py-2.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.1] text-xs font-bold transition flex items-center justify-center gap-2 cursor-pointer"
+      >
+        <Icons name="play" class="w-3.5 h-3.5 fill-current text-emerald-400" />
+        <span>Launch CS2 to Farm XP</span>
+      </a>
+    </div>
+  </div>
+</section>

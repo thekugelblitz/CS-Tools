@@ -10,7 +10,9 @@ import LiveMatches from '../components/LiveMatches.astro';
 import ProLeaderboard from '../components/ProLeaderboard.astro';
 import PlayerCommandCenter from '../components/PlayerCommandCenter.astro';
 import HackerRadar from '../components/HackerRadar.astro';
+import WeeklyDropRadar from '../components/WeeklyDropRadar.astro';
 import MatchScorecardModal from '../components/MatchScorecardModal.astro';
+import AuthModal from '../components/AuthModal.astro';
 import AddAccountModal from '../components/AddAccountModal.astro';
 import EditAccountModal from '../components/EditAccountModal.astro';
 import LogMatchModal from '../components/LogMatchModal.astro';
@@ -18,7 +20,11 @@ import SettingsModal from '../components/SettingsModal.astro';
 import Icons from '../components/Icons.astro';
 ---
 
-<Layout title="CS2 Intelligence & Hacker Radar | greatmahakaal Live AMOLED Dashboard">
+<Layout
+  title="CS2Live — CS2 Live Stats Tracker, Match Hacker Radar & Drop Intel"
+  description="Counter-Strike 2 live intelligence command center. Real-time cheater detection radar, 10-player match scorecards, automated weekly care package drop reset countdown, and Steam inventory XP audit."
+  canonical="https://cs2live.top/"
+>
   <!-- Navbar -->
   <Navbar />
 
@@ -32,6 +38,9 @@ import Icons from '../components/Icons.astro';
 
     <!-- SECTION 1: Hacker & Cheater Prediction Radar -->
     <HackerRadar />
+
+    <!-- SECTION 1.5: 360-Degree Drop & XP Radar -->
+    <WeeklyDropRadar />
 
     <!-- SECTION 2: Fleet Radar (Accounts, Reset Countdown, XP) -->
     <div id="section-fleet" class="space-y-6 hidden">
@@ -94,21 +103,33 @@ import Icons from '../components/Icons.astro';
   </main>
 
   <!-- Footer -->
-  <footer class="mt-16 border-t border-white/[0.08] bg-surface-1/60 py-6 text-center text-xs text-zinc-500">
-    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div class="flex items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span class="font-bold text-zinc-300">CS2 Drop Radar</span>
-        <span class="text-zinc-600">|</span>
-        <span>AMOLED Multi-Account Manager</span>
+  <footer class="mt-16 border-t border-white/[0.08] bg-zinc-950/80 backdrop-blur-md py-8 text-xs text-zinc-400">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="flex flex-col sm:flex-row items-center gap-3">
+        <div class="flex items-center gap-2">
+          <img src="/logo-icon.svg" alt="CS2Live" class="w-5 h-5" />
+          <span class="font-extrabold text-white">CS2<span class="text-emerald-400">LIVE</span></span>
+          <span class="text-zinc-600">·</span>
+          <span class="font-mono text-zinc-400">cs2live.top</span>
+        </div>
+        <div class="flex items-center gap-3 text-[11px] text-zinc-400">
+          <a href="/brand" class="hover:text-emerald-400 transition underline underline-offset-4">Brandkit & Assets</a>
+          <span>·</span>
+          <a href="/sitemap.xml" class="hover:text-emerald-400 transition">Sitemap</a>
+          <span>·</span>
+          <a href="/llms.txt" class="hover:text-emerald-400 transition">llms.txt</a>
+          <span>·</span>
+          <a href="/api/cs2/scavenger" target="_blank" class="hover:text-emerald-400 transition">Live API</a>
+        </div>
       </div>
-      <p class="text-zinc-500 text-[11px]">
-        Counter-Strike and Steam are registered trademarks of Valve Corporation. Live match data powered by CS Pro Open API.
+      <p class="text-zinc-500 text-[11px] text-center md:text-right max-w-lg">
+        CS2Live is an independent analytics platform. Counter-Strike and Steam are registered trademarks of Valve Corporation. Match data scavenged and verified via CSTracker.gg & csst.at.
       </p>
     </div>
   </footer>
 
   <!-- Modals -->
+  <AuthModal />
   <AddAccountModal />
   <EditAccountModal />
   <LogMatchModal />

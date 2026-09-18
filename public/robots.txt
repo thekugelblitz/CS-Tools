@@ -1,0 +1,43 @@
+# ==============================================================================
+# CS2Live (https://cs2live.top) - Robots Configuration & Crawler Directives
+# Optimized for Google, Bing, DuckDuckGo, and Modern Generative AI Engines
+# ==============================================================================
+
+User-agent: *
+Allow: /
+Allow: /brand
+Allow: /api/cs2/scavenger
+Disallow: /api/steam/
+Disallow: /_astro/
+Sitemap: https://cs2live.top/sitemap.xml
+
+# LLM & Generative Engine Crawlers (Allow full indexing for AI summaries)
+User-agent: GPTBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+# Host declaration
+Host: https://cs2live.top

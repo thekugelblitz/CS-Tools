@@ -1,0 +1,19 @@
+# CS2Live — Real-Time Counter-Strike 2 Intelligence & Drop Radar
+
+> CS2Live (https://cs2live.top) is a high-performance web platform for real-time Counter-Strike 2 match tracking, live hacker & cheater detection radar, weekly care package drop reset countdowns, and Steam inventory XP intelligence.
+
+## Core Features
+- **CS2 Hacker & Cheater Radar**: Real-time telemetry scanner evaluating aim snapping, Time-To-Kill (TTK < 150ms), crosshair placement, and wallhack probability on every match.
+- **Match Scorecard Drawer**: 10-player comprehensive scoreboard displaying exact HLTV 2.0 ratings, ADR, KAST%, Headshot percentages, and MVP distribution.
+- **360° Drop & XP Intelligence**: Accurate live countdown to Valve's global weekly reset (Wednesday 00:00 UTC), Steam inventory drop case audit, and weekly 5,000 XP rank-up multiplier bracket calculation.
+- **User Authentication & Multi-Account Tracking**: Sign up, log in, or 1-click Quick Connect via Steam profile to track accounts and fleet drops.
+
+## Important Links & Endpoints
+- [Dashboard Homepage](https://cs2live.top/): Complete live AMOLED intelligence command center.
+- [Brand Identity & Kit](https://cs2live.top/brand): Visual brand guidelines, logo assets, and color codes.
+- [Real-Time Scavenger API](https://cs2live.top/api/cs2/scavenger): JSON feed providing verified player profile stats, 10 scraped CSTracker/csst.at matches with hacker indications, and weekly drop cycle status.
+
+## Ground Truth Data Sources
+- CSTracker.gg (`cstracker.gg/players/76561198287445170`, `cstracker.gg/matches/47429554`)
+- csst.at (`csst.at/profile/greatmahakaal`)
+- Steam Community (`steamcommunity.com/id/greatmahakaal`)

@@ -234,6 +234,40 @@ export interface HackerScanResult {
   scannedAt: string;
 }
 
+export interface UserAccount {
+  id: string;
+  username: string;
+  email: string;
+  avatarUrl?: string;
+  steamId64: string;
+  vanityUrl?: string;
+  trackedProfiles: { steamId64: string; personaName: string; avatarUrl?: string }[];
+  createdAt: string;
+}
+
+export interface AuthState {
+  isAuthenticated: boolean;
+  user: UserAccount | null;
+}
+
+export interface WeeklyDropIntelligence {
+  cycleStartUtc: string;
+  cycleEndUtc: string;
+  resetDayName: string;
+  secondsRemaining: number;
+  formattedTimeRemaining: string;
+  isDropClaimed: boolean;
+  isDropDue: boolean;
+  statusTitle: string;
+  confidenceScore: number;
+  recentInventoryDrops: { name: string; type: string; dateFound: string; iconUrl: string; marketPrice?: number }[];
+  xpWeeklyAccumulated: number;
+  xpToNextRank: number;
+  currentRank: number;
+  weeklyMultiplierTier: '4x Bonus' | '2x Bonus' | '1x Standard' | '0.175x Reduced';
+  recommendation: string;
+}
+
 export interface MatchPlayerScore {
   steamId64: string;
   personaName: string;
@@ -247,11 +281,17 @@ export interface MatchPlayerScore {
   kast: number;
   hltvRating: number;
   aimRating?: number;
+  mvps?: number;
+  accuracyPct?: number;
+  preaimDeg?: number;
+  ttdMs?: number;
   hackerScan: HackerScanResult;
 }
 
 export interface DetailedMatch {
   id: string;
+  scrapedMatchId?: string;
+  serverRegion?: string;
   map: string;
   mode: 'Premier' | 'Competitive' | 'Wingman' | 'Faceit';
   date: string;
@@ -263,6 +303,23 @@ export interface DetailedMatch {
   winnerTeam: 1 | 2 | 0; // 0 = tie
   demoShareCode?: string;
   sourceUrl?: string;
+  hackerBadge: {
+    threatLevel: 'CLEAN' | 'SUSPECT' | 'FLAGGED';
+    titleText: string;
+    shortTag: string;
+    flaggedPlayer?: string;
+  };
+  userTelemetry?: {
+    kills: number;
+    deaths: number;
+    assists: number;
+    adr: number;
+    headshotPct: number;
+    hltvRating: number;
+    accuracyPct?: number;
+    preaimDeg?: number;
+    ttdMs?: number;
+  };
   players: MatchPlayerScore[];
   hackerRadarSummary: {
     totalScanned: number;
@@ -272,4 +329,5 @@ export interface DetailedMatch {
     highestThreatPlayer?: string;
   };
 }
+
 

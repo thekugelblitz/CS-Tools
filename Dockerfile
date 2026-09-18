@@ -42,7 +42,7 @@ COPY --chown=node:node --from=builder /app/server-entry.mjs ./server-entry.mjs
 COPY --chown=node:node --from=builder /app/dist ./dist
 
 # Expose default port and common reverse-proxy ports
-EXPOSE 4321 3000
+EXPOSE 4321 3000 8080
 
 # Built-in health check for Dokploy / container orchestration
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s --retries=3 \

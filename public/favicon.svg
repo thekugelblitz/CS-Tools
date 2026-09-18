@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none" width="100%" height="100%">
+  <!-- Sleek dark background -->
+  <rect width="32" height="32" rx="8" fill="#09090b" />
+  
+  <!-- Outer subtle tactical ring -->
+  <circle cx="16" cy="16" r="11" stroke="#27272a" stroke-width="1.2" />
+  <!-- Inner vibrant emerald target ring -->
+  <circle cx="16" cy="16" r="7" stroke="#10b981" stroke-width="1.4" />
+  
+  <!-- Subtle Crosshair ticks -->
+  <line x1="16" y1="2" x2="16" y2="6" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
+  <line x1="16" y1="26" x2="16" y2="30" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
+  <line x1="2" y1="16" x2="6" y2="16" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
+  <line x1="26" y1="16" x2="30" y2="16" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" />
+  
+  <!-- Center live signal dot -->
+  <circle cx="16" cy="16" r="2.2" fill="#10b981" />
+  <circle cx="16" cy="16" r="1" fill="#ffffff" />
+</svg>

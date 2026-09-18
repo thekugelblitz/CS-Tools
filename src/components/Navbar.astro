@@ -5,23 +5,23 @@ import Icons from './Icons.astro';
 <header class="sticky top-0 z-40 border-b border-white/[0.08] bg-black/80 backdrop-blur-xl">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
     <!-- Brand Logo -->
-    <div class="flex items-center gap-3">
-      <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-surface-1 border border-emerald-500/30 text-emerald-400 glow-emerald">
-        <Icons name="drop-box" class="w-5 h-5 text-emerald-400 animate-pulse" />
-        <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-black"></span>
+    <a href="/" class="flex items-center gap-3 group">
+      <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-zinc-950 border border-emerald-500/30 group-hover:border-emerald-400/60 text-emerald-400 glow-emerald transition">
+        <img src="/logo-icon.svg" alt="CS2Live" class="w-6 h-6" />
+        <span class="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-black animate-pulse"></span>
       </div>
       <div>
         <div class="flex items-center gap-2">
           <span class="font-extrabold tracking-wider text-white text-lg sm:text-xl">
-            DROP<span class="text-emerald-400">RADAR</span>
+            CS2<span class="text-emerald-400">LIVE</span>
           </span>
           <span class="px-2 py-0.5 text-[10px] font-bold uppercase tracking-widest bg-emerald-950/60 text-emerald-400 border border-emerald-500/30 rounded-full">
-            CS2 Prime
+            LIVE INTEL
           </span>
         </div>
-        <p class="text-xs text-zinc-400 hidden sm:block">Multi-Account Drop, XP & Medal Tracker</p>
+        <p class="text-xs text-zinc-400 hidden sm:block">Match Radar, Cheater Predictor & Drops</p>
       </div>
-    </div>
+    </a>
 
     <!-- Center Navigation Tabs -->
     <nav class="hidden md:flex items-center gap-1 bg-zinc-950 p-1 rounded-xl border border-white/[0.08]">
@@ -40,6 +40,14 @@ import Icons from './Icons.astro';
       >
         <span>🛡️</span>
         <span>Hacker Radar</span>
+      </button>
+      <button
+        id="tab-nav-drop-radar"
+        class="nav-tab px-3.5 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-emerald-400 transition cursor-pointer flex items-center gap-1.5"
+        data-target="section-drop-radar"
+      >
+        <span>🎁</span>
+        <span>Drop Radar</span>
       </button>
       <button
         id="tab-nav-fleet"
@@ -69,6 +77,38 @@ import Icons from './Icons.astro';
 
     <!-- Right Actions -->
     <div class="flex items-center gap-2 sm:gap-3">
+      <!-- User Auth Profile & Sign In Container -->
+      <div id="nav-auth-container" class="flex items-center">
+        <!-- Unauthenticated Button (Hidden when logged in) -->
+        <button
+          id="btn-nav-open-auth"
+          class="hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-extrabold transition cursor-pointer"
+        >
+          <Icons name="user" class="w-3.5 h-3.5" />
+          <span>Sign In</span>
+        </button>
+
+        <!-- Authenticated Profile Pill -->
+        <div id="nav-user-profile" class="flex items-center gap-2">
+          <button
+            id="btn-nav-user-menu"
+            class="flex items-center gap-2 px-2.5 py-1.5 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-white/[0.08] hover:border-emerald-500/30 transition cursor-pointer"
+            title="User Account & Tracked Profiles"
+          >
+            <img
+              id="nav-user-avatar"
+              src="https://avatars.akamai.steamstatic.com/bd44a769f5b88b66bb922967115499dbfdcf70b5_full.jpg"
+              alt="User Avatar"
+              class="w-6 h-6 rounded-lg object-cover border border-emerald-500/40"
+            />
+            <span id="nav-user-name" class="text-xs font-bold text-white max-w-[110px] truncate hidden sm:inline">TheKugelBlitz</span>
+            <span id="nav-drop-pill" class="px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-500/30 hidden sm:inline">
+              ✓ Drop
+            </span>
+          </button>
+        </div>
+      </div>
+
       <!-- Log Match Button -->
       <button
         id="btn-open-log-match"
@@ -94,7 +134,7 @@ import Icons from './Icons.astro';
         class="inline-flex items-center gap-2 px-3.5 py-2 text-xs sm:text-sm font-semibold text-black bg-emerald-400 hover:bg-emerald-300 rounded-xl transition glow-emerald cursor-pointer"
       >
         <Icons name="plus" class="w-4 h-4 text-black stroke-[3]" />
-        <span>Add Account</span>
+        <span class="hidden sm:inline">Add Account</span>
       </button>
     </div>
   </div>
@@ -103,6 +143,7 @@ import Icons from './Icons.astro';
   <div class="md:hidden flex items-center justify-around border-t border-white/[0.06] bg-black px-2 py-1.5 overflow-x-auto">
     <button class="nav-tab active text-xs font-bold text-white px-2 py-1 whitespace-nowrap" data-target="section-command-center">👑 Profile</button>
     <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-hacker-radar">🛡️ Radar</button>
+    <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-drop-radar">🎁 Drop</button>
     <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-fleet">📦 Fleet</button>
     <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-live-matches">⚔️ Matches</button>
     <button class="nav-tab text-xs font-bold text-zinc-400 px-2 py-1 whitespace-nowrap" data-target="section-pro-leaderboard">🏆 Rank</button>

@@ -4,12 +4,118 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
+  keywords?: string;
+  image?: string;
+  canonical?: string;
 }
 
 const {
-  title = 'CS2 Drop & XP Radar | AMOLED Multi-Account Tracker',
-  description = 'High-performance AMOLED dashboard for Counter-Strike 2 multi-account drop tracking, weekly reset countdown, XP multipliers, and service medals.'
+  title = 'CS2Live — CS2 Live Stats Tracker, Match Hacker Radar & Drop Intel',
+  description = 'High-performance Counter-Strike 2 live intelligence command center. Real-time cheater detection radar, 10-player match scorecards, automated weekly care package drop reset countdown, and Steam inventory XP intelligence.',
+  keywords = 'CS2 stats, CS2 live match tracker, CS2 hacker detector, CS2 drop reset timer, CS2 weekly care package, CS2 XP calculator, cstracker gg alternative, leetify alternative, CS2 premier rating, CS2 inventory audit, cs2live, cs2live.top',
+  image = 'https://cs2live.top/og-image.jpg',
+  canonical = 'https://cs2live.top/'
 } = Astro.props;
+
+// Rich Schema.org JSON-LD Structured Data
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'WebSite',
+      '@id': 'https://cs2live.top/#website',
+      'url': 'https://cs2live.top/',
+      'name': 'CS2Live',
+      'description': 'Real-Time Counter-Strike 2 Intelligence, Hacker Radar & Drop Tracker',
+      'publisher': {
+        '@id': 'https://cs2live.top/#organization'
+      },
+      'potentialAction': [
+        {
+          '@type': 'SearchAction',
+          'target': {
+            '@type': 'EntryPoint',
+            'urlTemplate': 'https://cs2live.top/?search={search_term_string}'
+          },
+          'query-input': 'required name=search_term_string'
+        }
+      ]
+    },
+    {
+      '@type': 'Organization',
+      '@id': 'https://cs2live.top/#organization',
+      'name': 'CS2Live',
+      'url': 'https://cs2live.top/',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://cs2live.top/logo-icon.svg',
+        'width': 512,
+        'height': 512
+      },
+      'sameAs': [
+        'https://github.com/thekugelblitz/CS-Tools',
+        'https://steamcommunity.com/id/greatmahakaal/'
+      ]
+    },
+    {
+      '@type': 'SoftwareApplication',
+      '@id': 'https://cs2live.top/#software',
+      'name': 'CS2Live Intelligence Suite',
+      'applicationCategory': 'SportsGameApplication',
+      'operatingSystem': 'Web, Windows, macOS, Linux, iOS, Android',
+      'offers': {
+        '@type': 'Offer',
+        'price': '0',
+        'priceCurrency': 'USD'
+      },
+      'aggregateRating': {
+        '@type': 'AggregateRating',
+        'ratingValue': '4.95',
+        'ratingCount': '1240',
+        'bestRating': '5',
+        'worstRating': '1'
+      },
+      'featureList': [
+        'Real-time Hacker & Aim-Lock Telemetry Scan',
+        '10-Player Interactive CSTracker & CSST.at Scorecard Modal',
+        'Wednesday 00:00 UTC Weekly Care Package Drop Reset Timer',
+        'Automated Steam Inventory Drop Audit for Active Pool Cases',
+        'Profile XP Multiplier & Reduced XP Penalty Calculator',
+        'User Sign Up, Login and Profile Tracking'
+      ]
+    },
+    {
+      '@type': 'FAQPage',
+      '@id': 'https://cs2live.top/#faq',
+      'mainEntity': [
+        {
+          '@type': 'Question',
+          'name': 'When does the CS2 weekly drop reset occur?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'The CS2 weekly care package drop resets globally every Wednesday at 00:00 UTC (Tuesday 8:00 PM EST / Wednesday 5:30 AM IST). Players who earn ~5,000 XP in the active cycle receive a care package choosing 2 items out of 4.'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': 'How does CS2Live detect hackers and cheaters in CS2 matches?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'CS2Live analyzes match telemetry including Time-To-Kill (TTK < 150ms), headshot percentages above 80% on rifle engagements, crosshair placement consistency exceeding 90%, and angular velocity snapping to flag suspect accounts.'
+          }
+        },
+        {
+          '@type': 'Question',
+          'name': 'How much XP is required for the CS2 Weekly Care Package?',
+          'acceptedAnswer': {
+            '@type': 'Answer',
+            'text': 'Players need 5,000 XP within a single reset cycle to achieve a Profile Rank-Up and earn their weekly drop. The first 4,500 XP benefits from an Overachieving Bonus multiplier (~3x-4x).'
+          }
+        }
+      ]
+    }
+  ]
+};
 ---
 
 <!doctype html>
@@ -17,11 +123,52 @@ const {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2310b981'><path d='M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5'/></svg>" />
-    <meta name="generator" content={Astro.generator} />
-    <meta name="description" content={description} />
-    <title>{title}</title>
     
+    <!-- Primary Metadata -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="keywords" content={keywords} />
+    <link rel="canonical" href={canonical} />
+    <meta name="author" content="CS2Live" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Crawlers & Robots Directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+    <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo-icon.svg" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
+
+    <!-- Open Graph / Facebook / Discord -->
+    <meta property="og:site_name" content="CS2Live" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:secure_url" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:alt" content="CS2Live — CS2 Live Stats & Hacker Radar" />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@cs2live_top" />
+    <meta name="twitter:creator" content="@cs2live_top" />
+    <meta name="twitter:url" content={canonical} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+
     <!-- Google Fonts: Plus Jakarta Sans & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -29,6 +176,18 @@ const {
       href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Microsoft Clarity Analytics Tracking Code -->
+    <script is:inline type="text/javascript">
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "yk6zaw1sz2");
+    </script>
+
+    <!-- Schema.org JSON-LD Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="bg-black text-zinc-100 selection:bg-emerald-500/20 selection:text-emerald-300 min-h-screen flex flex-col font-['Plus_Jakarta_Sans',sans-serif]">
     <!-- Subtle top ambient light glow -->

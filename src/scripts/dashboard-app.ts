@@ -11,15 +11,26 @@ import type {
   DetailedMatch,
   HackerScanResult,
   InventoryShowcaseItem,
-  MatchPlayerScore
+  MatchPlayerScore,
+  UserAccount,
+  WeeklyDropIntelligence
 } from '../lib/types';
 import {
   loadAccountsFromStorage,
   saveAccountsToStorage,
   loadSettingsFromStorage,
   saveSettingsToStorage,
+  getCurrentUser,
+  setCurrentUser,
+  loginUser,
+  registerUser,
+  loginWithSteam,
+  logoutUser,
+  addTrackedProfile,
+  DEFAULT_USER,
   type AppSettings
 } from '../lib/client-store';
+import { getWeeklyResetCycle } from '../lib/drop-intelligence';
 import { INITIAL_DEMO_ACCOUNTS } from '../lib/mock-data';
 
 // Global state
@@ -30,6 +41,7 @@ let searchQuery: string = '';
 let currentView: 'grid' | 'table' = 'grid';
 let currentScavengedProfile: ScavengedPlayerProfile | null = null;
 let scavengedMatches: DetailedMatch[] = [];
+let currentDropIntelligence: WeeklyDropIntelligence | null = null;
 
 // Initialize
 export function initDashboard() {
@@ -37,6 +49,8 @@ export function initDashboard() {
   currentView = settings.activeView || 'grid';
 
   bindEvents();
+  setupAuth();
+  setupDropRadar();
   setupTabNavigation();
   setupLogMatchModal();
   loadMarketPrices();
@@ -1228,6 +1242,7 @@ function setupTabNavigation() {
   const tabs = document.querySelectorAll('.nav-tab');
   const secCommand = document.getElementById('section-command-center');
   const secRadar = document.getElementById('section-hacker-radar');
+  const secDropRadar = document.getElementById('section-drop-radar');
   const secFleet = document.getElementById('section-fleet');
   const secMatches = document.getElementById('section-live-matches');
   const secLeaderboard = document.getElementById('section-pro-leaderboard');
@@ -1251,6 +1266,7 @@ function setupTabNavigation() {
       // Hide all sections first
       secCommand?.classList.add('hidden');
       secRadar?.classList.add('hidden');
+      secDropRadar?.classList.add('hidden');
       secFleet?.classList.add('hidden');
       secMatches?.classList.add('hidden');
       secLeaderboard?.classList.add('hidden');
@@ -1259,6 +1275,8 @@ function setupTabNavigation() {
         secCommand?.classList.remove('hidden');
       } else if (target === 'section-hacker-radar') {
         secRadar?.classList.remove('hidden');
+      } else if (target === 'section-drop-radar') {
+        secDropRadar?.classList.remove('hidden');
       } else if (target === 'section-fleet') {
         secFleet?.classList.remove('hidden');
       } else if (target === 'section-live-matches') {
@@ -1703,6 +1721,17 @@ async function fetchScavengerData(isManual = false) {
         }).join('');
       }
 
+      // Update Drop Radar if data received
+      if (data.dropIntelligence) {
+        currentDropIntelligence = data.dropIntelligence;
+        updateDropRadarData(data.dropIntelligence);
+      }
+
+      // Render the 10 real scraped matches in command-matches-list
+      if (Array.isArray(data.matches) && data.matches.length > 0) {
+        renderScavengedMatches(data.matches);
+      }
+
       if (isManual) {
         showToast('⚡ Live stats & inventory successfully scavenged for greatmahakaal!', 'success');
       }
@@ -1715,6 +1744,256 @@ async function fetchScavengerData(isManual = false) {
 function updateLinkHref(id: string, url?: string) {
   const el = document.getElementById(id) as HTMLAnchorElement | null;
   if (el && url) el.href = url;
+}
+
+// -------------------------------------------------------------
+// Authentication Controller
+// -------------------------------------------------------------
+
+function setupAuth() {
+  const modal = document.getElementById('modal-auth');
+  const btnClose = document.getElementById('btn-close-auth-modal');
+  const btnOpenAuth = document.getElementById('btn-nav-open-auth');
+  const btnUserMenu = document.getElementById('btn-nav-user-menu');
+  const tabLogin = document.getElementById('tab-auth-login');
+  const tabRegister = document.getElementById('tab-auth-register');
+  const fieldUsername = document.getElementById('auth-field-username');
+  const fieldSteam = document.getElementById('auth-field-steam');
+  const btnSubmit = document.getElementById('auth-btn-submit');
+  const formAuth = document.getElementById('form-auth-user') as HTMLFormElement | null;
+  const inputEmail = document.getElementById('auth-input-email') as HTMLInputElement | null;
+  const inputPassword = document.getElementById('auth-input-password') as HTMLInputElement | null;
+  const inputUsername = document.getElementById('auth-input-username') as HTMLInputElement | null;
+  const inputSteam = document.getElementById('auth-input-steamid') as HTMLInputElement | null;
+  const btnQuickGreatmahakaal = document.getElementById('btn-quick-login-greatmahakaal');
+
+  let mode: 'login' | 'register' = 'login';
+
+  const updateModalTabs = () => {
+    if (mode === 'login') {
+      tabLogin?.classList.add('bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/30');
+      tabLogin?.classList.remove('text-zinc-400');
+      tabRegister?.classList.remove('bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/30');
+      tabRegister?.classList.add('text-zinc-400');
+      fieldUsername?.classList.add('hidden');
+      fieldSteam?.classList.add('hidden');
+      if (btnSubmit) btnSubmit.textContent = 'Sign In';
+    } else {
+      tabRegister?.classList.add('bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/30');
+      tabRegister?.classList.remove('text-zinc-400');
+      tabLogin?.classList.remove('bg-emerald-500/20', 'text-emerald-400', 'border-emerald-500/30');
+      tabLogin?.classList.add('text-zinc-400');
+      fieldUsername?.classList.remove('hidden');
+      fieldSteam?.classList.remove('hidden');
+      if (btnSubmit) btnSubmit.textContent = 'Create Account';
+    }
+  };
+
+  tabLogin?.addEventListener('click', () => { mode = 'login'; updateModalTabs(); });
+  tabRegister?.addEventListener('click', () => { mode = 'register'; updateModalTabs(); });
+
+  btnOpenAuth?.addEventListener('click', () => modal?.classList.remove('hidden'));
+  btnUserMenu?.addEventListener('click', () => modal?.classList.remove('hidden'));
+  btnClose?.addEventListener('click', () => modal?.classList.add('hidden'));
+  modal?.addEventListener('click', (e) => {
+    if (e.target === modal) modal.classList.add('hidden');
+  });
+
+  btnQuickGreatmahakaal?.addEventListener('click', () => {
+    const user = loginWithSteam('76561198287445170');
+    updateNavbarUser(user);
+    modal?.classList.add('hidden');
+    showToast('Connected as TheKugelBlitz (greatmahakaal)!', 'success');
+  });
+
+  formAuth?.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = inputEmail?.value.trim() || 'greatmahakaal@steam.community';
+    const password = inputPassword?.value || '';
+    const username = inputUsername?.value.trim() || 'TheKugelBlitz';
+    const steam = inputSteam?.value.trim() || '76561198287445170';
+
+    let user;
+    if (mode === 'register') {
+      user = registerUser({ username, email, password, steamId64: steam });
+      showToast(`Account created for ${user.username}!`, 'success');
+    } else {
+      user = loginUser(email, password);
+      showToast(`Welcome back, ${user.username}!`, 'success');
+    }
+    updateNavbarUser(user);
+    modal?.classList.add('hidden');
+  });
+
+  // Initial user state check
+  const currentUser = getCurrentUser();
+  updateNavbarUser(currentUser);
+}
+
+function updateNavbarUser(user: UserAccount | null) {
+  const btnOpenAuth = document.getElementById('btn-nav-open-auth');
+  const userProfile = document.getElementById('nav-user-profile');
+  const userNameEl = document.getElementById('nav-user-name');
+  const userAvatarEl = document.getElementById('nav-user-avatar') as HTMLImageElement | null;
+
+  if (user) {
+    btnOpenAuth?.classList.add('hidden');
+    userProfile?.classList.remove('hidden');
+    if (userNameEl) userNameEl.textContent = user.username;
+    if (userAvatarEl && user.avatarUrl) userAvatarEl.src = user.avatarUrl;
+  } else {
+    btnOpenAuth?.classList.remove('hidden');
+    userProfile?.classList.add('hidden');
+  }
+}
+
+// -------------------------------------------------------------
+// 360-Degree Drop & XP Radar Controller
+// -------------------------------------------------------------
+
+function setupDropRadar() {
+  const timerEl = document.getElementById('drop-countdown-timer');
+
+  const updateCountdown = () => {
+    const { formattedTimeRemaining } = getWeeklyResetCycle();
+    if (timerEl) timerEl.textContent = formattedTimeRemaining;
+  };
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+}
+
+function updateDropRadarData(intel: WeeklyDropIntelligence) {
+  const statusEl = document.getElementById('drop-status-text');
+  const multEl = document.getElementById('drop-xp-multiplier');
+  const xpProgEl = document.getElementById('drop-xp-progress-text');
+  const xpBarEl = document.getElementById('drop-xp-bar');
+  const xpRemainEl = document.getElementById('drop-xp-remaining-text');
+  const recEl = document.getElementById('drop-recommendation-text');
+  const navPill = document.getElementById('nav-drop-pill');
+
+  if (statusEl) {
+    statusEl.innerHTML = intel.isDropClaimed
+      ? '<span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span><span>CLAIMED</span>'
+      : '<span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span><span>DROP DUE</span>';
+  }
+
+  if (multEl) multEl.textContent = intel.weeklyMultiplierTier;
+  if (xpProgEl) xpProgEl.textContent = `${(intel.xpWeeklyAccumulated % 5000).toLocaleString()} / 5,000 XP`;
+  if (xpBarEl) {
+    const pct = Math.min(100, Math.round(((intel.xpWeeklyAccumulated % 5000) / 5000) * 100));
+    xpBarEl.style.width = `${pct}%`;
+  }
+  if (xpRemainEl) xpRemainEl.textContent = `${intel.xpToNextRank.toLocaleString()} XP to Level Up`;
+  if (recEl) recEl.textContent = intel.recommendation;
+
+  if (navPill) {
+    if (intel.isDropClaimed) {
+      navPill.className = 'px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-emerald-950 text-emerald-400 border border-emerald-500/30 hidden sm:inline';
+      navPill.textContent = '✓ Drop';
+    } else {
+      navPill.className = 'px-1.5 py-0.5 rounded text-[9px] font-black uppercase tracking-wider bg-amber-950 text-amber-400 border border-amber-500/30 hidden sm:inline';
+      navPill.textContent = '🚨 Due';
+    }
+  }
+}
+
+// -------------------------------------------------------------
+// Scavenged Matches Feed Renderer
+// -------------------------------------------------------------
+
+function renderScavengedMatches(matches: DetailedMatch[]) {
+  const container = document.getElementById('command-matches-list');
+  if (!container || !Array.isArray(matches) || matches.length === 0) return;
+
+  container.innerHTML = matches.map(m => {
+    const isClean = m.hackerBadge?.threatLevel === 'CLEAN';
+    const isFlagged = m.hackerBadge?.threatLevel === 'FLAGGED';
+
+    const borderClass = isClean
+      ? 'border-emerald-500/30 hover:border-emerald-400'
+      : isFlagged
+      ? 'border-red-500/40 hover:border-red-500 shadow-[0_0_20px_-8px_rgba(239,68,68,0.2)]'
+      : 'border-yellow-500/30 hover:border-yellow-400';
+
+    const badgeClass = isClean
+      ? 'bg-emerald-950 text-emerald-400 border-emerald-500/30'
+      : isFlagged
+      ? 'bg-red-950 text-red-400 border-red-500/30 animate-pulse'
+      : 'bg-yellow-950 text-yellow-400 border-yellow-500/30';
+
+    const tele = m.userTelemetry;
+
+    return `
+      <div class="rounded-2xl bg-surface-1 border ${borderClass} p-5 transition">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.06] pb-3 mb-3">
+          <div class="flex items-center gap-3">
+            <span class="px-2.5 py-1 rounded-lg ${badgeClass} border text-xs font-black uppercase tracking-wider">
+              ${m.hackerBadge?.shortTag || 'VERIFIED'}
+            </span>
+            <div>
+              <h4 class="font-extrabold text-white text-base">
+                ${m.hackerBadge?.titleText || `${m.map} (${m.scoreTeam1} - ${m.scoreTeam2})`}
+              </h4>
+              <span class="text-xs text-zinc-400 font-mono">
+                ${m.serverRegion || 'Mumbai'} Server · ${m.mode} · Duration: ${m.duration} · ${m.date}
+              </span>
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button
+              class="btn-inspect-match-radar px-3.5 py-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-200 border border-white/[0.08] hover:border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+              data-match-id="${m.id}"
+            >
+              <svg class="w-3.5 h-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+              <span>Inspect 10-Player Scoreboard</span>
+            </button>
+
+            ${m.sourceUrl ? `
+              <a
+                href="${m.sourceUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="p-2 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-zinc-400 hover:text-white border border-white/[0.08] transition"
+                title="Open CSTracker Match"
+              >
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+              </a>
+            ` : ''}
+          </div>
+        </div>
+
+        ${tele ? `
+          <div class="grid grid-cols-2 sm:grid-cols-6 gap-2 text-center text-xs">
+            <div class="p-2 rounded-xl bg-black/40 border border-white/[0.04]">
+              <span class="text-[10px] text-zinc-500 font-mono block uppercase">K / D / A</span>
+              <strong class="text-white font-mono text-sm">${tele.kills} / ${tele.deaths} / ${tele.assists}</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-black/40 border border-white/[0.04]">
+              <span class="text-[10px] text-zinc-500 font-mono block uppercase">ADR</span>
+              <strong class="text-orange-400 font-mono text-sm">${tele.adr.toFixed(1)}</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-black/40 border border-white/[0.04]">
+              <span class="text-[10px] text-zinc-500 font-mono block uppercase">HLTV Rating</span>
+              <strong class="text-emerald-400 font-mono text-sm">${tele.hltvRating.toFixed(2)}</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-black/40 border border-white/[0.04]">
+              <span class="text-[10px] text-zinc-500 font-mono block uppercase">Accuracy</span>
+              <strong class="text-cyan-400 font-mono text-sm">${tele.accuracyPct ? tele.accuracyPct + '%' : '18.5%'}</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-black/40 border border-white/[0.04]">
+              <span class="text-[10px] text-zinc-500 font-mono block uppercase">Preaim Angle</span>
+              <strong class="text-white font-mono text-sm">${tele.preaimDeg ? tele.preaimDeg + '°' : '2.1°'}</strong>
+            </div>
+            <div class="p-2 rounded-xl bg-black/40 border border-white/[0.04]">
+              <span class="text-[10px] text-zinc-500 font-mono block uppercase">Anti-Cheat Verdict</span>
+              <strong class="${isClean ? 'text-emerald-400' : 'text-red-400'} font-mono text-sm">${isClean ? '0.00% Risk' : m.hackerBadge?.flaggedPlayer || 'Flagged'}</strong>
+            </div>
+          </div>
+        ` : ''}
+      </div>
+    `;
+  }).join('');
 }
 
 // ----------------------------------------------------------------------
@@ -1935,17 +2214,19 @@ function setupMatchScorecardModal() {
     if (e.target === modal) modal.classList.add('hidden');
   });
 
-  // Connect inspect match buttons
-  document.querySelectorAll('.btn-inspect-match-radar').forEach((btn) => {
-    btn.addEventListener('click', () => {
+  // Connect inspect match buttons (delegated listener to support dynamic and static match cards)
+  document.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    const btn = target?.closest('.btn-inspect-match-radar');
+    if (btn) {
       const matchId = btn.getAttribute('data-match-id');
-      const match = scavengedMatches.find(m => m.id === matchId) || (scavengedMatches[0] as DetailedMatch | undefined);
+      const match = scavengedMatches.find(m => m.id === matchId || m.scrapedMatchId === matchId) || (scavengedMatches[0] as DetailedMatch | undefined);
       if (match) {
         openMatchScorecard(match);
       } else {
         showToast('Loading match demo logs...', 'info');
       }
-    });
+    }
   });
 
   function openMatchScorecard(m: DetailedMatch) {
