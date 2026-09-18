@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
+import LootFlowTracker from '../components/LootFlowTracker.astro';
 import QuickLookHub from '../components/QuickLookHub.astro';
 import MatchScorecardModal from '../components/MatchScorecardModal.astro';
 import AuthModal from '../components/AuthModal.astro';
@@ -8,8 +9,8 @@ import SettingsModal from '../components/SettingsModal.astro';
 ---
 
 <Layout
-  title="CS2Live — Quick Look CS2 Player, Match Hacker Radar & Drop Tracker"
-  description="Quick look any Counter-Strike 2 player by Steam ID. Track 360° combat stats, live match cheater detection, weekly care package drop reset timer, and Steam inventory XP audit."
+  title="CS2Live — CS2 Prime Drop Tracker, Farm ROI & Hacker Radar"
+  description="LootFlow 2.0 multi-account CS2 Prime drop tracker, payback ROI analytics, care package reset countdown, and live match player hacker radar."
   canonical="https://cs2live.top/"
 >
   <!-- Navbar -->
@@ -17,8 +18,33 @@ import SettingsModal from '../components/SettingsModal.astro';
 
   <!-- Main Dashboard Viewport -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8 space-y-6 sm:space-y-8">
-    <!-- Unified Quick Look Player, 360 Drop Intel & Match Radar -->
-    <QuickLookHub />
+    <!-- View Switcher Bar -->
+    <div class="p-1.5 rounded-2xl bg-[#11161d] border border-white/[0.08] flex items-center gap-1.5 max-w-md mx-auto sm:mx-0 shadow-lg">
+      <button
+        id="btn-mode-lootflow"
+        class="flex-1 px-4 py-2 rounded-xl text-xs sm:text-sm font-extrabold transition flex items-center justify-center gap-2 cursor-pointer bg-emerald-400 text-black glow-emerald"
+      >
+        <span class="text-base">🎁</span>
+        <span>LootFlow Drop Tracker</span>
+      </button>
+      <button
+        id="btn-mode-quicklook"
+        class="flex-1 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition flex items-center justify-center gap-2 cursor-pointer text-zinc-400 hover:text-white"
+      >
+        <span class="text-base">🎯</span>
+        <span>Player Radar & Intel</span>
+      </button>
+    </div>
+
+    <!-- View 1: LootFlow Drop Tracker Dashboard (Active Default) -->
+    <div id="view-lootflow-tracker" class="space-y-6">
+      <LootFlowTracker />
+    </div>
+
+    <!-- View 2: Quick Look Player, 360 Drop Intel & Match Radar -->
+    <div id="view-quicklook-radar" class="space-y-6 hidden">
+      <QuickLookHub />
+    </div>
   </main>
 
   <!-- Footer -->

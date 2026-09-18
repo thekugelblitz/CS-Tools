@@ -15,6 +15,7 @@ import {
   removeTrackedProfile
 } from '../lib/client-store';
 import { getWeeklyResetCycle } from '../lib/drop-intelligence';
+import { initLootFlow } from './lootflow-controller';
 
 // Application State
 let currentProfile: ScavengedPlayerProfile | null = null;
@@ -25,6 +26,7 @@ let countdownInterval: any = null;
 
 // Entry Point
 export function initDashboard() {
+  initLootFlow();
   setupAuth();
   setupQuickLook();
   setupMatchScorecardModal();

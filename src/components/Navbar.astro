@@ -25,12 +25,18 @@ import Icons from './Icons.astro';
 
     <!-- Center Navigation Links -->
     <nav class="hidden md:flex items-center gap-2">
-      <a
-        href="/"
-        class="px-3 py-1.5 rounded-lg text-xs font-bold text-white bg-zinc-800 hover:bg-zinc-700 transition"
+      <button
+        id="nav-link-drop-tracker"
+        class="px-3 py-1.5 rounded-lg text-xs font-extrabold text-black bg-emerald-400 glow-emerald transition cursor-pointer"
       >
-        Quick Look
-      </a>
+        Drop Tracker
+      </button>
+      <button
+        id="nav-link-player-radar"
+        class="px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-900 transition cursor-pointer"
+      >
+        Player Radar
+      </button>
       <a
         href="/compare"
         class="px-3 py-1.5 rounded-lg text-xs font-bold text-zinc-400 hover:text-white hover:bg-zinc-900 transition"

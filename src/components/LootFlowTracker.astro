@@ -1,0 +1,980 @@
+---
+import Icons from './Icons.astro';
+---
+
+<section id="lootflow-tracker-root" class="space-y-6 sm:space-y-8">
+  <!-- Top Hero Header with LootFlow Branding & Quick Actions -->
+  <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#11161d] border border-white/[0.08] shadow-2xl backdrop-blur-xl space-y-5">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+      <!-- Title & Branding -->
+      <div>
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[11px] font-bold uppercase tracking-wider mb-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>LootFlow 2.0 Engine</span>
+          <span class="text-zinc-500">·</span>
+          <span class="text-zinc-300">CS2 Prime Drop & ROI Analytics</span>
+        </div>
+        <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2.5">
+          <span>Weekly Drops, Fleet & Farm ROI</span>
+        </h2>
+        <p class="text-xs sm:text-sm text-zinc-400 mt-1 max-w-2xl">
+          Automated CS2 Prime weekly drop limits, Steam Market cached valuations, payback vs Prime investment, and discovered collection tracking.
+        </p>
+      </div>
+
+      <!-- Currency Switcher & Drop Reset Timer -->
+      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+        <!-- Live Reset Pill -->
+        <div class="px-3 py-1.5 rounded-xl bg-[#0d1117] border border-white/[0.08] flex items-center gap-2 text-xs">
+          <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+          <span class="text-zinc-400 font-medium">Reset:</span>
+          <span id="lf-reset-countdown" class="font-mono font-bold text-amber-400">Loading...</span>
+        </div>
+
+        <!-- Currency Selector -->
+        <div class="flex items-center bg-[#0d1117] border border-white/[0.08] rounded-xl p-1 gap-1">
+          <button class="lf-currency-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition cursor-pointer bg-emerald-500/20 text-emerald-400" data-curr="USD">$ USD</button>
+          <button class="lf-currency-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition cursor-pointer text-zinc-400 hover:text-white" data-curr="BRL">R$ BRL</button>
+          <button class="lf-currency-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition cursor-pointer text-zinc-400 hover:text-white" data-curr="EUR">€ EUR</button>
+          <button class="lf-currency-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition cursor-pointer text-zinc-400 hover:text-white" data-curr="INR">₹ INR</button>
+          <button class="lf-currency-btn px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition cursor-pointer text-zinc-400 hover:text-white" data-curr="GBP">£ GBP</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Action Toolbars -->
+    <div class="flex flex-wrap items-center justify-between gap-3 pt-4 border-t border-white/[0.06]">
+      <div class="flex flex-wrap items-center gap-2">
+        <button
+          id="btn-open-log-drop"
+          class="px-4 py-2 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-xs sm:text-sm flex items-center gap-2 transition glow-emerald cursor-pointer"
+        >
+          <Icons name="plus" class="w-4 h-4 stroke-[3]" />
+          <span>Log New Drop</span>
+        </button>
+
+        <button
+          id="btn-open-add-account"
+          class="px-3.5 py-2 rounded-xl bg-[#161b22] hover:bg-[#1c2128] text-white border border-white/[0.08] font-bold text-xs sm:text-sm flex items-center gap-2 transition cursor-pointer"
+        >
+          <Icons name="steam" class="w-4 h-4 text-emerald-400" />
+          <span>Add Account</span>
+        </button>
+
+        <button
+          id="btn-open-add-goal"
+          class="px-3.5 py-2 rounded-xl bg-[#161b22] hover:bg-[#1c2128] text-zinc-300 hover:text-white border border-white/[0.08] font-semibold text-xs sm:text-sm flex items-center gap-2 transition cursor-pointer"
+        >
+          <Icons name="medal" class="w-4 h-4 text-amber-400" />
+          <span>New Goal</span>
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button
+          id="btn-open-data-modal"
+          class="px-3 py-1.5 rounded-lg bg-[#0d1117] hover:bg-[#161b22] text-zinc-400 hover:text-zinc-200 border border-white/[0.06] text-xs font-mono transition flex items-center gap-1.5 cursor-pointer"
+          title="Backup, Export & Demo Sync"
+        >
+          <Icons name="download" class="w-3.5 h-3.5" />
+          <span>Export / Sync</span>
+        </button>
+        <button
+          id="btn-quick-demo-reset"
+          class="px-2.5 py-1.5 rounded-lg bg-[#0d1117] hover:bg-[#161b22] text-zinc-400 hover:text-amber-400 border border-white/[0.06] text-xs font-mono transition flex items-center gap-1 cursor-pointer"
+          title="Reset to demo fleet"
+        >
+          <Icons name="refresh" class="w-3.5 h-3.5" />
+          <span>Reset Demo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Financial ROI & Farm Metrics Grid -->
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+    <!-- Card 1: Gross Drop Revenue -->
+    <div class="p-4 rounded-2xl bg-[#11161d] border border-white/[0.07] flex flex-col justify-between space-y-2 hover:border-emerald-500/30 transition">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-zinc-400 font-semibold">Total Drops Value</span>
+        <span class="p-1.5 rounded-lg bg-emerald-500/10 text-emerald-400">
+          <Icons name="drop-box" class="w-3.5 h-3.5" />
+        </span>
+      </div>
+      <div>
+        <div id="stat-gross-value" class="text-xl sm:text-2xl font-black font-mono text-emerald-400">$0.00</div>
+        <div id="stat-total-drops-sub" class="text-[11px] text-zinc-500 font-mono mt-0.5">0 drops recorded</div>
+      </div>
+      <div class="text-[10px] text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded flex items-center justify-between">
+        <span>Avg: <strong id="stat-avg-drop" class="text-zinc-200 font-mono">$0.00</strong></span>
+        <span>Best: <strong id="stat-best-drop" class="text-amber-400 font-mono">$0.00</strong></span>
+      </div>
+    </div>
+
+    <!-- Card 2: Realized Cashout -->
+    <div class="p-4 rounded-2xl bg-[#11161d] border border-white/[0.07] flex flex-col justify-between space-y-2 hover:border-cyan-500/30 transition">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-zinc-400 font-semibold">Realized Cashout</span>
+        <span class="p-1.5 rounded-lg bg-cyan-500/10 text-cyan-400">
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"></path><path d="M12 18V6"></path></svg>
+        </span>
+      </div>
+      <div>
+        <div id="stat-cashout-value" class="text-xl sm:text-2xl font-black font-mono text-cyan-400">$0.00</div>
+        <div id="stat-sold-count-sub" class="text-[11px] text-zinc-500 font-mono mt-0.5">0 items sold</div>
+      </div>
+      <div class="text-[10px] text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded">
+        <span>Liquid Market & 3rd-Party Balance</span>
+      </div>
+    </div>
+
+    <!-- Card 3: Prime Fleet Cost -->
+    <div class="p-4 rounded-2xl bg-[#11161d] border border-white/[0.07] flex flex-col justify-between space-y-2 hover:border-purple-500/30 transition">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-zinc-400 font-semibold">Prime Investment</span>
+        <span class="p-1.5 rounded-lg bg-purple-500/10 text-purple-400">
+          <Icons name="shield-check" class="w-3.5 h-3.5" />
+        </span>
+      </div>
+      <div>
+        <div id="stat-prime-cost" class="text-xl sm:text-2xl font-black font-mono text-purple-300">$0.00</div>
+        <div id="stat-accounts-sub" class="text-[11px] text-zinc-500 font-mono mt-0.5">0 active accounts</div>
+      </div>
+      <div class="text-[10px] text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded">
+        <span>Fixed Status Acquisition</span>
+      </div>
+    </div>
+
+    <!-- Card 4: Net Balance & ROI -->
+    <div class="p-4 rounded-2xl bg-[#11161d] border border-white/[0.07] flex flex-col justify-between space-y-2 hover:border-emerald-500/30 transition">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-zinc-400 font-semibold">Farm ROI & Net</span>
+        <span id="stat-roi-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono font-black uppercase bg-emerald-500/20 text-emerald-400">
+          +0%
+        </span>
+      </div>
+      <div>
+        <div id="stat-net-profit" class="text-xl sm:text-2xl font-black font-mono text-white">$0.00</div>
+        <div id="stat-roi-sub" class="text-[11px] text-zinc-500 font-mono mt-0.5">Payback in progress</div>
+      </div>
+      <div class="text-[10px] text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded">
+        <span>Prime Cost Recovery Balance</span>
+      </div>
+    </div>
+
+    <!-- Card 5: Weekly Drop Claims & Streak -->
+    <div class="p-4 rounded-2xl bg-[#11161d] border border-white/[0.07] flex flex-col justify-between space-y-2 col-span-2 sm:col-span-1 hover:border-amber-500/30 transition">
+      <div class="flex items-center justify-between text-xs">
+        <span class="text-zinc-400 font-semibold">Current Week Drops</span>
+        <span id="stat-streak-badge" class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-400 flex items-center gap-1">
+          <span>🔥</span> <span id="stat-streak-count">0</span>
+        </span>
+      </div>
+      <div>
+        <div id="stat-week-claims" class="text-xl sm:text-2xl font-black font-mono text-amber-400">0 / 0</div>
+        <div id="stat-week-status-sub" class="text-[11px] text-zinc-500 font-mono mt-0.5">Tuesday Reset Cycle</div>
+      </div>
+      <div class="text-[10px] text-zinc-400 bg-white/[0.03] px-2 py-0.5 rounded">
+        <span>Max 2 drops / account / week</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Prime Break-Even Payback Progress Meter -->
+  <div class="p-4 sm:p-5 rounded-2xl bg-[#11161d] border border-white/[0.07] space-y-3">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs">
+      <div class="flex items-center gap-2">
+        <span class="font-extrabold text-white text-sm">Prime Cost Payback Progress</span>
+        <span id="pb-progress-badge" class="px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono font-bold text-[11px]">
+          0% Payback
+        </span>
+      </div>
+      <div class="flex items-center gap-3 text-zinc-400 text-[11px]">
+        <span>Remaining to break-even: <strong id="pb-remaining-amount" class="text-white font-mono">$0.00</strong></span>
+        <span>·</span>
+        <span id="pb-eta-text" class="text-amber-400 font-medium">ETA: ~0 weeks</span>
+      </div>
+    </div>
+
+    <!-- Dual Progress Bar -->
+    <div class="relative w-full h-3 rounded-full bg-[#0d1117] border border-white/[0.06] overflow-hidden">
+      <div
+        id="pb-progress-bar"
+        class="h-full bg-gradient-to-r from-cyan-500 via-emerald-400 to-amber-400 rounded-full transition-all duration-700 glow-emerald"
+        style="width: 0%"
+      ></div>
+    </div>
+  </div>
+
+  <!-- Internal Navigation Sub-Tabs -->
+  <div class="border-b border-white/[0.08] flex items-center gap-2 overflow-x-auto pb-1 text-xs sm:text-sm font-semibold">
+    <button
+      class="lf-tab-btn px-4 py-2 rounded-xl text-emerald-400 bg-emerald-500/10 border border-emerald-500/30 transition flex items-center gap-2 cursor-pointer shrink-0"
+      data-tab="fleet"
+    >
+      <Icons name="steam" class="w-4 h-4" />
+      <span>Account Fleet (<span id="count-tab-fleet">0</span>)</span>
+    </button>
+
+    <button
+      class="lf-tab-btn px-4 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.03] transition flex items-center gap-2 cursor-pointer shrink-0"
+      data-tab="ledger"
+    >
+      <Icons name="drop-box" class="w-4 h-4" />
+      <span>Drop Ledger (<span id="count-tab-drops">0</span>)</span>
+    </button>
+
+    <button
+      class="lf-tab-btn px-4 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.03] transition flex items-center gap-2 cursor-pointer shrink-0"
+      data-tab="collection"
+    >
+      <Icons name="medal" class="w-4 h-4" />
+      <span>Discovered Codex (<span id="count-tab-collection">0</span>)</span>
+    </button>
+
+    <button
+      class="lf-tab-btn px-4 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.03] transition flex items-center gap-2 cursor-pointer shrink-0"
+      data-tab="goals"
+    >
+      <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+      <span>Goals & Streaks (<span id="count-tab-goals">0</span>)</span>
+    </button>
+
+    <button
+      class="lf-tab-btn px-4 py-2 rounded-xl text-zinc-400 hover:text-white hover:bg-white/[0.03] transition flex items-center gap-2 cursor-pointer shrink-0"
+      data-tab="xp-radar"
+    >
+      <Icons name="xp" class="w-4 h-4 text-cyan-400" />
+      <span>XP & Service Medal</span>
+    </button>
+  </div>
+
+  <!-- Tab 1: Account Fleet Grid -->
+  <div id="tab-content-fleet" class="space-y-4">
+    <div id="fleet-accounts-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <!-- Dynamically rendered via JS -->
+    </div>
+  </div>
+
+  <!-- Tab 2: Drop Ledger & History Table -->
+  <div id="tab-content-ledger" class="space-y-4 hidden">
+    <!-- Filter & Search Controls -->
+    <div class="p-3.5 rounded-2xl bg-[#11161d] border border-white/[0.07] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 text-xs">
+      <div class="flex flex-wrap items-center gap-2">
+        <input
+          id="input-filter-drop-name"
+          type="text"
+          placeholder="Filter by item or account..."
+          class="px-3 py-2 rounded-xl bg-[#0d1117] border border-white/[0.08] focus:border-emerald-500/50 text-white placeholder:text-zinc-500 font-mono outline-none text-xs w-full sm:w-64"
+        />
+
+        <select
+          id="select-filter-type"
+          class="px-3 py-2 rounded-xl bg-[#0d1117] border border-white/[0.08] text-zinc-300 font-mono outline-none text-xs cursor-pointer"
+        >
+          <option value="all">All Types</option>
+          <option value="case">Cases Only</option>
+          <option value="weapon">Weapon Skins</option>
+          <option value="graffiti">Graffitis</option>
+          <option value="sticker">Stickers</option>
+        </select>
+
+        <select
+          id="select-filter-sold"
+          class="px-3 py-2 rounded-xl bg-[#0d1117] border border-white/[0.08] text-zinc-300 font-mono outline-none text-xs cursor-pointer"
+        >
+          <option value="all">All Statuses</option>
+          <option value="sold">Sold Items</option>
+          <option value="unsold">In Inventory</option>
+        </select>
+      </div>
+
+      <div class="flex items-center gap-2 justify-end">
+        <button
+          id="btn-export-csv"
+          class="px-3 py-2 rounded-xl bg-[#161b22] hover:bg-[#1c2128] text-zinc-300 hover:text-white border border-white/[0.08] transition flex items-center gap-1.5 cursor-pointer"
+        >
+          <Icons name="download" class="w-3.5 h-3.5" />
+          <span>Export CSV</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="overflow-x-auto rounded-2xl bg-[#11161d] border border-white/[0.07] shadow-xl">
+      <table class="w-full text-left text-xs sm:text-sm">
+        <thead class="bg-[#0d1117] text-zinc-400 uppercase font-mono text-[10px] sm:text-[11px] border-b border-white/[0.06]">
+          <tr>
+            <th class="py-3.5 px-4 font-semibold">Item & Details</th>
+            <th class="py-3.5 px-4 font-semibold">Account</th>
+            <th class="py-3.5 px-4 font-semibold">Week Cycle</th>
+            <th class="py-3.5 px-4 font-semibold">Steam Est.</th>
+            <th class="py-3.5 px-4 font-semibold">Status / Cashout</th>
+            <th class="py-3.5 px-4 font-semibold text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="drops-table-body" class="divide-y divide-white/[0.04] font-mono">
+          <!-- Populated dynamically via JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Tab 3: Discovered Collection Codex -->
+  <div id="tab-content-collection" class="space-y-4 hidden">
+    <div class="p-4 rounded-2xl bg-[#11161d] border border-white/[0.07] flex items-center justify-between">
+      <div>
+        <h3 class="text-sm sm:text-base font-extrabold text-white">Discovered Drop Codex</h3>
+        <p class="text-xs text-zinc-400">All unique CS2 items discovered and logged across your farming fleet.</p>
+      </div>
+      <div class="px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-mono font-bold">
+        <span id="collection-unlocked-count">0</span> Unique Drops
+      </div>
+    </div>
+
+    <div id="collection-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4">
+      <!-- Populated dynamically via JS -->
+    </div>
+  </div>
+
+  <!-- Tab 4: Goals & Streaks -->
+  <div id="tab-content-goals" class="space-y-4 hidden">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <!-- Perfect Weeks & Streaks Card -->
+      <div class="p-5 rounded-2xl bg-[#11161d] border border-white/[0.07] space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">🔥</span>
+            <h3 class="font-extrabold text-white text-sm sm:text-base">Perfect Week Streaks</h3>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-amber-500/10 text-amber-400 border border-amber-500/20">
+            Efficiency
+          </span>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          A <strong>Perfect Week</strong> is achieved when every active Prime account in your fleet completes its 2 weekly care package drops before Tuesday 8PM CT reset.
+        </p>
+
+        <div class="grid grid-cols-2 gap-3 pt-2">
+          <div class="p-3.5 rounded-xl bg-[#0d1117] border border-white/[0.06] text-center">
+            <div class="text-xs text-zinc-400 font-semibold mb-1">Current Streak</div>
+            <div id="goal-current-streak" class="text-2xl font-black font-mono text-amber-400">0 Weeks</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#0d1117] border border-white/[0.06] text-center">
+            <div class="text-xs text-zinc-400 font-semibold mb-1">All-Time Best</div>
+            <div id="goal-best-streak" class="text-2xl font-black font-mono text-emerald-400">0 Weeks</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Farm System Insights -->
+      <div class="p-5 rounded-2xl bg-[#11161d] border border-white/[0.07] space-y-3">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="text-xl">💡</span>
+            <h3 class="font-extrabold text-white text-sm sm:text-base">Smart Farm Insights</h3>
+          </div>
+          <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold uppercase bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+            AI Telemetry
+          </span>
+        </div>
+
+        <div id="goals-insights-list" class="space-y-2.5 text-xs text-zinc-300">
+          <!-- Injected dynamically -->
+        </div>
+      </div>
+    </div>
+
+    <!-- Active Farm Goals List -->
+    <div class="p-5 rounded-2xl bg-[#11161d] border border-white/[0.07] space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 class="font-extrabold text-white text-sm sm:text-base">Active Targets & Milestone Goals</h3>
+        <button
+          id="btn-goals-add-trigger"
+          class="px-3 py-1.5 rounded-xl bg-emerald-400 text-black font-bold text-xs flex items-center gap-1.5 transition glow-emerald cursor-pointer"
+        >
+          <Icons name="plus" class="w-3.5 h-3.5 stroke-[3]" />
+          <span>New Target Goal</span>
+        </button>
+      </div>
+
+      <div id="goals-list-container" class="space-y-3">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 5: XP & Service Medal Progression Radar (Zero-Dependency CS2 XP Tracker) -->
+  <div id="tab-content-xp-radar" class="space-y-6 hidden">
+    <!-- Header with Account Picker & Multiplier info -->
+    <div class="p-5 rounded-3xl bg-[#11161d] border border-white/[0.08] flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+      <div>
+        <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-[11px] font-bold uppercase tracking-wider mb-2">
+          <span>🎖️ Profile Rank, XP & 2026 Service Medal Radar</span>
+          <span class="text-zinc-500">·</span>
+          <span class="text-zinc-300">Zero-Bot Dependency</span>
+        </div>
+        <h3 class="text-xl sm:text-2xl font-black text-white">CS2 Profile XP & Service Medal Tracker</h3>
+        <p class="text-xs text-zinc-400 mt-1 max-w-2xl">
+          Tracks the 5,000 XP profile rank-up required for weekly care packages, calculates weekly multiplier brackets, and projects matches needed for Rank 40 Service Medals.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-2.5 w-full md:w-auto">
+        <label class="text-xs font-semibold text-zinc-400 whitespace-nowrap">Account:</label>
+        <select
+          id="select-xp-account"
+          class="px-3.5 py-2 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-cyan-500/50 w-full md:w-56 cursor-pointer"
+        >
+          <!-- Dynamically populated with fleet accounts -->
+        </select>
+      </div>
+    </div>
+
+    <!-- Active Account XP & Rank Telemetry Card -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <!-- Rank & Level Progress -->
+      <div class="lg:col-span-2 p-5 sm:p-6 rounded-3xl bg-[#11161d] border border-white/[0.08] space-y-5">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-2xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 font-black text-xl font-mono">
+              <span id="xp-rank-number">28</span>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-wider font-mono text-zinc-500">Active Profile Rank</div>
+              <h4 id="xp-rank-title" class="text-lg font-black text-white">Captain</h4>
+            </div>
+          </div>
+
+          <div id="xp-multiplier-badge" class="px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-mono font-bold flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span id="xp-multiplier-text">4x Overachieving Bonus</span>
+          </div>
+        </div>
+
+        <!-- XP Bar to Next Level -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-zinc-400">Current Level Progress</span>
+            <span id="xp-progress-numbers" class="font-bold text-white">3,150 / 5,000 XP</span>
+          </div>
+          <div class="relative w-full h-3.5 rounded-full bg-[#0d1117] border border-white/[0.06] overflow-hidden">
+            <div
+              id="xp-level-bar"
+              class="h-full bg-gradient-to-r from-cyan-500 to-emerald-400 rounded-full transition-all duration-500 glow-cyan"
+              style="width: 63%"
+            ></div>
+          </div>
+          <div class="flex items-center justify-between text-[11px] text-zinc-500 font-mono">
+            <span id="xp-needed-text">1,850 XP to Next Rank & Care Package</span>
+            <span id="xp-percent-text">63%</span>
+          </div>
+        </div>
+
+        <!-- Weekly Multiplier Brackets Visualizer -->
+        <div class="p-4 rounded-2xl bg-[#0d1117] border border-white/[0.06] space-y-2">
+          <div class="text-[11px] font-bold uppercase tracking-wider text-zinc-400">Weekly XP Bracket Telemetry</div>
+          <div class="grid grid-cols-4 gap-1.5 text-[10px] font-mono text-center">
+            <div class="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/40 text-emerald-400">
+              <div class="font-bold">4.0x Bonus</div>
+              <div class="text-zinc-500 text-[9px]">0 - 4,500 XP</div>
+            </div>
+            <div class="p-2 rounded-lg bg-cyan-950/20 border border-cyan-500/20 text-cyan-300">
+              <div class="font-bold">1.0x Standard</div>
+              <div class="text-zinc-500 text-[9px]">4.5k - 7.5k XP</div>
+            </div>
+            <div class="p-2 rounded-lg bg-amber-950/20 border border-amber-500/20 text-amber-400">
+              <div class="font-bold">0.5x Reduced</div>
+              <div class="text-zinc-500 text-[9px]">7.5k - 11.2k XP</div>
+            </div>
+            <div class="p-2 rounded-lg bg-red-950/20 border border-red-500/20 text-red-400">
+              <div class="font-bold">0.175x Penalty</div>
+              <div class="text-zinc-500 text-[9px]">11.2k+ XP</div>
+            </div>
+          </div>
+          <p id="xp-bracket-description" class="text-[11px] text-zinc-400 pt-1 leading-relaxed">
+            Weekly care package bonus active! First 4,500 XP earns 4x boosted XP. Reset resets every Wednesday 00:00 UTC.
+          </p>
+        </div>
+
+        <!-- Quick Match XP Logger / Simulator -->
+        <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-white/[0.06]">
+          <div class="text-xs font-semibold text-zinc-300">Log Finished Match XP:</div>
+          <div class="flex items-center gap-1.5">
+            <button class="btn-add-xp-quick px-2.5 py-1.5 rounded-lg bg-[#161b22] hover:bg-[#1c2128] text-xs font-mono font-bold text-zinc-300 hover:text-emerald-400 border border-white/[0.06] cursor-pointer transition" data-xp="780">+780 XP (Premier Win)</button>
+            <button class="btn-add-xp-quick px-2.5 py-1.5 rounded-lg bg-[#161b22] hover:bg-[#1c2128] text-xs font-mono font-bold text-zinc-300 hover:text-cyan-400 border border-white/[0.06] cursor-pointer transition" data-xp="420">+420 XP (Comp Win)</button>
+            <button class="btn-add-xp-quick px-2.5 py-1.5 rounded-lg bg-[#161b22] hover:bg-[#1c2128] text-xs font-mono font-bold text-zinc-300 hover:text-amber-400 border border-white/[0.06] cursor-pointer transition" data-xp="120">+120 XP (Deathmatch)</button>
+            <button id="btn-reset-xp-account" class="px-2.5 py-1.5 rounded-lg bg-zinc-900 hover:bg-zinc-800 text-[11px] font-mono text-zinc-500 hover:text-zinc-300 cursor-pointer transition" title="Reset XP for testing">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Service Medal Estimator Card -->
+      <div class="p-5 sm:p-6 rounded-3xl bg-[#11161d] border border-white/[0.08] space-y-4 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="text-2xl">🎖️</span>
+              <div>
+                <h4 class="font-extrabold text-white text-sm sm:text-base">2026 Service Medal</h4>
+                <p class="text-[11px] text-zinc-400">Rank 40 Required</p>
+              </div>
+            </div>
+            <span id="xp-ranks-to-medal" class="px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-500/10 text-amber-400 border border-amber-500/30">
+              12 Ranks Left
+            </span>
+          </div>
+
+          <div class="mt-4 p-3.5 rounded-2xl bg-[#0d1117] border border-white/[0.06] text-center">
+            <div class="text-[11px] text-zinc-500 font-mono">Total XP Needed for Medal</div>
+            <div id="xp-total-to-medal" class="text-2xl font-black font-mono text-amber-400 mt-0.5">61,850 XP</div>
+            <div id="xp-hours-estimate" class="text-[11px] text-zinc-400 font-mono mt-1">~54 gameplay hours</div>
+          </div>
+        </div>
+
+        <!-- Mode Breakdowns -->
+        <div class="space-y-2 text-xs font-mono">
+          <div class="text-[11px] uppercase tracking-wider text-zinc-500 font-bold">Estimated Matches Required:</div>
+          <div class="flex items-center justify-between p-2 rounded-xl bg-[#0d1117] border border-white/[0.04]">
+            <span class="text-zinc-300">Premier Wins (avg 650 XP):</span>
+            <strong id="xp-est-premier" class="text-cyan-400">~96 wins</strong>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-xl bg-[#0d1117] border border-white/[0.04]">
+            <span class="text-zinc-300">Competitive Wins (avg 420 XP):</span>
+            <strong id="xp-est-comp" class="text-zinc-200">~148 wins</strong>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-xl bg-[#0d1117] border border-white/[0.04]">
+            <span class="text-zinc-300">Deathmatch Games (avg 120 XP):</span>
+            <strong id="xp-est-dm" class="text-amber-400">~516 games</strong>
+          </div>
+          <div class="flex items-center justify-between p-2 rounded-xl bg-[#0d1117] border border-white/[0.04]">
+            <span class="text-zinc-300">Wingman Wins (avg 210 XP):</span>
+            <strong id="xp-est-wingman" class="text-purple-400">~295 wins</strong>
+          </div>
+        </div>
+
+        <div class="text-[10px] text-zinc-500 italic text-center">
+          Pure mathematical calculations based on CS2 Game Coordinator mechanics. Zero credentials required.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================================================================= -->
+<!-- MODALS -->
+<!-- ========================================================================= -->
+
+<!-- 1. Log Drop Modal -->
+<div id="modal-log-drop" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+  <div class="relative w-full max-w-lg rounded-3xl bg-[#11161d] border border-white/[0.12] shadow-2xl p-5 sm:p-6 space-y-5 max-h-[90vh] overflow-y-auto">
+    <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+      <div class="flex items-center gap-2.5">
+        <div class="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+          <Icons name="drop-box" class="w-5 h-5" />
+        </div>
+        <div>
+          <h3 class="text-lg font-black text-white">Log Weekly Care Package Drop</h3>
+          <p class="text-xs text-zinc-400">Add an earned case, weapon skin, or graffiti to your farm ledger.</p>
+        </div>
+      </div>
+      <button class="btn-close-modal text-zinc-400 hover:text-white p-1 cursor-pointer">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <form id="form-log-drop" class="space-y-4">
+      <!-- Target Account Selection -->
+      <div>
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Select Farming Account *</label>
+        <select
+          id="drop-input-account"
+          required
+          class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+        >
+          <!-- Injected dynamically -->
+        </select>
+      </div>
+
+      <!-- Quick Preset Selector -->
+      <div>
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Quick Presets (Active CS2 Pool)</label>
+        <div class="flex flex-wrap gap-1.5">
+          <button type="button" class="btn-case-preset px-2.5 py-1 rounded-lg bg-[#0d1117] hover:bg-[#1c2128] border border-white/[0.08] text-[11px] font-mono text-zinc-300 hover:text-emerald-400 cursor-pointer" data-name="Gallery Case" data-price="1.45" data-type="case">Gallery Case ($1.45)</button>
+          <button type="button" class="btn-case-preset px-2.5 py-1 rounded-lg bg-[#0d1117] hover:bg-[#1c2128] border border-white/[0.08] text-[11px] font-mono text-zinc-300 hover:text-emerald-400 cursor-pointer" data-name="Kilowatt Case" data-price="0.95" data-type="case">Kilowatt Case ($0.95)</button>
+          <button type="button" class="btn-case-preset px-2.5 py-1 rounded-lg bg-[#0d1117] hover:bg-[#1c2128] border border-white/[0.08] text-[11px] font-mono text-zinc-300 hover:text-emerald-400 cursor-pointer" data-name="Dreams & Nightmares Case" data-price="1.12" data-type="case">Dreams & Nightmares ($1.12)</button>
+          <button type="button" class="btn-case-preset px-2.5 py-1 rounded-lg bg-[#0d1117] hover:bg-[#1c2128] border border-white/[0.08] text-[11px] font-mono text-zinc-300 hover:text-emerald-400 cursor-pointer" data-name="Revolution Case" data-price="0.38" data-type="case">Revolution ($0.38)</button>
+          <button type="button" class="btn-case-preset px-2.5 py-1 rounded-lg bg-[#0d1117] hover:bg-[#1c2128] border border-white/[0.08] text-[11px] font-mono text-zinc-300 hover:text-emerald-400 cursor-pointer" data-name="Recoil Case" data-price="0.28" data-type="case">Recoil Case ($0.28)</button>
+          <button type="button" class="btn-case-preset px-2.5 py-1 rounded-lg bg-[#0d1117] hover:bg-[#1c2128] border border-white/[0.08] text-[11px] font-mono text-zinc-300 hover:text-emerald-400 cursor-pointer" data-name="Desert Eagle | Mudder" data-price="0.12" data-type="weapon">Desert Eagle | Mudder</button>
+        </div>
+      </div>
+
+      <!-- Item Name & Type -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <div class="sm:col-span-2">
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Item Name *</label>
+          <input
+            id="drop-input-item-name"
+            type="text"
+            required
+            placeholder="e.g. Gallery Case or MP9 | Starlight Protector"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Item Type</label>
+          <select
+            id="drop-input-item-type"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          >
+            <option value="case">Case</option>
+            <option value="weapon">Weapon Skin</option>
+            <option value="graffiti">Graffiti</option>
+            <option value="sticker">Sticker</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Wear Condition & Float (Optional for skins) -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Wear Condition</label>
+          <select
+            id="drop-input-wear"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          >
+            <option value="">N/A (Cases/Graffiti)</option>
+            <option value="FN">Factory New (FN)</option>
+            <option value="MW">Minimal Wear (MW)</option>
+            <option value="FT">Field-Tested (FT)</option>
+            <option value="WW">Well-Worn (WW)</option>
+            <option value="BS">Battle-Scarred (BS)</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Float Value (0.00-1.00)</label>
+          <input
+            id="drop-input-float"
+            type="number"
+            step="0.001"
+            min="0"
+            max="1"
+            placeholder="0.214"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          />
+        </div>
+      </div>
+
+      <!-- Steam Market Value & Cashout Status -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Steam Market Value (USD) *</label>
+          <input
+            id="drop-input-price"
+            type="number"
+            step="0.01"
+            required
+            placeholder="1.45"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Drop Number</label>
+          <select
+            id="drop-input-drop-num"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          >
+            <option value="1">Drop #1 (Primary)</option>
+            <option value="2">Drop #2 (Secondary)</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Sold Immediately Toggle -->
+      <div class="p-3 rounded-xl bg-[#0d1117] border border-white/[0.06] space-y-2">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input id="drop-input-sold-toggle" type="checkbox" class="w-4 h-4 rounded text-emerald-400 focus:ring-0 bg-[#161b22] border-white/20" />
+          <span class="text-xs font-bold text-white">Item Already Sold (Realize Cashout)</span>
+        </label>
+        <div id="drop-sold-extra" class="hidden pl-6 pt-1">
+          <label class="block text-[11px] text-zinc-400 mb-1">Actual Cash Received (USD)</label>
+          <input
+            id="drop-input-cashout-val"
+            type="number"
+            step="0.01"
+            placeholder="1.30 (after fee)"
+            class="w-full px-3 py-1.5 rounded-lg bg-[#161b22] border border-white/[0.1] text-white text-xs font-mono outline-none"
+          />
+        </div>
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button
+          type="button"
+          class="btn-close-modal px-4 py-2.5 rounded-xl bg-[#161b22] hover:bg-[#1c2128] text-zinc-300 text-xs font-bold cursor-pointer transition"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-xs sm:text-sm glow-emerald cursor-pointer transition flex items-center gap-2"
+        >
+          <span>Save & Log Drop</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 2. Add / Edit Account Modal -->
+<div id="modal-account" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+  <div class="relative w-full max-w-md rounded-3xl bg-[#11161d] border border-white/[0.12] shadow-2xl p-5 sm:p-6 space-y-5">
+    <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+      <div class="flex items-center gap-2.5">
+        <div class="p-2 rounded-xl bg-cyan-500/10 text-cyan-400">
+          <Icons name="steam" class="w-5 h-5" />
+        </div>
+        <div>
+          <h3 id="modal-account-title" class="text-lg font-black text-white">Add CS2 Prime Account</h3>
+          <p class="text-xs text-zinc-400">Track drop progress and calculate payback ROI.</p>
+        </div>
+      </div>
+      <button class="btn-close-modal text-zinc-400 hover:text-white p-1 cursor-pointer">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <form id="form-account" class="space-y-4">
+      <input type="hidden" id="account-edit-id" value="" />
+
+      <div>
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Account Label / Persona *</label>
+        <input
+          id="account-input-name"
+          type="text"
+          required
+          placeholder="e.g. Main Farm Account #1"
+          class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+        />
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">SteamID64 or Profile Vanity</label>
+        <input
+          id="account-input-steamid"
+          type="text"
+          placeholder="76561198... or vanity URL"
+          class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Prime Cost (USD) *</label>
+          <input
+            id="account-input-cost"
+            type="number"
+            step="0.01"
+            required
+            value="14.99"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Color Tag</label>
+          <select
+            id="account-input-color"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          >
+            <option value="#10b981">Emerald Green</option>
+            <option value="#06b6d4">Cyan Blue</option>
+            <option value="#f59e0b">Amber Gold</option>
+            <option value="#a855f7">Purple Covert</option>
+            <option value="#ef4444">Crimson Red</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Notes</label>
+        <input
+          id="account-input-notes"
+          type="text"
+          placeholder="e.g. Needs Deathmatch XP on weekend"
+          class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+        />
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button
+          type="button"
+          class="btn-close-modal px-4 py-2.5 rounded-xl bg-[#161b22] hover:bg-[#1c2128] text-zinc-300 text-xs font-bold cursor-pointer transition"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2.5 rounded-xl bg-emerald-400 hover:bg-emerald-300 text-black font-extrabold text-xs sm:text-sm glow-emerald cursor-pointer transition"
+        >
+          Save Account
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 3. Add Goal Modal -->
+<div id="modal-goal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+  <div class="relative w-full max-w-md rounded-3xl bg-[#11161d] border border-white/[0.12] shadow-2xl p-5 sm:p-6 space-y-5">
+    <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+      <div class="flex items-center gap-2.5">
+        <div class="p-2 rounded-xl bg-amber-500/10 text-amber-400">
+          <Icons name="medal" class="w-5 h-5" />
+        </div>
+        <div>
+          <h3 class="text-lg font-black text-white">Create Farm Milestone Goal</h3>
+          <p class="text-xs text-zinc-400">Target a dream skin or financial milestone.</p>
+        </div>
+      </div>
+      <button class="btn-close-modal text-zinc-400 hover:text-white p-1 cursor-pointer">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <form id="form-goal" class="space-y-4">
+      <div>
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Goal Title *</label>
+        <input
+          id="goal-input-name"
+          type="text"
+          required
+          placeholder="e.g. Buy Knife or Full Payback"
+          class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+        />
+      </div>
+
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Target Amount (USD) *</label>
+          <input
+            id="goal-input-amount"
+            type="number"
+            step="0.01"
+            required
+            placeholder="100.00"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Goal Type</label>
+          <select
+            id="goal-input-type"
+            class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+          >
+            <option value="revenue">Total Drop Revenue</option>
+            <option value="cashout">Realized Cashout</option>
+            <option value="profit">Net Profit Over Cost</option>
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-xs font-semibold text-zinc-300 mb-1.5">Target CS2 Item (Optional)</label>
+        <input
+          id="goal-input-item-name"
+          type="text"
+          placeholder="e.g. AWP | Asiimov (Field-Tested)"
+          class="w-full px-3.5 py-2.5 rounded-xl bg-[#0d1117] border border-white/[0.1] text-white text-xs sm:text-sm font-mono outline-none focus:border-emerald-500/50"
+        />
+      </div>
+
+      <!-- Submit Buttons -->
+      <div class="flex items-center justify-end gap-2.5 pt-2">
+        <button
+          type="button"
+          class="btn-close-modal px-4 py-2.5 rounded-xl bg-[#161b22] hover:bg-[#1c2128] text-zinc-300 text-xs font-bold cursor-pointer transition"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="px-5 py-2.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-black font-extrabold text-xs sm:text-sm glow-gold cursor-pointer transition"
+        >
+          Create Goal
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 4. Export / Import Data Sync Modal -->
+<div id="modal-data-sync" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+  <div class="relative w-full max-w-md rounded-3xl bg-[#11161d] border border-white/[0.12] shadow-2xl p-5 sm:p-6 space-y-5">
+    <div class="flex items-center justify-between pb-3 border-b border-white/[0.08]">
+      <div class="flex items-center gap-2.5">
+        <div class="p-2 rounded-xl bg-purple-500/10 text-purple-400">
+          <Icons name="download" class="w-5 h-5" />
+        </div>
+        <div>
+          <h3 class="text-lg font-black text-white">Data Backup & Export</h3>
+          <p class="text-xs text-zinc-400">Export drops to CSV, backup JSON, or restore.</p>
+        </div>
+      </div>
+      <button class="btn-close-modal text-zinc-400 hover:text-white p-1 cursor-pointer">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+
+    <div class="space-y-3 text-xs">
+      <button
+        id="btn-sync-export-csv"
+        class="w-full p-3.5 rounded-xl bg-[#0d1117] hover:bg-[#161b22] border border-white/[0.08] flex items-center justify-between transition cursor-pointer text-left group"
+      >
+        <div>
+          <div class="font-bold text-white group-hover:text-emerald-400 transition">Download Drops Ledger (.CSV)</div>
+          <div class="text-zinc-500 text-[11px]">Spreadsheet format compatible with Excel and Google Sheets</div>
+        </div>
+        <Icons name="download" class="w-4 h-4 text-zinc-400 group-hover:text-emerald-400" />
+      </button>
+
+      <button
+        id="btn-sync-export-json"
+        class="w-full p-3.5 rounded-xl bg-[#0d1117] hover:bg-[#161b22] border border-white/[0.08] flex items-center justify-between transition cursor-pointer text-left group"
+      >
+        <div>
+          <div class="font-bold text-white group-hover:text-cyan-400 transition">Download Complete Backup (.JSON)</div>
+          <div class="text-zinc-500 text-[11px]">Full backup of accounts, drops, goals, and history</div>
+        </div>
+        <Icons name="download" class="w-4 h-4 text-zinc-400 group-hover:text-cyan-400" />
+      </button>
+
+      <div class="p-3.5 rounded-xl bg-[#0d1117] border border-white/[0.08] space-y-2">
+        <div class="font-bold text-white">Restore / Import Backup (.JSON)</div>
+        <input
+          type="file"
+          id="input-import-json-file"
+          accept=".json"
+          class="w-full text-xs text-zinc-400 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#1c2128] file:text-zinc-200 hover:file:bg-[#252b35] cursor-pointer"
+        />
+      </div>
+
+      <div class="pt-2 flex items-center justify-between border-t border-white/[0.06]">
+        <button
+          id="btn-danger-clear-all"
+          class="px-3 py-1.5 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 text-[11px] font-bold transition cursor-pointer"
+        >
+          Clear All Data
+        </button>
+
+        <button
+          type="button"
+          class="btn-close-modal px-4 py-1.5 rounded-xl bg-[#161b22] text-zinc-300 text-xs font-semibold cursor-pointer"
+        >
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
